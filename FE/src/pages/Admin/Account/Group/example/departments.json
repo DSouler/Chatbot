@@ -1,0 +1,29 @@
+{
+  "VTI": {
+    "D1": "Development team 1",
+    "D2": "Development team 2",
+    "D3": "Development team 3",
+    "D4": "Development team 4"
+  },
+  "VJP": {
+    "G2": "Group 2 in Japan branch",
+    "G3": "Group 3 in Japan branch",
+    "G4": "Group 4 in Japan branch",
+    "G5": "Group 5 in Japan branch",
+    "G6": "Group 6 in Japan branch",
+    "G7": "Group 7 in Japan branch"
+  },
+  "VKR": {
+    "Sales": "Sales team in Korea"
+  },
+  "VAP": {
+    "Marketing": "Marketing team in APAC",
+    "Sales": "Sales team in APAC"
+  },
+  "HRI": {
+    "Support": "Support department"
+  },
+  "EDU": {
+    "Training": "Education and training team"
+  }
+}
