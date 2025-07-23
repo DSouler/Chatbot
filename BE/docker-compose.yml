@@ -1,0 +1,52 @@
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - backend
+
+  fastapi-app:
+    build: .
+    ports:
+      - "8100:8000"
+    depends_on:
+      - qdrant
+    environment:
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+    networks:
+      - backend
+
+  postgres:
+    hostname: postgres
+    container_name: postgres
+    image: postgres:14.15-alpine
+    ports:
+      - ${POSTGRES_PORT:-5496}:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_DEFAULT_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_DEFAULT_PASSWORD:-admin}
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_DEFAULT_USER:-admin}", "-d", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  qdrant_data:
+  postgres_data:
+
+ 
