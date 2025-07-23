@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG API Testing Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .response-area {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            min-height: 200px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .nav-tabs {
+            margin-bottom: 20px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: 20%;
+        }
+        .bot-message {
+            background-color: #f5f5f5;
+            margin-right: 20%;
+        }
+        .markdown-body {
+            background-color: transparent;
+            font-size: 14px;
+        }
+        .sources-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+        }
+        .source-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .source-score {
+            margin-left: auto;
+            padding: 2px 8px;
+            background-color: #e9ecef;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .source-path {
+            color: #6c757d;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        .response-content {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">RAG API Testing Interface</h1>
+        
+        <ul class="nav nav-tabs" id="apiTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="chat-tab" data-bs-toggle="tab" href="#chat" role="tab">Chat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="upload-tab" data-bs-toggle="tab" href="#upload" role="tab">S3 Upload</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="ingest-tab" data-bs-toggle="tab" href="#ingest" role="tab">Ingest</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="delete-tab" data-bs-toggle="tab" href="#delete" role="tab">Delete</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tenant-tab" data-bs-toggle="tab" href="#tenant" role="tab">Add Tenant</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="apiTabContent">
+            <!-- Chat Tab -->
+            <div class="tab-pane fade show active" id="chat" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Chat with RAG</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Mode</label>
+                            <select class="form-select" id="chatMode">
+                                <option value="RAG">RAG</option>
+                                <option value="LLM">LLM</option>
+                            </select>
+                        </div>
+
+                        <!-- LLM Settings -->
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">LLM Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Provider</label>
+                                    <select class="form-select" id="llmProvider" onchange="toggleProviderConfig('llm')">
+                                        <option value="openai">OpenAI</option>
+                                        <option value="anthropic">Anthropic</option>
+                                        <option value="google">Google</option>
+                                        <option value="azure">Azure</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Model</label>
+                                    <input type="text" class="form-control" id="llmModel" placeholder="e.g., gpt-4, claude-3-sonnet">
+                                </div>
+                                <!-- OpenAI Config -->
+                                <div id="llmOpenaiConfig" class="provider-config" style="display: block;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="llmOpenaiApiKey" placeholder="sk-...">
+                                    </div>
+                                </div>
+
+                                <!-- Anthropic Config -->
+                                <div id="llmAnthropicConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="llmAnthropicApiKey" placeholder="sk-ant-...">
+                                    </div>
+                                </div>
+
+                                <!-- Google Config -->
+                                <div id="llmGoogleConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">Project ID</label>
+                                        <input type="text" class="form-control" id="llmGoogleProjectId" placeholder="your-gcp-project-id">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Region</label>
+                                        <input type="text" class="form-control" id="llmGoogleRegion" placeholder="us-central1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Application Credentials JSON</label>
+                                        <textarea class="form-control" id="llmGoogleCredentials" rows="3" placeholder="Paste your service account JSON credentials here"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Azure Config -->
+                                <div id="llmAzureConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API KEY</label>
+                                        <input type="password" class="form-control" id="llmAzureApiKey" placeholder="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Base URL</label>
+                                        <input type="text" class="form-control" id="llmAzureBaseUrl" placeholder="https://...">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">API Version</label>
+                                        <input type="text" class="form-control" id="llmAzureApiVersion" placeholder="e.g., 2024-08-01-preview"></input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vector Embedding Settings -->
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">Vector Embedding Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Model</label>
+                                    <input type="text" class="form-control" id="embeddingModel" placeholder="e.g., gpt-4, gpt-4o-mini">
+                                </div>
+                                <!-- OpenAI Config -->
+                                <div id="llmOpenaiConfig" class="provider-config" style="display: block;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="embeddingOpenaiApiKey" placeholder="sk-...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Retrieval Settings -->
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">Retrieval Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Retrieval Mode</label>
+                                    <select class="form-select" id="retrievalMode">
+                                        <option value="vector">Vector</option>
+                                        <option value="hybrid">Hybrid</option>
+                                        <option value="text">Text</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="useMMR">
+                                        <label class="form-check-label" for="useMMR">
+                                            Use MMR (Maximum Marginal Relevance)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="useReranking">
+                                        <label class="form-check-label" for="useReranking">
+                                            Use Reranking
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="useLLMRelevantScoring" class="form-check-input">
+                                        <label for="useLLMRelevantScoring">Use LLM Relevant Scoring</label>
+                                    </div>
+                                </div>
+                                <!-- New fields for LLM Relevant Scoring-->
+                                <div class="mb-3" class="relevantScoringSetting">
+                                    <label class="form-label">LLM Relevant Scoring</label>
+                                    <select class="form-select" id="llmScoringProvider" onchange="toggleProviderConfig('scoring')">
+                                        <option value="">None</option>
+                                        <option value="openai">OpenAI</option>
+                                        <option value="anthropic">Anthropic</option>
+                                        <option value="google">Google</option>
+                                        <option value="azure">Azure</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" class="relevantScoringSetting">
+                                    <label class="form-label">LLM Relevant Scoring Model</label>
+                                    <input type="text" class="form-control" id="llmScoringModel" placeholder="e.g., gpt-4, claude-3-sonnet">
+                                </div>
+
+                                <!-- Planner Provider Configs -->
+                                <div id="scoringOpenaiConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="llmScoringOpenaiApiKey" placeholder="sk-...">
+                                    </div>
+                                </div>
+
+                                <div id="scoringAnthropicConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="llmScoringAnthropicApiKey" placeholder="sk-ant-...">
+                                    </div>
+                                </div>
+
+                                <div id="scoringGoogleConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">Project ID</label>
+                                        <input type="text" class="form-control" id="llmScoringGoogleProjectId" placeholder="your-gcp-project-id">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Region</label>
+                                        <input type="text" class="form-control" id="llmScoringGoogleRegion" placeholder="us-central1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Application Credentials JSON</label>
+                                        <textarea class="form-control" id="llmScoringGoogleCredentials" rows="3" placeholder="Paste your service account JSON credentials here"></textarea>
+                                    </div>
+                                </div>
+                                <div id="scoringAzureConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API KEY</label>
+                                        <input type="password" class="form-control" id="llmScoringAzureApiKey" placeholder="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Base URL</label>
+                                        <input type="text" class="form-control" id="llmScoringAzureBaseUrl" placeholder="https://...">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">API Version</label>
+                                        <input type="text" class="form-control" id="llmScoringAzureApiVersion" placeholder="e.g., 2024-08-01-preview"></input>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="prioritizeTable" class="form-check-input">
+                                        <label for="prioritizeTable">Prioritize Table Content</label>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="form-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="prioritizeTable" class="form-check-input">
+                                        <label for="prioritizeTable">Prioritize Table Content</label>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Reasoning Settings -->
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">Reasoning Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Language</label>
+                                    <select class="form-select" id="reasoningLanguage">
+                                        <option value="English">English</option>
+                                        <option value="Vietnamese">Vietnamese</option>
+                                        <option value="Japanese">Japanese</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Framework</label>
+                                    <select class="form-select" id="reasoningFramework" onchange="toggleComplexPrompts()">
+                                        <option value="simple">Simple</option>
+                                        <option value="complex">Complex</option>
+                                        <option value="react">ReAct</option>
+                                        <option value="rewoo">ReWOO</option>
+                                    </select>
+                                </div>
+                                <div id="complexPrompts" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">Decompose Prompt (Optional)</label>
+                                        <textarea class="form-control" id="decomposePrompt" rows="2" placeholder="Custom decompose prompt template"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Complex Prompt (Optional)</label>
+                                        <textarea class="form-control" id="complexPrompt" rows="2" placeholder="Custom complex prompt template"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- New fields for LLM Planner -->
+                                <div class="mb-3">
+                                    <label class="form-label">LLM Planner Provider</label>
+                                    <select class="form-select" id="llmPlannerProvider" onchange="toggleProviderConfig('planner')">
+                                        <option value="">None</option>
+                                        <option value="openai">OpenAI</option>
+                                        <option value="anthropic">Anthropic</option>
+                                        <option value="google">Google</option>
+                                        <option value="azure">Azure</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">LLM Planner Model</label>
+                                    <input type="text" class="form-control" id="llmPlannerModel" placeholder="e.g., gpt-4, claude-3-sonnet">
+                                </div>
+
+                                <!-- Planner Provider Configs -->
+                                <div id="plannerOpenaiConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="llmPlannerOpenaiApiKey" placeholder="sk-...">
+                                    </div>
+                                </div>
+
+                                <div id="plannerAnthropicConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="llmPlannerAnthropicApiKey" placeholder="sk-ant-...">
+                                    </div>
+                                </div>
+
+                                <div id="plannerGoogleConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">Project ID</label>
+                                        <input type="text" class="form-control" id="llmPlannerGoogleProjectId" placeholder="your-gcp-project-id">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Region</label>
+                                        <input type="text" class="form-control" id="llmPlannerGoogleRegion" placeholder="us-central1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Application Credentials JSON</label>
+                                        <textarea class="form-control" id="llmPlannerGoogleCredentials" rows="3" placeholder="Paste your service account JSON credentials here"></textarea>
+                                    </div>
+                                </div>
+
+                                <div id="plannerAzureConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API KEY</label>
+                                        <input type="password" class="form-control" id="llmPlannerAzureApiKey" placeholder="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Base URL</label>
+                                        <input type="text" class="form-control" id="llmPlannerAzureBaseUrl" placeholder="https://...">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">API Version</label>
+                                        <input type="text" class="form-control" id="llmPlannerAzureApiVersion" placeholder="e.g., 2024-08-01-preview"></input>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="prioritizeTable" class="form-check-input">
+                                        <label for="prioritizeTable">Prioritize Table Content</label>
+                                    </div>
+                                </div>
+
+                                <!-- New fields for LLM Solver -->
+                                <div class="mb-3">
+                                    <label class="form-label">LLM Solver Provider</label>
+                                    <select class="form-select" id="llmSolverProvider" onchange="toggleProviderConfig('solver')">
+                                        <option value="">None</option>
+                                        <option value="openai">OpenAI</option>
+                                        <option value="anthropic">Anthropic</option>
+                                        <option value="google">Google</option>
+                                        <option value="azure">Azure</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">LLM Solver Model</label>
+                                    <input type="text" class="form-control" id="llmSolverModel" placeholder="e.g., gpt-4, claude-3-sonnet">
+                                </div>
+                                <!-- Solver Provider Configs -->
+                                <div id="solverOpenaiConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="llmSolverOpenaiApiKey" placeholder="sk-...">
+                                    </div>
+                                </div>
+
+                                <div id="solverAnthropicConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="llmSolverAnthropicApiKey" placeholder="sk-ant-...">
+                                    </div>
+                                </div>
+
+                                <div id="solverGoogleConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">Project ID</label>
+                                        <input type="text" class="form-control" id="llmSolverGoogleProjectId" placeholder="your-gcp-project-id">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Region</label>
+                                        <input type="text" class="form-control" id="llmSolverGoogleRegion" placeholder="us-central1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Application Credentials JSON</label>
+                                        <textarea class="form-control" id="llmSolverGoogleCredentials" rows="3" placeholder="Paste your service account JSON credentials here"></textarea>
+                                    </div>
+                                </div>
+
+                                <div id="solverAzureConfig" class="provider-config" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">API KEY</label>
+                                        <input type="password" class="form-control" id="llmSolverAzureApiKey" placeholder="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Base URL</label>
+                                        <input type="text" class="form-control" id="llmSolverAzureBaseUrl" placeholder="https://...">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">API Version</label>
+                                        <input type="text" class="form-control" id="llmSolverAzureApiVersion" placeholder="e.g., 2024-08-01-preview"></input>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="prioritizeTable" class="form-check-input">
+                                        <label for="prioritizeTable">Prioritize Table Content</label>
+                                    </div>
+                                </div>
+                                <!-- New fields for Prompts -->
+                                <div class="mb-3">
+                                    <label class="form-label">Planner Prompt (Optional)</label>
+                                    <textarea class="form-control" id="plannerPrompt" rows="2" placeholder="Custom planner prompt template"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Solver Prompt (Optional)</label>
+                                    <textarea class="form-control" id="solverPrompt" rows="2" placeholder="Custom solver prompt template"></textarea>
+                                </div>
+                                <!-- New fields for Tools and Settings -->
+                                <div class="mb-3">
+                                    <label class="form-label">Tools</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="toolWikipedia" value="wikipedia">
+                                        <label class="form-check-label" for="toolWikipedia">Wikipedia</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="toolGoogle" value="google">
+                                        <label class="form-check-label" for="toolGoogle">Google</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="toolLLM" value="llm">
+                                        <label class="form-check-label" for="toolLLM">LLM</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="tooldocsearch" value="docsearch">
+                                        <label class="form-check-label" for="tooldocsearch">docsearch</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="toolwebreader" value="webreader">
+                                        <label class="form-check-label" for="toolwebreader">webreader</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="useCitation">
+                                        <label class="form-check-label" for="useCitation">Use Citation</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Max Iterations</label>
+                                    <input type="number" class="form-control" id="maxIterations" value="5" min="1" max="10">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Question</label>
+                            <textarea class="form-control" id="question" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">System Prompt (Optional)</label>
+                            <textarea class="form-control" id="systemPrompt" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Top K Results</label>
+                            <input type="number" class="form-control" id="topK" value="3">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">N Last Interactions</label>
+                            <input type="number" class="form-control" id="nLastInteractions" placeholder="Number of last interactions to consider">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Max Context Rewrite Length</label>
+                            <input type="number" class="form-control" id="maxContextRewriteLength" placeholder="Maximum length for context rewrite">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">QA Prompt (Optional)</label>
+                            <textarea class="form-control" id="qaPrompt" rows="2" placeholder="Custom QA prompt template"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tenant ID</label>
+                            <input type="text" class="form-control" id="tenantId">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Collection ID</label>
+                            <input type="text" class="form-control" id="collectionId">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">User Group ID</label>
+                            <input type="text" class="form-control" id="userGroupId">
+                        </div>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-primary" onclick="sendChat()">Send</button>
+                            <button class="btn btn-secondary" onclick="clearChatHistory()">Clear History</button>
+                        </div>
+                        <div class="response-area mt-3" id="chatResponse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- S3 Upload Tab -->
+            <div class="tab-pane fade" id="upload" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Upload Files to S3</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Files</label>
+                            <input type="file" class="form-control" id="files" multiple>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bucket Name</label>
+                            <input type="text" class="form-control" id="bucketName">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Prefix</label>
+                            <input type="text" class="form-control" id="prefix">
+                        </div>
+                        <button class="btn btn-primary" onclick="uploadFiles()">Upload</button>
+                        <div class="response-area mt-3" id="uploadResponse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ingest Tab -->
+            <div class="tab-pane fade" id="ingest" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ingest Documents</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Object Keys (one per line)</label>
+                            <textarea class="form-control" id="objectKeys" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bucket Name</label>
+                            <input type="text" class="form-control" id="ingestBucketName">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tenant ID</label>
+                            <input type="text" class="form-control" id="ingestTenantId">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Collection ID</label>
+                            <input type="text" class="form-control" id="ingestCollectionId">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">User Group ID</label>
+                            <input type="text" class="form-control" id="ingestUserGroupId">
+                        </div>                        
+                        <div class="mb-3">
+                            <label class="form-label">Model</label>
+                            <input type="text" class="form-control" id="embeddingModel_ingest" placeholder="e.g., gpt-4, gpt-4o-mini">
+                        </div>
+                        <!-- OpenAI Config -->
+                        <div id="llmOpenaiConfig" class="provider-config" style="display: block;">
+                            <div class="mb-3">
+                                <label class="form-label">API Key</label>
+                                <input type="password" class="form-control" id="embeddingOpenaiApiKey_ingest" placeholder="sk-...">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="ingestDocuments()">Ingest</button>
+                        <div class="response-area mt-3" id="ingestResponse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Tab -->
+            <div class="tab-pane fade" id="delete" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Delete Vectors</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Object Keys (one per line)</label>
+                            <textarea class="form-control" id="deleteObjectKeys" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tenant ID</label>
+                            <input type="text" class="form-control" id="deleteTenantId">
+                        </div>
+                        <button class="btn btn-danger" onclick="deleteVectors()">Delete</button>
+                        <div class="response-area mt-3" id="deleteResponse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Tenant Tab -->
+            <div class="tab-pane fade" id="tenant" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Add New Tenant</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Tenant ID</label>
+                            <input type="text" class="form-control" id="newTenantId">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Embedding model</label>
+                            <input type="text" class="form-control" id="embedModelName">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Embedding dim</label>
+                            <input type="text" class="form-control" id="embedDim">
+                        </div>
+                        <button class="btn btn-primary" onclick="addTenant()">Add Tenant</button>
+                        <div class="response-area mt-3" id="tenantResponse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // Helper function to display responses
+        function displayResponse(elementId, data) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function toggleProviderConfig(section) {
+            const providers = ['openai', 'anthropic', 'google', 'azure'];
+            const selectedProvider = document.getElementById(section === 'llm' ? 'llmProvider' : 
+                                                           section === 'planner' ? 'llmPlannerProvider' : 
+                                                           section === 'scoring' ? 'llmScoringProvider' :
+                                                           'llmSolverProvider').value;
+            
+            // Hide all provider configs for this section
+            providers.forEach(provider => {
+                const configDiv = document.getElementById(`${section}${provider.charAt(0).toUpperCase() + provider.slice(1)}Config`);
+                
+                if (configDiv) {
+                    configDiv.style.display = 'none';
+                }
+            });
+            
+            // Show selected provider config
+            if (selectedProvider) {
+                const configDiv = document.getElementById(`${section}${selectedProvider.charAt(0).toUpperCase() + selectedProvider.slice(1)}Config`);
+                if (configDiv) {
+                    configDiv.style.display = 'block';
+                }
+            }
+        }
+
+        // Chat history management
+        function getChatHistory() {
+            const history = localStorage.getItem('chatHistory');
+            return history ? JSON.parse(history) : [];
+        }
+
+        function saveChatHistory(history) {
+            localStorage.setItem('chatHistory', JSON.stringify(history));
+        }
+
+        function addToChatHistory(role, content) {
+            // Only add non-empty content to history
+            if (!content || content.trim() === '') {
+                return;
+            }
+            const history = getChatHistory();
+            history.push({ role, content });
+            saveChatHistory(history);
+        }
+
+        function clearChatHistory() {
+            localStorage.removeItem('chatHistory');
+            const responseArea = document.getElementById('chatResponse');
+            responseArea.innerHTML = '';
+        }
+
+        // Helper function to format source path
+        function formatSourcePath(path) {
+            const filename = path.split('\\').pop().split('/').pop();
+            return filename;
+        }
+
+        // Add this function at the beginning of the script section
+        function toggleComplexPrompts() {
+            const framework = document.getElementById('reasoningFramework').value;
+            const complexPrompts = document.getElementById('complexPrompts');
+            complexPrompts.style.display = framework === 'complex' ? 'block' : 'none';
+        }
+
+        // Chat API
+        async function sendChat() {
+            const responseArea = document.getElementById('chatResponse');
+            const question = document.getElementById('question').value;
+            
+            // Build request object with required fields
+            const request = {
+                question: question,
+                mode: document.getElementById('chatMode').value,
+                chat_history: getChatHistory(),
+                reasoning_settings: {
+                    language: document.getElementById('reasoningLanguage').value,
+                    framework: document.getElementById('reasoningFramework').value,
+                    llm: {
+                        provider: document.getElementById('llmProvider').value,
+                        model: document.getElementById('llmModel').value,
+                        api_key: document.getElementById("llmOpenaiApiKey").value ? document.getElementById("llmOpenaiApiKey").value : 
+                        document.getElementById("llmAnthropicApiKey").value ? document.getElementById("llmAnthropicApiKey").value : 
+                        document.getElementById("llmAzureApiKey").value,
+                        project_id: document.getElementById("llmGoogleProjectId").value,
+                        region: document.getElementById("llmGoogleRegion").value,
+                        application_credentials: document.getElementById("llmGoogleCredentials").value,
+                        base_url: document.getElementById("llmAzureBaseUrl").value,
+                        api_version: document.getElementById("llmAzureApiVersion").value
+                    }
+                },
+                retrieval_settings: {
+                    llm_relevant_scoring: {
+                        provider: document.getElementById('llmScoringProvider').value,
+                        model: document.getElementById('llmScoringModel').value,
+                        api_key: document.getElementById("llmScoringOpenaiApiKey").value ? document.getElementById("llmScoringOpenaiApiKey").value : 
+                        document.getElementById("llmScoringAnthropicApiKey").value ? document.getElementById("llmScoringAnthropicApiKey").value : 
+                        document.getElementById("llmScoringAzureApiKey").value,
+                        project_id: document.getElementById("llmScoringGoogleProjectId").value,
+                        region: document.getElementById("llmScoringGoogleRegion").value,
+                        application_credentials: document.getElementById("llmScoringGoogleCredentials").value,
+                        base_url: document.getElementById("llmScoringAzureBaseUrl").value,
+                        api_version: document.getElementById("llmScoringAzureApiVersion").value,
+                    },
+                    embedding_settings: {
+                        model: document.getElementById('embeddingModel').value,
+                        api_key: document.getElementById('embeddingOpenaiApiKey').value
+                    },
+                    retrieval_mode: document.getElementById('retrievalMode').value,
+                    use_MMR: document.getElementById('useMMR').checked,
+                    use_reranking: document.getElementById('useReranking').checked,
+                    use_llm_relevant_scoring: document.getElementById('useLLMRelevantScoring').checked,
+                    prioritize_table: document.getElementById('prioritizeTable').checked
+                }
+            };
+
+            // Add optional fields only if they have values
+            const tenantId = document.getElementById('tenantId').value;
+            if (tenantId) {
+                request.tenant_id = tenantId;
+                request.sources = ["/docling_test/2003.00744v3.pdf"];
+            }
+
+            const collectionId = document.getElementById('collectionId').value;
+            if (collectionId) {
+                request.collection_id = "";
+            }
+
+            // const userGroupId = document.getElementById('userGroupId').value;
+            // if (userGroupId) {
+            //     request.user_group_id = userGroupId;
+            // }
+
+            const topK = document.getElementById('topK').value;
+            if (topK && topK.trim() !== '') {
+                request.top_k = parseInt(topK);
+            }
+
+            const systemPrompt = document.getElementById('systemPrompt').value;
+            if (systemPrompt) {
+                request.system_prompt = systemPrompt;
+            }
+
+            const nLastInteractions = document.getElementById('nLastInteractions').value;
+            if (nLastInteractions && nLastInteractions.trim() !== '') {
+                request.n_last_interactions = parseInt(nLastInteractions);
+            }
+
+            const maxContextRewriteLength = document.getElementById('maxContextRewriteLength').value;
+            if (maxContextRewriteLength && maxContextRewriteLength.trim() !== '') {
+                request.max_context_rewrite_length = parseInt(maxContextRewriteLength);
+            }
+
+            const qaPrompt = document.getElementById('qaPrompt').value;
+            if (qaPrompt) {
+                request.qa_prompt = qaPrompt;
+            }
+
+            const decomposePrompt = document.getElementById('decomposePrompt').value;
+            if (decomposePrompt) {
+                request.decompose_prompt = decomposePrompt;
+            }
+
+            const complexPrompt = document.getElementById('complexPrompt').value;
+            if (complexPrompt) {
+                request.complex_prompt = complexPrompt;
+            }
+
+            // Add new optional fields for reasoning settings
+            const llmPlannerProvider = document.getElementById('llmPlannerProvider').value;
+            const llmPlannerModel = document.getElementById('llmPlannerModel').value;
+            if (llmPlannerProvider && llmPlannerModel) {
+                request.reasoning_settings.llm_planner = {
+                    provider: llmPlannerProvider,
+                    model: llmPlannerModel,
+                    api_key: document.getElementById("llmPlannerOpenaiApiKey").value ? document.getElementById("llmPlannerOpenaiApiKey").value : 
+                        document.getElementById("llmPlannerAnthropicApiKey").value ? document.getElementById("llmPlannerAnthropicApiKey").value : 
+                        document.getElementById("llmPlannerAzureApiKey").value,
+                        project_id: document.getElementById("llmPlannerGoogleProjectId").value,
+                        region: document.getElementById("llmPlannerGoogleRegion").value,
+                        application_credentials: document.getElementById("llmPlannerGoogleCredentials").value,
+                        base_url: document.getElementById("llmPlannerAzureBaseUrl").value,
+                        api_version: document.getElementById("llmPlannerAzureApiVersion").value
+                };
+            }
+
+            const llmSolverProvider = document.getElementById('llmSolverProvider').value;
+            const llmSolverModel = document.getElementById('llmSolverModel').value;
+            if (llmSolverProvider && llmSolverModel) {
+                request.reasoning_settings.llm_solver = {
+                    provider: llmSolverProvider,
+                    model: llmSolverModel,
+                    api_key: document.getElementById("llmSolverOpenaiApiKey").value ? document.getElementById("llmSolverOpenaiApiKey").value : 
+                    document.getElementById("llmSolverAnthropicApiKey").value ? document.getElementById("llmSolverAnthropicApiKey").value : 
+                    document.getElementById("llmSolverAzureApiKey").value,
+                    project_id: document.getElementById("llmSolverGoogleProjectId").value,
+                    region: document.getElementById("llmSolverGoogleRegion").value,
+                    application_credentials: document.getElementById("llmSolverGoogleCredentials").value,
+                    base_url: document.getElementById("llmSolverAzureBaseUrl").value,
+                    api_version: document.getElementById("llmSolverAzureApiVersion").value
+                };
+            }
+
+            const plannerPrompt = document.getElementById('plannerPrompt').value;
+            if (plannerPrompt) {
+                request.reasoning_settings.planner_prompt = plannerPrompt;
+            }
+
+            const solverPrompt = document.getElementById('solverPrompt').value;
+            if (solverPrompt) {
+                request.reasoning_settings.solver_prompt = solverPrompt;
+            }
+
+            // Add tools if any are selected
+            const selectedTools = [];
+            if (document.getElementById('toolWikipedia').checked) selectedTools.push('wikipedia');
+            if (document.getElementById('toolGoogle').checked) selectedTools.push('google');
+            if (document.getElementById('toolLLM').checked) selectedTools.push('llm');
+            if (document.getElementById('tooldocsearch').checked) selectedTools.push('docsearch');
+            if (document.getElementById('toolwebreader').checked) selectedTools.push('webreader');
+            if (selectedTools.length > 0) {
+                request.reasoning_settings.tools = selectedTools;
+            }
+
+            // Add use_citation if checked
+            if (document.getElementById('useCitation').checked) {
+                request.reasoning_settings.use_citation = true;
+            }
+
+            // Add max_iterations if different from default
+            const maxIterations = parseInt(document.getElementById('maxIterations').value);
+            if (maxIterations && maxIterations !== 5) {
+                request.reasoning_settings.max_interations = maxIterations;
+            }
+            console.log(request);
+            
+            try {
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(request)
+                });
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let responseContent = '';
+                let sources = [];
+
+                while (true) {
+                    const {value, done} = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const data = JSON.parse(line.slice(6));
+                            
+                            if (data.type === 'token') {
+                                responseContent += data.content;
+                                // Update the response area with formatted content
+                                responseArea.innerHTML = `
+                                    <div class="response-content markdown-body">
+                                        ${marked.parse(responseContent)}
+                                    </div>
+                                `;
+                            } else if (data.type === 'sources') {
+                                sources = data.data;
+                                // Update sources section immediately when received
+                                const responseContentDiv = responseArea.querySelector('.response-content');
+                                if (responseContentDiv) {
+                                    responseArea.innerHTML = `
+                                        ${responseContentDiv.outerHTML}
+                                        <div class="sources-section">
+                                            <h6>Sources:</h6>
+                                            ${sources.map(s => `
+                                                <div class="source-item">
+                                                    <div>
+                                                        <div>${formatSourcePath(s.source)}</div>
+                                                        <div class="source-path">${s.source}</div>
+                                                    </div>
+                                                    <div class="d-flex gap-2">
+                                                        <span class="source-score">Embedding: ${s.embedding_score !== null ? s.embedding_score.toFixed(4) : 'N/A'}</span>
+                                                        <span class="source-score">Relevance: ${s.relevance_score !== null ? s.relevance_score.toFixed(4) : 'N/A'}</span>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    `;
+                                }
+                            } 
+                            else if (data.type === 'reasoning' || data.type === "observation") {
+                                responseContent += data.content;
+                                // Update the response area with formatted content
+                                responseArea.innerHTML = `
+                                    <div class="response-content markdown-body">
+                                        ${marked.parse(responseContent)}
+                                    </div>
+                                    ${sources.length > 0 ? `
+                                        <div class="sources-section">
+                                            <h6>Sources:</h6>
+                                            ${sources.map(s => `
+                                                <div class="source-item">
+                                                    <div>
+                                                        <div>${formatSourcePath(s.source)}</div>
+                                                        <div class="source-path">${s.source}</div>
+                                                    </div>
+                                                    <span class="source-score">Score: ${s.score.toFixed(4)}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
+                                `;
+                            } else if (data.type === 'error') {
+                                responseArea.innerHTML += `<div class="alert alert-danger">${data.message}</div>`;
+                            }
+                        }
+                    }
+                }
+
+                // Add user question to chat history
+                addToChatHistory('user', question);
+
+                // Only add non-empty bot response to chat history
+                if (responseContent.trim() !== '') {
+                    addToChatHistory('assistant', responseContent);
+                }
+
+            } catch (error) {
+                responseArea.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            }
+        }
+
+        // S3 Upload API
+        async function uploadFiles() {
+            const formData = new FormData();
+            const files = document.getElementById('files').files;
+            const bucketName = document.getElementById('bucketName').value;
+            const prefix = document.getElementById('prefix').value;
+
+            for (let file of files) {
+                formData.append('files', file);
+            }
+            formData.append('bucket_name', bucketName);
+            formData.append('prefix', prefix);
+
+            try {
+                const response = await fetch('/s3-upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                displayResponse('uploadResponse', data);
+            } catch (error) {
+                displayResponse('uploadResponse', { error: error.message });
+            }
+        }
+
+        // Ingest API
+        async function ingestDocuments() {
+            const objectKeys = document.getElementById('objectKeys').value.split('\n').filter(k => k.trim());
+            const request = {
+                object_keys: objectKeys,
+                bucket_name: document.getElementById('ingestBucketName').value,
+                tenant_id: document.getElementById('ingestTenantId').value,
+                collection_id: document.getElementById('ingestCollectionId').value,
+                user_group_id: document.getElementById('ingestUserGroupId').value,
+                file_loader: 'DoclingLoader',
+                embedding_settings: {
+                    model: document.getElementById('embeddingModel_ingest').value,
+                    api_key: document.getElementById('embeddingOpenaiApiKey_ingest').value
+                }
+            };
+
+            try {
+                const response = await fetch('/ingest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(request)
+                });
+                const data = await response.json();
+                displayResponse('ingestResponse', data);
+            } catch (error) {
+                displayResponse('ingestResponse', { error: error.message });
+            }
+        }
+
+        // Delete API
+        async function deleteVectors() {
+            const objectKeys = document.getElementById('deleteObjectKeys').value.split('\n').filter(k => k.trim());
+            const request = {
+                object_keys: objectKeys,
+                tenant_id: document.getElementById('deleteTenantId').value
+            };
+
+            try {
+                const response = await fetch('/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(request)
+                });
+                const data = await response.json();
+                displayResponse('deleteResponse', data);
+            } catch (error) {
+                displayResponse('deleteResponse', { error: error.message });
+            }
+        }
+
+        // Add Tenant API
+        async function addTenant() {
+            const request = {
+                tenant_id: document.getElementById('newTenantId').value,
+                embedding_dimension: document.getElementById('embedDim').value,
+                embedding_model: document.getElementById('embedModelName').value
+            };
+
+            try {
+                const response = await fetch('/add-tenant', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(request)
+                });
+                const data = await response.json();
+                displayResponse('tenantResponse', data);
+            } catch (error) {
+                displayResponse('tenantResponse', { error: error.message });
+            }
+        }
+    </script>
+</body>
+</html> 
