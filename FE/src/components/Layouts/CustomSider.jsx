@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isYesterday from 'dayjs/plugin/isYesterday';
 import { getConversations, deleteConversation } from '../../services/chat';
+import { useUser } from '../../hooks/useUser';
+import logo from '../../../public/logo.png';
 
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
@@ -24,6 +26,7 @@ const CustomSider = ({
   onDeleteConversation,
 }) => {
   const [chatHistory, setChatHistory] = useState([]);
+  const { user, logout } = useUser();
 
   useEffect(() => {
     getConversations(userId).then((res) => {
@@ -64,62 +67,74 @@ const CustomSider = ({
       collapsible
       trigger={null}
       style={{
-        background: '#fff',
+        background: '#fafafa',
         borderRight: '1px solid #f0f0f0',
         position: 'fixed',
-        minHeight: 'calc(100vh - 64px)',
+        minHeight: '100vh',
         padding: 0,
         zIndex: 20,
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <Button
-        shape="circle"
-        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        size="small"
-        onClick={onToggle}
-        style={{
-          position: 'absolute',
-          right: -16,
-          top: '7%',
-          transform: 'translateY(-50%)',
-          zIndex: 100,
-          boxShadow: '0 0 4px rgba(0,0,0,0.2)',
-          background: '#fff',
-          border: '1px solid #eee',
-        }}
-      />
-      {/* Show Edit when collapsed */}
+      {/* Show icons when collapsed */}
       {collapsed && (
-        <EditOutlined
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: 32,
-            transform: 'translateX(-50%)',
-            fontSize: 18,
-            color: '#131313',
-            cursor: 'pointer',
-            zIndex: 101,
-            background: '#fff',
-            borderRadius: '50%',
-            boxShadow: '0 0 4px rgba(0,0,0,0.08)',
-          }}
-          onClick={onResetChat}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 24, gap: 16 }}>
+          <Button
+            shape="circle"
+            icon={<MenuUnfoldOutlined />}
+            size="large"
+            onClick={onToggle}
+            style={{ marginBottom: 8 }}
+            title="Open sidebar"
+          />
+          <Button
+            shape="circle"
+            icon={<EditOutlined />}
+            size="large"
+            onClick={onResetChat}
+            title="New Chat"
+          />
+        </div>
       )}
+      
       {!collapsed && (
-        <>
-          {/* Header */}
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          height: '100vh' 
+        }}>
+          {/* Header: Logo + History + Collapse button */}
           <div
             style={{
               padding: '20px 16px 8px 16px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              flexShrink: 0,
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <HistoryOutlined style={{ fontSize: 16, color: '#bfbfbf' }} />
+              <img 
+                src={logo} 
+                alt="logo" 
+                style={{ 
+                  width: 20, 
+                  height: 30, 
+                  objectFit: 'contain', 
+                  opacity: 1,
+                  cursor: 'pointer',
+                  transition: 'opacity 0.2s'
+                }}
+                onClick={onResetChat}
+                onMouseOver={(e) => {
+                  e.target.style.opacity = 0.7;
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.opacity = 1;
+                }}
+                title="New Chat"
+              />
               <Text
                 type="secondary"
                 style={{
@@ -133,24 +148,46 @@ const CustomSider = ({
                 History
               </Text>
             </div>
-            <EditOutlined
+            <Button
+              shape="circle"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              size="small"
+              onClick={onToggle}
               style={{
-                fontSize: 18,
-                color: '#131313',
-                marginLeft: 4,
-                cursor: 'pointer',
+                marginLeft: 8,
+                boxShadow: '0 0 4px rgba(0,0,0,0.2)',
+                background: '#fafafa',
+                border: '1px solid #eee',
               }}
-              onClick={onResetChat}
+              title={collapsed ? 'Open sidebar' : 'Close sidebar'}
             />
+          </div>
+
+          {/* New Chat button*/}
+          <div style={{ 
+            padding: '8px 16px 8px 16px',
+            flexShrink: 0,
+          }}>
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              block
+              style={{ fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              onClick={onResetChat}
+              title="New Chat"
+            >
+              New Chat
+            </Button>
           </div>
 
           {/* Chat grouped list */}
           <div
             className="custom-scrollbar"
             style={{
-              height: 'calc(100vh - 80px)',
+              flex: 1,
               overflowY: 'auto',
               padding: '0 8px',
+              minHeight: 0,
             }}
           >
             {Object.keys(groupedConversations).map((dateLabel) => (
@@ -216,7 +253,54 @@ const CustomSider = ({
               </div>
             ))}
           </div>
-        </>
+          
+          {/* User section - luôn ở cuối */}
+          {user && (
+            <div 
+              style={{
+                padding: '14px 16px',
+                borderTop: '1px solid #f0f0f0',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexShrink: 0,
+                backgroundColor: '#fafafa',
+              }}
+            >
+              <span style={{ 
+                color: '#000', 
+                fontWeight: 600, 
+                fontSize: 15 
+              }}>
+                {user.email.split('@')[0]}
+              </span>
+              <button
+                onClick={logout}
+                style={{
+                  fontSize: 12,
+                  color: '#666',
+                  padding: '8px 12px',
+                  borderRadius: 6,
+                  border: '1px solid #e5e5e5',
+                  backgroundColor: '#fafafa',
+                  cursor: 'pointer',
+                  fontWeight: 500,
+                  transition: 'all 0.2s',
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.color = '#dc2626';
+                  e.target.style.backgroundColor = '#fef2f2';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.color = '#666';
+                  e.target.style.backgroundColor = '#fafafa';
+                }}
+              >
+                Sign Out
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </Sider>
   );

@@ -1,38 +1,39 @@
-import { useUser } from '../../hooks/useUser';
 import logo from '../../assets/vti-logo-horiz.png';
+import { useState } from 'react';
+import { SiderContext } from '../../contexts/SiderContext';
 
 const AppLayout = ({ children }) => {
-  const { user, logout } = useUser();
+  const [collapsedSider, setCollapsedSider] = useState(false);
+  const [collapsedInfoPanel, setCollapsedInfoPanel] = useState(true);
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
-      <header className="bg-white fixed top-0 left-0 z-30 shadow-sm w-full">
-        <div className="px-6 flex justify-between h-16 items-center">
-          <div className="flex items-center space-x-6">
-            <img 
-              src={logo}
-              alt="VTI Chatbot"
-              className="h-8 w-auto"
-            />
-            {/* <Navigation /> */}
-          </div>
-          {user && (
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700 font-medium">{user.email}</span>
-              <button
-                onClick={logout}
-                className="text-gray-600 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium border border-gray-200 bg-gray-100 hover:bg-red-50 transition"
-              >
-                Sign Out
-              </button>
+    <SiderContext.Provider value={{ collapsedSider, setCollapsedSider, collapsedInfoPanel, setCollapsedInfoPanel }}>
+      <div className="h-screen flex flex-col bg-gray-50">
+        <main className="flex-1 relative w-full min-h-[calc(100vh - 88px)]">
+          <header
+            className="fixed top-0 z-30"
+            style={{
+              left: collapsedSider ? '79px' : '259px',
+              right: collapsedInfoPanel ? '79px' : '0',
+              transition: 'left 0.3s cubic-bezier(0.4,0,0.2,1)'
+            }}
+          >
+            <div className="px-6 flex justify-between h-16 items-center">
+              <div className="flex items-center space-x-6">
+                <img 
+                  src={logo}
+                  alt="VTI Chatbot"
+                  className="h-8 w-auto"
+                />
+                {/* <Navigation /> */}
+              </div>
+              
             </div>
-          )}
-        </div>
-      </header>
-      <main className="flex-1 relative mt-[64px] w-full min-h-[calc(100vh - 88px)]">
-        {children}
-      </main>
-    </div>
+          </header>
+          {children}
+        </main>
+      </div>
+    </SiderContext.Provider>
   );
 };
 
