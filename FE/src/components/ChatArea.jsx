@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import { List, Input, Spin, Typography, Button } from 'antd';
 import {
   InboxOutlined,
@@ -25,14 +25,41 @@ const ChatArea = ({
   currentConversationId = null,
 }) => {
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const lastUserMessageRef = useRef(null);
   const [inputValue, setInputValue] = useState('');
   const [showThinking, setShowThinking] = useState(false);
 
   const isActive = activeConversationId === currentConversationId;
 
+  // Auto scroll to the latest message div
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  }, [messages, streamingMessage, streamingThinking]);
+    if (messages.length > 0) {
+      // Use a longer delay to ensure DOM is fully rendered
+      setTimeout(() => {
+        if (lastUserMessageRef.current && messagesContainerRef.current) {
+          const container = messagesContainerRef.current;
+          const messageDiv = lastUserMessageRef.current;
+          
+          // Try different scroll methods
+          try {
+            // Method 1: Direct scrollTop calculation
+            const scrollTop = messageDiv.offsetTop - container.offsetTop - 24;
+            container.scrollTop = scrollTop;
+            
+            // Method 2: If Method 1 doesn't work, try scrollIntoView
+            if (container.scrollTop === 0) {
+              messageDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            console.log('Scrolling to:', scrollTop, 'Message offset:', messageDiv.offsetTop, 'Container offset:', container.offsetTop);
+          } catch (error) {
+            console.error('Scroll error:', error);
+          }
+        }
+      }, 300);
+    }
+  }, [messages]);
 
   const handleSend = () => {
     if (inputValue.trim() && !isLoading) {
@@ -56,13 +83,15 @@ const ChatArea = ({
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Messages */}
       <div
+        ref={messagesContainerRef}
         style={{
           flex: 1,
-          padding: 24,
+          padding: '24px 24px 120px 24px',
           maxWidth: 965,
           margin: '0 auto',
           width: '100%',
           position: 'relative',
+          overflow: 'auto'
         }}
       >
         {messages.length === 0 ? (
@@ -74,178 +103,94 @@ const ChatArea = ({
             </Text>
           </div>
         ) : (
-          <List
-            dataSource={messages}
-            renderItem={(msg, idx) => {
-              const lastUserIdx = [...messages].reverse().findIndex(m => m.role === 'user');
-              const isLastUser = messages.length - 1 - lastUserIdx === idx;
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {messages.map((msg, idx) => {
               const isUser = msg.role === 'user';
-
-              return (
-                <React.Fragment key={msg.id || idx}>
-                  <List.Item
+              const isLastUser = idx === messages.length - 1 && isUser;
+              // Xác định đây có phải là cặp message mới nhất (user + assistant) không
+              const isLatestPair = (() => {
+                if (!isUser) return false;
+                if (idx === messages.length - 1) return true;
+                if (idx === messages.length - 2 && messages[idx + 1].role === 'assistant') return true;
+                return false;
+              })();
+              // Group messages: user message + next assistant message (if exists)
+              if (isUser) {
+                const nextAssistantMsg = messages[idx + 1];
+                const hasAssistantResponse = nextAssistantMsg && nextAssistantMsg.role === 'assistant';
+                return (
+                  <div
+                    key={msg.id || idx}
+                    ref={isLatestPair ? lastUserMessageRef : null}
                     style={{
+                      minHeight: isLatestPair ? '100vh' : 'auto',
                       display: 'flex',
-                      justifyContent: isUser ? 'flex-end' : 'flex-start',
-                      border: 'none',
-                      background: 'transparent',
-                      padding: 0,
-                      marginBottom: 24,
-                      animation: 'fadeIn 0.3s ease',
+                      flexDirection: 'column',
+                      padding: '24px',
+                      marginBottom: isLatestPair ? 0 : '16px',
                     }}
                   >
+                    {/* User message div - fixed height */}
                     <div
                       style={{
-                        maxWidth: isUser ? '80%' : '100%',
-                        borderRadius: isUser
-                          ? '20px 20px 20px 20px'
-                          : '14px 14px 14px 4px',
-                        background: isUser ? '#1890ff' : 'transparent',
-                        color: isUser ? '#fff' : '#222',
-                        padding: '12px 14px',
-                        fontSize: 15,
-                        boxShadow: isUser ? '0 2px 8px rgba(0,0,0,0.04)' : 'none',
-                        whiteSpace: 'normal',
-                        lineHeight: 1.4,
-                      }}
-                    >
-                    <ReactMarkdown
-                      remarkPlugins={[remarkMath, remarkGfm]}
-                      rehypePlugins={[rehypeKatex]}
-                      components={{
-                        p: ({ children }) => (
-                          <p style={{ margin: '4px 0', lineHeight: 1.6 }}>{children}</p>
-                        ),
-                        ul: ({ children }) => (
-                          <ul
-                            style={{
-                              paddingLeft: 0,
-                              listStyleType: 'none',
-                              margin: '4px 0',
-                              textAlign: 'left',
-                            }}
-                          >
-                            {children}
-                          </ul>
-                        ),
-                        li: ({ children }) => (
-                          <li style={{ 
-                            lineHeight: 1.4, 
-                            textAlign: 'left', 
-                            paddingLeft: '20px',
-                            margin: '2px 0',
-                            display: 'flex',
-                            alignItems: 'flex-start'
-                          }}>
-                            <span style={{ marginRight: '8px', flexShrink: 0 }}>•</span>
-                            <span style={{ flex: 1 }}>{children}</span>
-                          </li>
-                        ),
-                        hr: () => <hr style={{ margin: '12px 0', borderColor: '#ccc' }} />,
-                        a: ({ href, children }) => (
-                          <a
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                              color: isUser ? '#fff' : '#1890ff',
-                              textDecoration: 'underline',
-                              cursor: 'pointer',
-                            }}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              window.open(href, '_blank', 'noopener,noreferrer');
-                            }}
-                          >
-                            {children}
-                          </a>
-                        ),
-                      }}
-                    >
-                      {msg.content}
-                    </ReactMarkdown>
-                    </div>
-                  </List.Item>
-
-                  {/* Thinking section */}
-                  {isLastUser && (isLoading || streamingMessage) && streamingThinking && isActive && (
-                    <div
-                      style={{
-                        marginBottom: 16,
-                        background: '#f0f2f5',
-                        borderRadius: 16,
-                        padding: 16,
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-                        maxWidth: showThinking ? '100%' : 360,
-                        transition: 'all 0.3s ease',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginBottom: '16px',
                       }}
                     >
                       <div
                         style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          marginBottom: 8,
+                          maxWidth: '80%',
+                          borderRadius: '20px',
+                          background: '#1890ff',
+                          color: '#fff',
+                          padding: '12px 14px',
+                          fontSize: 15,
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                          whiteSpace: 'normal',
+                          lineHeight: 1.4,
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <span style={{ color: '#1890ff', fontWeight: 500 }}>Thinking</span>
-                          <div className="thinking-dots">
-                            <span className="dot" />
-                            <span className="dot" />
-                            <span className="dot" />
-                          </div>
-                        </div>
-                        <button
-                          onClick={toggleThinking}
-                          style={{
-                            background: 'transparent',
-                            border: 'none',
-                            color: '#1890ff',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 4,
-                            fontSize: 14,
-                          }}
-                        >
-                          {showThinking ? (
-                            <>
-                              <EyeInvisibleOutlined />
-                              Ẩn
-                            </>
-                          ) : (
-                            <>
-                              <EyeOutlined />
-                              Xem
-                            </>
-                          )}
-                        </button>
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 14,
-                          color: '#444',
-                          lineHeight: 1.5,
-                          display: showThinking ? 'block' : '-webkit-box',
-                          WebkitLineClamp: showThinking ? 'unset' : 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          maxHeight: showThinking ? 300 : '3.5em',
-                        }}
-                      >
-                        <ReactMarkdown 
-                          remarkPlugins={[remarkMath]} 
+                        <ReactMarkdown
+                          remarkPlugins={[remarkMath, remarkGfm]}
                           rehypePlugins={[rehypeKatex]}
                           components={{
+                            p: ({ children }) => (
+                              <p style={{ margin: '4px 0', lineHeight: 1.6 }}>{children}</p>
+                            ),
+                            ul: ({ children }) => (
+                              <ul
+                                style={{
+                                  paddingLeft: 0,
+                                  listStyleType: 'none',
+                                  margin: '4px 0',
+                                  textAlign: 'left',
+                                }}
+                              >
+                                {children}
+                              </ul>
+                            ),
+                            li: ({ children }) => (
+                              <li style={{
+                                lineHeight: 1.4,
+                                textAlign: 'left',
+                                paddingLeft: '20px',
+                                margin: '2px 0',
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                              }}>
+                                <span style={{ marginRight: '8px', flexShrink: 0 }}>•</span>
+                                <span style={{ flex: 1 }}>{children}</span>
+                              </li>
+                            ),
+                            hr: () => <hr style={{ margin: '12px 0', borderColor: '#ccc' }} />,
                             a: ({ href, children }) => (
                               <a
                                 href={href}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{
-                                  color: '#1890ff',
+                                  color: '#fff',
                                   textDecoration: 'underline',
                                   cursor: 'pointer',
                                 }}
@@ -259,101 +204,279 @@ const ChatArea = ({
                             ),
                           }}
                         >
-                          {streamingThinking}
+                          {msg.content}
                         </ReactMarkdown>
                       </div>
                     </div>
-                  )}
-                </React.Fragment>
-              );
-            }}
-          />
-        )}
-
-        {/* Streaming bot message */}
-        {streamingMessage && isActive && (
-          <List.Item
-            key="streaming"
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              border: 'none',
-              background: 'transparent',
-              padding: 0,
-              marginBottom: 24,
-              animation: 'fadeIn 0.3s ease',
-            }}
-          >
-            <div
-              style={{
-                maxWidth: '100%',
-                borderRadius: '14px 14px 14px 4px',
-                background: 'transparent',
-                color: '#222',
-                padding: '12px 14px',
-                fontSize: 15,
-                boxShadow: 'none',
-                whiteSpace: 'normal',
-                lineHeight: 1.4,
-              }}
-            >
-              <ReactMarkdown 
-                 remarkPlugins={[remarkMath, remarkGfm]}
-                 rehypePlugins={[rehypeKatex]}
-                 components={{
-                   p: ({ children }) => (
-                     <p style={{ margin: '4px 0', lineHeight: 1.6 }}>{children}</p>
-                   ),
-                   ul: ({ children }) => (
-                     <ul
-                       style={{
-                         paddingLeft: 0,
-                         listStyleType: 'none',
-                         margin: '4px 0',
-                         textAlign: 'left',
-                       }}
-                     >
-                       {children}
-                     </ul>
-                   ),
-                   li: ({ children }) => (
-                     <li style={{ 
-                       lineHeight: 1.4, 
-                       textAlign: 'left', 
-                       paddingLeft: '20px',
-                       margin: '2px 0',
-                       display: 'flex',
-                       alignItems: 'flex-start'
-                     }}>
-                       <span style={{ marginRight: '8px', flexShrink: 0 }}>•</span>
-                       <span style={{ flex: 1 }}>{children}</span>
-                     </li>
-                   ),
-                   hr: () => <hr style={{ margin: '12px 0', borderColor: '#ccc' }} />,
-                   a: ({ href, children }) => (
-                     <a
-                       href={href}
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       style={{
-                         color: '#1890ff',
-                         textDecoration: 'underline',
-                         cursor: 'pointer',
-                       }}
-                       onClick={(e) => {
-                         e.preventDefault();
-                         window.open(href, '_blank', 'noopener,noreferrer');
-                       }}
-                     >
-                       {children}
-                     </a>
-                   ),
-                 }}
-              >
-                {streamingMessage}
-              </ReactMarkdown>
-            </div>
-          </List.Item>
+                    {/* Assistant message div - takes remaining height only for latest message */}
+                    {hasAssistantResponse && (
+                      <div
+                        style={{
+                          flex: isLatestPair ? '1 1 auto' : '0 0 auto',
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <div
+                          style={{
+                            maxWidth: '100%',
+                            borderRadius: '14px 14px 14px 4px',
+                            background: 'transparent',
+                            color: '#222',
+                            padding: '12px 14px',
+                            fontSize: 15,
+                            boxShadow: 'none',
+                            whiteSpace: 'normal',
+                            lineHeight: 1.4,
+                            width: '100%',
+                          }}
+                        >
+                          <ReactMarkdown
+                            remarkPlugins={[remarkMath, remarkGfm]}
+                            rehypePlugins={[rehypeKatex]}
+                            components={{
+                              p: ({ children }) => (
+                                <p style={{ margin: '4px 0', lineHeight: 1.6 }}>{children}</p>
+                              ),
+                              ul: ({ children }) => (
+                                <ul
+                                  style={{
+                                    paddingLeft: 0,
+                                    listStyleType: 'none',
+                                    margin: '4px 0',
+                                    textAlign: 'left',
+                                  }}
+                                >
+                                  {children}
+                                </ul>
+                              ),
+                              li: ({ children }) => (
+                                <li style={{
+                                  lineHeight: 1.4,
+                                  textAlign: 'left',
+                                  paddingLeft: '20px',
+                                  margin: '2px 0',
+                                  display: 'flex',
+                                  alignItems: 'flex-start',
+                                }}>
+                                  <span style={{ marginRight: '8px', flexShrink: 0 }}>•</span>
+                                  <span style={{ flex: 1 }}>{children}</span>
+                                </li>
+                              ),
+                              hr: () => <hr style={{ margin: '12px 0', borderColor: '#ccc' }} />,
+                              a: ({ href, children }) => (
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    color: '#1890ff',
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                  }}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    window.open(href, '_blank', 'noopener,noreferrer');
+                                  }}
+                                >
+                                  {children}
+                                </a>
+                              ),
+                            }}
+                          >
+                            {nextAssistantMsg.content}
+                          </ReactMarkdown>
+                        </div>
+                      </div>
+                    )}
+                    {/* Nếu là user cuối cùng, đang active và có streamingMessage thì render chunk ngay dưới user */}
+                    {isLastUser && streamingMessage && isActive && (
+                      <div
+                        style={{
+                          flex: '1 1 auto',
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <div
+                          style={{
+                            maxWidth: '100%',
+                            borderRadius: '14px 14px 14px 4px',
+                            background: 'transparent',
+                            color: '#222',
+                            padding: '12px 14px',
+                            fontSize: 15,
+                            boxShadow: 'none',
+                            whiteSpace: 'normal',
+                            lineHeight: 1.4,
+                            width: '100%',
+                          }}
+                        >
+                          <ReactMarkdown
+                            remarkPlugins={[remarkMath, remarkGfm]}
+                            rehypePlugins={[rehypeKatex]}
+                            components={{
+                              p: ({ children }) => (
+                                <p style={{ margin: '4px 0', lineHeight: 1.6 }}>{children}</p>
+                              ),
+                              ul: ({ children }) => (
+                                <ul
+                                  style={{
+                                    paddingLeft: 0,
+                                    listStyleType: 'none',
+                                    margin: '4px 0',
+                                    textAlign: 'left',
+                                  }}
+                                >
+                                  {children}
+                                </ul>
+                              ),
+                              li: ({ children }) => (
+                                <li style={{
+                                  lineHeight: 1.4,
+                                  textAlign: 'left',
+                                  paddingLeft: '20px',
+                                  margin: '2px 0',
+                                  display: 'flex',
+                                  alignItems: 'flex-start',
+                                }}>
+                                  <span style={{ marginRight: '8px', flexShrink: 0 }}>•</span>
+                                  <span style={{ flex: 1 }}>{children}</span>
+                                </li>
+                              ),
+                              hr: () => <hr style={{ margin: '12px 0', borderColor: '#ccc' }} />,
+                              a: ({ href, children }) => (
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    color: '#1890ff',
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                  }}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    window.open(href, '_blank', 'noopener,noreferrer');
+                                  }}
+                                >
+                                  {children}
+                                </a>
+                              ),
+                            }}
+                          >
+                            {streamingMessage}
+                          </ReactMarkdown>
+                        </div>
+                      </div>
+                    )}
+                    {/* Thinking section for last user message */}
+                    {isLastUser && isActive && streamingThinking && !streamingMessage && (
+                      <div
+                        style={{
+                          flex: '0 0 auto',
+                          marginTop: '16px',
+                          background: '#f0f2f5',
+                          borderRadius: 16,
+                          padding: 16,
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                          maxWidth: showThinking ? '100%' : 360,
+                          transition: 'all 0.3s ease',
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: 8,
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <span style={{ color: '#1890ff', fontWeight: 500 }}>Thinking</span>
+                            <div className="thinking-dots">
+                              <span className="dot" />
+                              <span className="dot" />
+                              <span className="dot" />
+                            </div>
+                          </div>
+                          <button
+                            onClick={toggleThinking}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: '#1890ff',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 4,
+                              fontSize: 14,
+                            }}
+                          >
+                            {showThinking ? (
+                              <>
+                                <EyeInvisibleOutlined />
+                                Ẩn
+                              </>
+                            ) : (
+                              <>
+                                <EyeOutlined />
+                                Xem
+                              </>
+                            )}
+                          </button>
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 14,
+                            color: '#444',
+                            lineHeight: 1.5,
+                            display: showThinking ? 'block' : '-webkit-box',
+                            WebkitLineClamp: showThinking ? 'unset' : 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            maxHeight: showThinking ? 300 : '3.5em',
+                          }}
+                        >
+                          <ReactMarkdown 
+                            remarkPlugins={[remarkMath]} 
+                            rehypePlugins={[rehypeKatex]}
+                            components={{
+                              a: ({ href, children }) => (
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    color: '#1890ff',
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                  }}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    window.open(href, '_blank', 'noopener,noreferrer');
+                                  }}
+                                >
+                                  {children}
+                                </a>
+                              ),
+                            }}
+                          >
+                            {streamingThinking}
+                          </ReactMarkdown>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+              // Skip assistant messages as they're handled above
+              return null;
+            })}
+          </div>
         )}
 
         <div ref={messagesEndRef} />
@@ -365,7 +488,9 @@ const ChatArea = ({
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
-          position: 'sticky',
+          position: 'fixed',
+          right: 0,
+          left: 130,
           bottom: 0,
           padding: '24px 0',
         }}
@@ -378,7 +503,6 @@ const ChatArea = ({
             margin: '0px auto',
             background: '#fff',
             borderRadius: 24,
-            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
             display: 'flex',
             alignItems: 'center',
             border: '1px solid #f0f0f0',

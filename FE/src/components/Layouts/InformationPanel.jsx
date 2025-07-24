@@ -5,7 +5,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 const { Sider } = Layout;
 
 const InformationPanel = ({ info = [], collapsed, onToggle }) => {
-  const [width, setWidth] = useState(400);
+  const [width, setWidth] = useState(300);
   const [isResizing, setIsResizing] = useState(false);
 
   const handleMouseDown = (e) => {
@@ -68,13 +68,12 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
       collapsible
       trigger={null}
       style={{
-        background: '#fff',
+        background: 'transparent',
         borderRight: '1px solid #f0f0f0',
         position: 'fixed',
         right: 0,
-        top: 64,
-        minHeight: 'calc(100vh - 64px)',
-        height: 'calc(100vh - 64px)',
+        minHeight: '100vh',
+        height: '100vh',
         zIndex: 20,
         padding: 0,
         display: 'flex',
@@ -85,6 +84,7 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
     >
       <div
         style={{
+          background: 'transparent',
           position: 'absolute',
           left: 0,
           top: 0,
@@ -121,6 +121,7 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
             size="small"
             pagination={false}
             style={{
+              background: 'transparent',
               borderRadius: 8,
             }}
             bordered={false}

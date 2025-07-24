@@ -21,7 +21,7 @@ const ChatWithInfoLayout = ({
         flexDirection: 'row',
         height: '100%',
         width: '100%',
-        background: '#f9fafb',
+        background: '#fff',
       }}
     >
       <div

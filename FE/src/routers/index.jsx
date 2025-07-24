@@ -24,24 +24,28 @@ const createAdminProtectedRoute = (component) => (
 );
 
 const routes = [
-  { path: "/login", component: <Login/> },
+  { path: "/login", element: <Login/> },
   { 
     path: "/", 
-    component: createProtectedRoute(<Navigate to="/home" replace />) 
+    element: createProtectedRoute(<Navigate to="/home" replace />) 
   },
   { 
     path: "/home", 
-    component: createProtectedRoute(<Chat/>) 
+    element: createProtectedRoute(<Chat/>) 
+  },
+  { 
+    path: "/home/:conversationId", 
+    element: createProtectedRoute(<Chat/>) 
   },
   {
     path: "/admin",
     element: <AdminLayout/>,
     children: [
-      { path: "/admin", component: createProtectedRoute(<Navigate to="/admin/tenant" replace />) },
-      { path: "/admin/tenant", component: createAdminProtectedRoute(<Tenant/>) },
-      { path: "/admin/account/user", component: createAdminProtectedRoute(<User />) },
-      { path: "/admin/account/group", component: createAdminProtectedRoute(<Group />) },
-      { path: "/admin/settings", component: createAdminProtectedRoute(<Settings/>) }
+      { path: "/admin", element: createProtectedRoute(<Navigate to="/admin/tenant" replace />) },
+      { path: "/admin/tenant", element: createAdminProtectedRoute(<Tenant/>) },
+      { path: "/admin/account/user", element: createAdminProtectedRoute(<User />) },
+      { path: "/admin/account/group", element: createAdminProtectedRoute(<Group />) },
+      { path: "/admin/settings", element: createAdminProtectedRoute(<Settings/>) }
     ]
   },
   { path: "*", element: <NotFoundPage /> }

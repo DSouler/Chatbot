@@ -14,11 +14,11 @@ function App() {
             <Routes>
             {routes.map((route, index) => {
               return (
-                <Route key={index} path={route.path} name={route.name} element={route.component}>
+                <Route key={index} path={route.path} name={route.name} element={route.element}>
                   {route?.children && route.children.length > 0 ?
                     route.children.map((routeChild, idx) => {
                       return (
-                        <Route key={idx} name={routeChild.name} path={routeChild.path} element={routeChild.component}></Route>
+                        <Route key={idx} name={routeChild.name} path={routeChild.path} element={routeChild.element}></Route>
                       )
                     })
                     :
