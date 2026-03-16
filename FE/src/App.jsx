@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { store } from './store';
 import AuthInitializer from './components/AuthInitializer';
@@ -10,7 +10,7 @@ function App() {
     <>
       <Provider store={store}>
         <AuthInitializer>
-          <BrowserRouter>
+          <HashRouter>
             <Routes>
             {routes.map((route, index) => {
               return (
@@ -27,7 +27,7 @@ function App() {
               );
             })}
             </Routes>
-          </BrowserRouter>
+          </HashRouter>
         </AuthInitializer>
       </Provider>
     </>
