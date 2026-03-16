@@ -44,9 +44,9 @@ class VectorDBEngine:
 
             # Initialize Qdrant client
             self.qdrant_client = QdrantClient(
-                url=qdrant_host,
+                host=qdrant_host,
                 port=qdrant_port,
-                api_key=qdrant_api_key,
+                api_key=qdrant_api_key if qdrant_api_key else None,
             )
 
             self.qdrant_collection_name = qdrant_collection_name

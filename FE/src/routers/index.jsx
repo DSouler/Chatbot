@@ -1,6 +1,8 @@
 import Chat from "../pages/Home/Chat";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import Login from "../pages/Login/Login";
+import Register from "../pages/Register/Register";
+import Landing from "../pages/Landing/Landing";
 
 import ProtectedRoute from "../components/ProtectedRoute";
 import AppLayout from "../layouts/DefaultLayout";
@@ -24,11 +26,9 @@ const createAdminProtectedRoute = (component) => (
 );
 
 const routes = [
+  { path: "/", element: <Landing /> },
   { path: "/login", element: <Login/> },
-  { 
-    path: "/", 
-    element: createProtectedRoute(<Navigate to="/home" replace />) 
-  },
+  { path: "/register", element: <Register/> },
   { 
     path: "/home", 
     element: createProtectedRoute(<Chat/>) 

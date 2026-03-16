@@ -3,8 +3,18 @@ import { Form, Input, Button, Typography, Card, Row, Col, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useUser } from '../../hooks/useUser';
 import { useNavigate, Link } from 'react-router-dom';
-import cover from '../../assets/cover.png';
-import companyLogo from '../../assets/vti-logo-horiz.png';
+
+const TFTLogo = ({ size = 48 }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width={size} height={size}>
+    <polygon points="60,4 110,32 110,88 60,116 10,88 10,32" fill="#5B4FCF"/>
+    <polygon points="60,10 104,35 104,85 60,110 16,85 16,35" fill="none" stroke="white" strokeWidth="5"/>
+    <path d="M30,44 L38,60 L48,50 L55,36 L60,30 L65,36 L72,50 L82,60 L90,44 L90,76 L30,76 Z" fill="white"/>
+    <rect x="36" y="60" width="48" height="16" rx="4" fill="#5B4FCF"/>
+    <rect x="39" y="63" width="18" height="9" rx="2" fill="white"/>
+    <rect x="63" y="63" width="18" height="9" rx="2" fill="white"/>
+    <polygon points="60,75 55,81 60,84 65,81" fill="white"/>
+  </svg>
+);
 
 const { Title, Text } = Typography;
 
@@ -17,10 +27,11 @@ const Login = () => {
   // Handle authentication state changes
   useEffect(() => {
     if (isAuthenticated && user) {
+      sessionStorage.removeItem('guestMode');
       if (user.role === 'ADMIN') {
         navigate('/admin');
       } else {
-        navigate('/');
+        navigate('/home');
       }
     }
   }, [isAuthenticated, user, navigate]);
@@ -50,19 +61,50 @@ const Login = () => {
 
   return (
     <Row>
-      {/* Left side - Cover Image */}
+      {/* Left side - TFT Cover */}
       <Col 
         lg={12}
         xs={0}
         style={{
           flex: 1,
-          backgroundImage: `url(${cover})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          minHeight: '100vh'
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #1a0533 0%, #2d1b69 30%, #c4506a 65%, #e8a87c 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          overflow: 'hidden',
         }}
-      />
+      >
+        {/* Decorative orbs */}
+        <div style={{ position: 'absolute', top: '15%', left: '10%', width: 180, height: 180, borderRadius: '50%', background: 'radial-gradient(circle, rgba(180,100,220,0.45) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,160,255,0.35) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', top: '40%', right: '25%', width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,180,100,0.3) 0%, transparent 70%)' }} />
+        {/* TFT Logo + Title */}
+        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '0 40px' }}>
+          <div style={{ marginBottom: 24 }}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width={90} height={90}>
+              <polygon points="60,4 110,32 110,88 60,116 10,88 10,32" fill="rgba(255,255,255,0.15)"/>
+              <polygon points="60,10 104,35 104,85 60,110 16,85 16,35" fill="none" stroke="white" strokeWidth="4"/>
+              <path d="M30,44 L38,60 L48,50 L55,36 L60,30 L65,36 L72,50 L82,60 L90,44 L90,76 L30,76 Z" fill="white"/>
+              <rect x="36" y="60" width="48" height="16" rx="4" fill="rgba(255,255,255,0.15)"/>
+              <rect x="39" y="63" width="18" height="9" rx="2" fill="white"/>
+              <rect x="63" y="63" width="18" height="9" rx="2" fill="white"/>
+              <polygon points="60,75 55,81 60,84 65,81" fill="white"/>
+            </svg>
+          </div>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.5)', marginBottom: 8 }}>
+            TEAMFIGHT
+          </div>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.5)', marginBottom: 24 }}>
+            TACTICS
+          </div>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15, letterSpacing: 1 }}>
+            Trợ lý AI chuyên biệt cho game TFT
+          </div>
+        </div>
+      </Col>
 
       {/* Right side - Login Form */}
       <Col 
@@ -94,13 +136,7 @@ const Login = () => {
             alignItems: 'center', 
             marginBottom: '32px' 
             }}>
-            <img 
-              src={companyLogo} 
-              alt="Company Logo"
-              style={{
-                marginBottom: '16px'
-              }}
-            />
+            <TFTLogo size={52} />
             
             <Text 
               type="secondary" 
@@ -109,7 +145,7 @@ const Login = () => {
                 marginBottom: showError ? '8px' : '0'
               }}
             >
-              Please login with your LDAP account
+              Đăng nhập vào TFTChat
             </Text>
 
             {/* Error message display */}
@@ -128,7 +164,7 @@ const Login = () => {
                   width: '100%'
                 }}
               >
-                Wrong account or incorrect password
+                Sai tài khoản hoặc mật khẩu
               </Text>
             )}
           </div>
@@ -145,18 +181,18 @@ const Login = () => {
             <Form.Item
               label={
                 <Text style={{ fontSize: '14px', color: '#666', fontWeight: '500' }}>
-                  Account
+                  Tài khoản
                 </Text>
               }
               name="account"
               rules={[
-                { required: true, message: 'Please input your account!' },
+                { required: true, message: 'Vui lòng nhập tài khoản!' },
               ]}
               style={{ marginBottom: '24px' }}
             >
               <Input
                 prefix={<UserOutlined style={{ color: '#bfbfbf' }} />}
-                placeholder="Account"
+                placeholder="Tên tài khoản"
                 style={{
                   height: '50px',
                   borderRadius: '8px',
@@ -168,19 +204,19 @@ const Login = () => {
             <Form.Item
               label={
                 <Text style={{ fontSize: '14px', color: '#666', fontWeight: '500' }}>
-                  Password
+                  Mật khẩu
                 </Text>
               }
               name="password"
               rules={[
-                { required: true, message: 'Please input your password!' },
-                { min: 6, message: 'Password must be at least 6 characters!' }
+                { required: true, message: 'Vui lòng nhập mật khẩu!' },
+                { min: 6, message: 'Mật khẩu phải ít nhất 6 ký tự!' }
               ]}
               style={{ marginBottom: '32px' }}
             >
               <Input.Password
                 prefix={<LockOutlined style={{ color: '#bfbfbf' }} />}
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 style={{
                   height: '50px',
                   borderRadius: '8px',
@@ -213,10 +249,18 @@ const Login = () => {
                   }
                 }}
               >
-                {loading ? 'Logging in...' : 'Login'}
+                {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
               </Button>
             </Form.Item>
           </Form>
+
+          {/* Register link */}
+          <div style={{ marginTop: 24, textAlign: 'center', borderTop: '1px solid #f0f0f0', paddingTop: 20 }}>
+            <Text type="secondary" style={{ fontSize: 14 }}>Chưa có tài khoản? </Text>
+            <Link to="/register" style={{ fontSize: 14, color: '#5B4FCF', fontWeight: 600 }}>
+              Đăng ký ngay
+            </Link>
+          </div>
         </Card>
       </Col>
     </Row>

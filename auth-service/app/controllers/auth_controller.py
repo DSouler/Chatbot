@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.services.auth_service import AuthService
-from app.schemas.auth import LoginRequest, LoginResponse, TokenData
+from app.schemas.auth import LoginRequest, LoginResponse, TokenData, RegisterRequest, RegisterResponse
 from app.dependencies import get_current_user, get_auth_service
 
 router = APIRouter(tags=["authentication"])
@@ -22,6 +22,21 @@ def login(
     Returns JWT access token and user information
     """
     return auth_service.login(login_request)
+
+@router.post("/register", response_model=RegisterResponse, status_code=201)
+def register(
+    register_request: RegisterRequest,
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """
+    Register a new local user account
+
+    - **username**: Desired username (must be unique)
+    - **password**: Password (will be hashed)
+    - **email**: Optional email address
+    """
+    user = auth_service.register_user(register_request)
+    return RegisterResponse(message="Tài khoản đã được tạo thành công", username=user.username, user_id=user.id)
 
 @router.get("/me")
 def get_current_user_info(

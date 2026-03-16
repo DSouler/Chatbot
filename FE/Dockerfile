@@ -1,3 +1,4 @@
+FROM python:3.11-slim AS base
 FROM node:20-alpine as build
 # test cicd 7
 WORKDIR /app

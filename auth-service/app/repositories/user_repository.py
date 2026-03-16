@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.user import User, Department, Company
+from app.models.user import User, Department, Company, Position
 from typing import Optional
 from datetime import datetime
 import re
@@ -150,4 +150,27 @@ class UserRepository:
             )
             self.create_user(user)
         
-        return user 
+        return user
+
+    def get_or_create_default_position(self) -> Position:
+        """Get first position or create a default 'User' position"""
+        position = self.db.query(Position).first()
+        if not position:
+            position = Position(position_name="User", level=1)
+            self.db.add(position)
+            self.db.commit()
+            self.db.refresh(position)
+        return position
+
+    def create_local_user(self, username: str, password_hash: str, email: Optional[str] = None) -> User:
+        """Create a new local (non-LDAP) user"""
+        position = self.get_or_create_default_position()
+        user = User(
+            username=username,
+            email=email,
+            password_hash=password_hash,
+            role="USER",
+            is_ldap_user=False,
+            position_id=position.id,
+        )
+        return self.create_user(user)

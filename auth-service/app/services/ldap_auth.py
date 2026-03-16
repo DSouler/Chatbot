@@ -23,9 +23,11 @@ class LDAPAuth:
         logger.info(f"LDAP Configuration loaded")
         
         if not all([self.server_url, self.user_search_base]):
-            error_msg = "LDAP configuration is incomplete. Check environment variables."
-            logger.error(error_msg)
-            raise ValueError(error_msg)
+            error_msg = "LDAP configuration is incomplete. LDAP authentication will be unavailable."
+            logger.warning(error_msg)
+            self._ldap_available = False
+        else:
+            self._ldap_available = True
     
     def _get_server(self) -> Server:
         """Create LDAP server connection"""
@@ -89,6 +91,8 @@ class LDAPAuth:
         Authenticate user against LDAP server
         Returns user information if successful, None if failed
         """
+        if not getattr(self, '_ldap_available', False):
+            return None
         logger.info(f"Starting LDAP authentication for user: {username}")
         try:
             # First, find the user's DN

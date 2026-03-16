@@ -12,7 +12,11 @@ const ChatWithInfoLayout = ({
   streamingMessage = null,
   streamingThinking = null,
   activeConversationId = null,
-  currentConversationId = null
+  currentConversationId = null,
+  chatMode = 'RAG',
+  onModeChange = () => {},
+  guestLimitReached = false,
+  isGuest = false,
 }) => {
   return (
     <div
@@ -20,14 +24,17 @@ const ChatWithInfoLayout = ({
         display: 'flex',
         flexDirection: 'row',
         height: '100%',
+        minHeight: 0,
         width: '100%',
-        background: '#fff',
+        background: 'transparent',
       }}
     >
       <div
         style={{
           flexGrow: 1,
-          padding: 24,
+          minHeight: 0,
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <ChatArea
@@ -38,6 +45,10 @@ const ChatWithInfoLayout = ({
           streamingThinking={streamingThinking}
           activeConversationId={activeConversationId}
           currentConversationId={currentConversationId}
+          chatMode={chatMode}
+          onModeChange={onModeChange}
+          guestLimitReached={guestLimitReached}
+          isGuest={isGuest}
         />
       </div>
       <InformationPanel

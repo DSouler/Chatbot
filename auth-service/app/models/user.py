@@ -13,6 +13,7 @@ class User(Base):
     last_name = Column(Text)
     username = Column(Text, unique=True, index=True)
     email = Column(String(255), unique=True, index=True, nullable=True)
+    password_hash = Column(Text, nullable=True)
     role = Column(Text, nullable=True)
     ldap_dn = Column(Text, nullable=True)
     is_ldap_user = Column(Boolean, default=False)

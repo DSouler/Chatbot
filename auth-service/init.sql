@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS users (
     last_name TEXT,
     username TEXT UNIQUE,
     email VARCHAR(255),
+    password_hash TEXT,
     role TEXT,
     ldap_dn TEXT,
     is_ldap_user BOOLEAN DEFAULT FALSE,

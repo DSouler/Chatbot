@@ -5,6 +5,16 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
+class RegisterRequest(BaseModel):
+    username: str
+    password: str
+    email: Optional[str] = None
+
+class RegisterResponse(BaseModel):
+    message: str
+    username: str
+    user_id: int
+
 class LoginResponse(BaseModel):
     access_token: str
     token_type: str
@@ -12,9 +22,9 @@ class LoginResponse(BaseModel):
     username: str
     first_name: Optional[str] = None
     last_name: Optional[str] = None
-    department_id: int
-    position_id: int
-    role: str
+    department_id: Optional[int] = None
+    position_id: Optional[int] = None
+    role: Optional[str] = None
 
 class TokenData(BaseModel):
     username: Optional[str] = None

@@ -309,9 +309,12 @@ async def health_check():
     return {"status": "healthy"}
 
 @app.post("/history/conversations")
-def api_create_conversation(user_id: int = Body(...), name: str = Body(...)):
-    conversation_id = create_conversation(user_id, name)
-    return {"conversation_id": conversation_id}
+async def api_create_conversation(user_id: int = Body(...), name: str = Body(...)):
+    try:
+        conversation_id = create_conversation(user_id, name)
+        return {"conversation_id": conversation_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to create conversation: {str(e)}")
 
 @app.post("/chat/message")
 def api_add_message(conversation_id: int = Body(...), content: str = Body(...), created_by: int = Body(...), role: str = Body("user")):

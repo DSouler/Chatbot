@@ -14,7 +14,7 @@ from langchain_qdrant import RetrievalMode
 from models.requests import RetrievalSettings, ReasoningSettings
 from .base import BasePipeline
 import threading
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from time import sleep
 from metadata_extractor.engine import MetaDataFilterEngine
 from hyde.engine import HyDEEngine
@@ -50,12 +50,10 @@ class SimplePipeline(BasePipeline):
             self.filter_pipeline = filter_pipeline
             self.reflection_engine = reflection_engine
             self.hyde_engine = hyde_engine
-            self.embedding = HuggingFaceBgeEmbeddings(
-            model_name=config.EMBEDDING_MODEL_NAME,
-            model_kwargs={"device": "cpu"},
-            encode_kwargs={"normalize_embeddings": True},
-            query_instruction=""
-)
+            self.embedding = OpenAIEmbeddings(
+                openai_api_key=config.LLM_API_KEY,
+                model="text-embedding-ada-002"
+            )
             self.__class__._initialized = True
             logger.info("Initialized RAG Chatbot")
 
@@ -120,13 +118,24 @@ class SimplePipeline(BasePipeline):
         
         return docs
 
+    @staticmethod
+    def _build_content_with_images(text: str, user_content) -> object:
+        """Giữ lại ảnh khi ghi đè text content trong RAG pipeline."""
+        if not isinstance(user_content, list):
+            return text
+        images = [item for item in user_content if item.get("type") == "image_url"]
+        if not images:
+            return text
+        return [{"type": "text", "text": text}] + images
+
     async def stream(
             self, original_question: str,
-            chat_history: List[Dict[str, str]], 
+            chat_history: List[Dict[str, str]],
             llm_client: Any,
-            messages: List[Dict[str, str]], 
+            messages: List[Dict[str, str]],
             retrieval_settings: RetrievalSettings,
-            reasoning_settings: ReasoningSettings
+            reasoning_settings: ReasoningSettings,
+            user_content=None
     ) -> AsyncGenerator[str, None]:
         """
         Stream a response from the LLM
@@ -162,17 +171,21 @@ class SimplePipeline(BasePipeline):
 
         hyDE_document_text = hyDE_document.get("hyDE_documents", enhanced_query_text)
 
-        messages.append({"role": "user", "content": original_question})    
+        messages.append({"role": "user", "content": user_content if user_content is not None else original_question})
 
         # Get relevant documents pipeline
-        res_retrive = await self.retrieve(
-            embedding=self.embedding,
-            retrieval_settings=retrieval_settings,
-            query=hyDE_document_text,
-            top_k= config.DEFAULT_TOP_K,
-            filter_payload=filter_metadata_result
-        )    
-        relevant_docs = res_retrive["docs"]
+        try:
+            res_retrive = await self.retrieve(
+                embedding=self.embedding,
+                retrieval_settings=retrieval_settings,
+                query=hyDE_document_text,
+                top_k= config.DEFAULT_TOP_K,
+                filter_payload=None
+            )    
+            relevant_docs = res_retrive["docs"]
+        except Exception as e:
+            logger.warning(f"Retrieval failed (no vector store context): {e}")
+            relevant_docs = []
 
         if relevant_docs:
             # Remove duplicate documents for consistent numbering
@@ -194,11 +207,25 @@ class SimplePipeline(BasePipeline):
             # Create augmented prompt with unique documents
             augmented_prompt = self._create_augmented_prompt(original_question, unique_docs, lang)
             logger.info(f"Augmented prompt: {augmented_prompt}")
-            messages[-1]["content"] = augmented_prompt
+            messages[-1]["content"] = self._build_content_with_images(augmented_prompt, user_content)
 
-        
-        async for chunk in self.stream_completion(model_name,llm_client,messages):
-            yield "data: " + json.dumps(chunk) + "\n\n"  
+            async for chunk in self.stream_completion(model_name, llm_client, messages):
+                yield "data: " + json.dumps(chunk) + "\n\n"
+        else:
+            # No documents found — fall back to LLM general knowledge
+            yield "data: " + json.dumps({
+                "type": "info",
+                "message": "Không tìm thấy tài liệu liên quan. Đang trả lời từ kiến thức chung của AI..."
+            }) + "\n\n"
+
+            fallback_text = (
+                f"Hãy trả lời câu hỏi sau bằng {lang} dựa trên kiến thức của bạn:\n\n"
+                f"Câu hỏi: {original_question}\nTrả lời:"
+            )
+            messages[-1]["content"] = self._build_content_with_images(fallback_text, user_content)
+
+            async for chunk in self.stream_completion(model_name, llm_client, messages):
+                yield "data: " + json.dumps(chunk) + "\n\n"
 
         # Display sources
         if relevant_docs:
@@ -236,55 +263,70 @@ class SimplePipeline(BasePipeline):
             callback: Optional[Callable[[str], None]] = None,
     ) -> AsyncGenerator[Dict[str, Any], None]:
         """
-        Stream a response from the LLM
-
-        Args:
-            messages: List of message dictionaries with role and content
-            callback: Optional callback function to be called for each chunk
-
-        Yields:
-            Response chunks from the LLM
-            :param messages:
-            :param callback:
-            :param relevant_docs:
-            :param use_rag:
+        Stream a response from the LLM using a background thread so the
+        event loop is never blocked, allowing uvicorn to flush each token
+        to the client in real time.
         """
+        loop = asyncio.get_event_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def _sync_stream():
+            try:
+                stream = llm_client.chat.completions.create(
+                    model=model_name,
+                    messages=messages,
+                    stream=True,
+                    stream_options={"include_usage": True},
+                    temperature=config.DEFAULT_TEMPERATURE,
+                )
+                for chunk in stream:
+                    # Final chunk carries usage stats (empty choices list)
+                    if hasattr(chunk, "usage") and chunk.usage is not None:
+                        asyncio.run_coroutine_threadsafe(
+                            queue.put({
+                                "type": "usage",
+                                "prompt_tokens": chunk.usage.prompt_tokens,
+                                "completion_tokens": chunk.usage.completion_tokens,
+                                "total_tokens": chunk.usage.total_tokens,
+                            }), loop
+                        )
+                    if not chunk.choices:
+                        continue
+                    delta = chunk.choices[0].delta
+                    reasoning_content = getattr(delta, "reasoning_content", None)
+                    content = getattr(delta, "content", None)
+                    if reasoning_content:
+                        asyncio.run_coroutine_threadsafe(
+                            queue.put({"type": "thinking", "content": reasoning_content}), loop
+                        )
+                    if content is not None:
+                        asyncio.run_coroutine_threadsafe(
+                            queue.put({"type": "token", "content": content}), loop
+                        )
+            except Exception as e:
+                asyncio.run_coroutine_threadsafe(
+                    queue.put({"type": "_error", "content": str(e)}), loop
+                )
+            finally:
+                asyncio.run_coroutine_threadsafe(queue.put(None), loop)
+
+        thread = threading.Thread(target=_sync_stream, daemon=True)
+        thread.start()
+
         try:
-
-            # Create a streaming request to OpenAI
-            stream = await asyncio.to_thread(
-                llm_client.chat.completions.create,
-                model=f"{model_name}",
-                messages=messages,
-                stream=True,
-                temperature=config.DEFAULT_TEMPERATURE,
-            )
-            collected_thinking = ""
-            collected_message = ""
-            for chunk in stream:
-                reasoning_content = None
-                content = None
-                if hasattr(chunk.choices[0].delta, "reasoning_content"):
-                    reasoning_content = chunk.choices[0].delta.reasoning_content
-                if hasattr(chunk.choices[0].delta, "content"):
-                    content = chunk.choices[0].delta.content
-                    
-                if reasoning_content:
-                  collected_thinking += reasoning_content
-                  if callback:
-                    callback(reasoning_content)
-                  yield {"type": "thinking", "content": reasoning_content}
-                  await asyncio.sleep(0.01)
-                  
-                if content is not None:
-                  collected_message += content
-                  if callback:
-                    callback(content)
-                  yield {"type": "token", "content": content}
-                  await asyncio.sleep(0.01)
-
+            while True:
+                item = await queue.get()
+                if item is None:
+                    break
+                if item.get("type") == "_error":
+                    raise StreamGenerationError(item["content"])
+                if callback and item.get("content"):
+                    callback(item["content"])
+                yield item
         except asyncio.TimeoutError:
             raise TimeoutError()
+        except StreamGenerationError:
+            raise
         except Exception as e:
             logger.error(f"Error in stream_completion: {str(e)}")
             raise StreamGenerationError(str(e))

@@ -33,6 +33,18 @@ class ReasoningSettings(BaseModel):
     tools: Optional[List[str]] = None
     max_interations: Optional[int] = 5
 
+class ConversationCreateRequest(BaseModel):
+    user_id: int
+    name: str
+
+class ConversationRenameRequest(BaseModel):
+    user_id: int
+    name: str
+
+class ImageData(BaseModel):
+    data: str        # base64 string (không có prefix "data:...")
+    media_type: str  # "image/jpeg" | "image/png" | "image/gif" | "image/webp"
+
 class QuestionRequest(BaseModel):
     question: str
     system_prompt: Optional[str] = None
@@ -50,6 +62,7 @@ class QuestionRequest(BaseModel):
     mode: Optional[str] = "RAG"
     conversation_id: Optional[int] = None
     created_by: Optional[int] = None
+    images: Optional[List[ImageData]] = None
 
 class IngestRequest(BaseModel):
     object_keys: List[str]

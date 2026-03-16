@@ -2,7 +2,7 @@
 export const DEFAULT_CHAT_CONFIG = {
   // LLM configuration
   llm: {
-    model: "Qwen/Qwen3-14B-AWQ",
+    model: "gpt-4o-mini",
   },
 
   // Reasoning configuration
@@ -20,7 +20,7 @@ export const getLLMConfig = () => {
     if (savedConfig) {
       const parsed = JSON.parse(savedConfig);
       return {
-        model: parsed.model || "Qwen/Qwen3-14B-AWQ",
+        model: parsed.model || "gpt-4o-mini",
         temperature: parsed.temperature || 0.7,
       };
     }
@@ -29,7 +29,7 @@ export const getLLMConfig = () => {
   }
   
   return {
-    model: "Qwen/Qwen3-14B-AWQ",
+    model: "gpt-4o-mini",
     temperature: 0.7,
   };
 };
@@ -65,14 +65,28 @@ export const RETRIEVAL_MODES = [
   { value: "text", label: "Text Search" }
 ];
 
+// Available chat modes
+export const CHAT_MODES = [
+  { value: "RAG", label: "📄 Tài liệu" },
+  { value: "WEB_SEARCH", label: "🔍 Tìm web" },
+];
+
 // Create request data from configuration
-export const createRequestData = (question, conversationId, userId, chatHistory, config = DEFAULT_CHAT_CONFIG) => {
+export const createRequestData = (question, conversationId, userId, chatHistory, config = DEFAULT_CHAT_CONFIG, mode = "RAG", images = null) => {
   return {
     question,
     conversation_id: conversationId,
     created_by: userId,
     chat_history: chatHistory,
-    mode: "RAG", // hoặc "RAG" tùy config
+    mode,
+    images: images && images.length > 0 ? images : null,
+    retrieval_settings: {
+      retrieval_mode: "vector",
+      use_MMR: false,
+      use_reranking: false,
+      use_llm_relevant_scoring: false,
+      prioritize_table: false
+    },
     reasoning_settings: {
       language: config.reasoning.language,
       framework: config.reasoning.framework,

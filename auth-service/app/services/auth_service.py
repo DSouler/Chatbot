@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.repositories.user_repository import UserRepository
-from app.schemas.auth import LoginRequest, LoginResponse, TokenData
+from app.schemas.auth import LoginRequest, LoginResponse, TokenData, RegisterRequest
 from app.services.ldap_auth import LDAPAuth
 from app.models.user import User
 # Password hashing
@@ -46,11 +46,21 @@ class AuthService:
             print(f"LDAP authentication error: {e}")
             return None
     
+    def authenticate_user_local(self, username: str, password: str):
+        """Authenticate user against local database password hash"""
+        user = self.user_repository.get_user_by_username(username)
+        if not user or not user.password_hash:
+            return None
+        if not self.verify_password(password, user.password_hash):
+            return None
+        return user
+
     def authenticate_user(self, username: str, password: str):
         """Main authentication method - tries LDAP first, then local database"""
-        # First try LDAP authentication
         user = self.authenticate_user_ldap(username, password)
-        return user
+        if user:
+            return user
+        return self.authenticate_user_local(username, password)
     
     def create_access_token(self, data: dict, expires_delta: Optional[timedelta] = None):
         """Create JWT access token"""
@@ -113,3 +123,22 @@ class AuthService:
     def get_user_by_id(self, user_id: int) -> User:
         """Get user by ID"""
         return self.user_repository.get_user_by_id(user_id)
+
+    def register_user(self, register_request: RegisterRequest) -> User:
+        """Register a new local user"""
+        if self.user_repository.get_user_by_username(register_request.username):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Tên tài khoản đã tồn tại"
+            )
+        if register_request.email and self.user_repository.get_user_by_email(register_request.email):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email đã được sử dụng"
+            )
+        password_hash = self.get_password_hash(register_request.password)
+        return self.user_repository.create_local_user(
+            username=register_request.username,
+            password_hash=password_hash,
+            email=register_request.email
+        )
