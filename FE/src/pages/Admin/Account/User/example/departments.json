@@ -1,0 +1,8 @@
+{
+  "VTI": ["D1", "D2", "D3", "D4"],
+  "VJP": ["G2", "G3", "G4", "G5", "G6", "G7"],
+  "VKR": ["Sales"],
+  "VAP": ["Marketing", "Sales"],
+  "HRI": ["Support"],
+  "EDU": ["Training"]
+}
