@@ -1,0 +1,200 @@
+What do the reference materials say about an object’s Attributes and Behavior in Java?
+According to the sources, what is Inheritance, and why is it discussed in the section on Classes?
+What types of loops do the sources list?
+What is the purpose of Creating Methods according to the source?
+How do you pass arguments from the command line to a Java application?
+Which basic GUI components do the sources enumerate?
+Where do the sources treat Dialog Boxes as a main topic?
+What is the difference between a final class and a final method?
+Why does using native methods have disadvantages?
+According to the source, which two websites are recommended for Java developers to find more information and resources?
+How do the sources explain the role of packages in Java?
+What is the definition of a Frame according to the source?
+Do any of the sources specifically mention the Unicode system in Java?
+What is Scanner used for, and where is it discussed in the sources—especially regarding input handling?
+Briefly explain the main difference between a while loop and a do…while loop according to the source.
+What is pseudocode, and how is it useful in the algorithm development process?
+What pseudocode algorithm is given for counting the number of divisors of a positive integer N?
+In the nested-for example that counts letters, what is the purpose of the break keyword?
+Which methods does the TextIO class provide for reading user input, and how do they differ in behavior (e.g., skipping whitespace)?
+How do the sources discuss using arrays to model and solve the Birthday Problem?
+Which chapter focuses on introducing GUI Programming?
+What does the source say about the special value null in Java and why it’s necessary?
+What is a Constructor, and what is its main purpose in defining a class?
+According to the source, when you execute fruit = new Kumquat(); (where Kumquat is the class and fruit its variable), what steps does the computer perform?
+Why does a simple class like Player have a toString() method even though it isn’t explicitly defined in the source code?
+What is Polymorphism according to the reference materials?
+What is Garbage Collection in Java, and what role does it play in memory management?
+Explain the terms instance variable and instance method.
+According to the source, what does the repaint() method do when called?
+What two ways of using the standard JPanel class are discussed in the source?
+What role does a LayoutManager play in Java GUI?
+What is a Data Structure, and which basic built-in data structures are mentioned?
+According to the source, what is the main advantage of binary search over linear search?
+ArrayList is described as a parameterized type. What does that mean?
+In the chapter on Correctness, Robustness, and Efficiency, how is a robust program defined?
+What is a Precondition, and how can it be used to help write correct programs?
+The built-in Java class Throwable represents what, and why does it exist?
+Why should a subroutine throw an exception on error rather than simply terminate the program?
+Which classic problem is used to illustrate recursion?
+How do the sources describe linked data structures, especially the idea of a chain of linked objects?
+What is the fundamental functional difference between a stack and a queue?
+What does it mean to parse a computer program?
+What is the general purpose of generic programming and using collection classes?
+Why can’t you create an object of type LinkedList<int> in Java? Which type should you use instead?
+What is an Iterator, and why is it necessary or useful for generic programming?
+According to the source, what is the essential functional difference between TreeMap and HashMap, particularly regarding element ordering?
+Java I/O uses streams, which are described as an abstraction. What does that mean, and why is it important?
+What is the main purpose of the JFileChooser class in Java GUI?
+How does the source explain the client/server model of network communication?
+What is a race condition in the context of multithreaded programming?
+What is Node.js primarily described as?
+Why is Node.js considered a useful tool?
+What tool is recommended for setting up a new Node.js project quickly?
+How do you import built-in Node.js core modules?
+What is the purpose of installing npm modules globally?
+What utility is mentioned for getting input from users via command line arguments?
+How can the builder property in Yargs be used to configure command options?
+What are some key features of ES6 arrow functions?
+How does the Array.find method differ from Array.filter?
+What section of the documentation covers debugging Node.js?
+What is a callback function in Node.js?
+How does callback chaining help with asynchronous tasks?
+What framework is used for creating web servers?
+How can static files like CSS or images be served with Express?
+What is the query string used for in a web application?
+How can you access data passed via the query string in Express?
+What API is mentioned for making HTTP requests from the browser?
+What platform is used for deploying Node.js applications?
+What type of database is MongoDB classified as?
+How do you insert documents into a MongoDB collection?
+What are the methods for querying documents in MongoDB?
+What is the purpose of Promises in handling asynchronous code?
+What is a REST API endpoint used for?
+How does Mongoose simplify working with MongoDB data?
+What aspects like data validation and sanitization are handled by Mongoose?
+What HTTP method is typically used for reading resources in a REST API?
+What are Async/Await and why are they useful?
+How can you organize Express application endpoints?
+How is user authentication implemented for an API?
+What technique is used for securely storing user passwords?
+What are JSON Web Tokens used for in API security?
+What is Express Middleware and how is it used?
+How can you filter data returned from an API based on client criteria?
+How is pagination configured for API responses?
+How can clients specify the order in which data is returned from an API?
+What libraries are introduced for handling file uploads in Node.js?
+How can you restrict the types or sizes of files that can be uploaded using Multer?
+What service is integrated for sending emails from the application?
+Why are environment variables important for sensitive information?
+What testing frameworks are covered?
+What is the role of the assert module in testing?
+How are assertions written in Jest tests?
+How do you test asynchronous code using Mocha or Jest?
+What are test hooks like beforeEach and afterEach used for in Mocha?
+What library is used for real-time web applications like chat apps?
+How do Socket.io rooms work?
+What is the Node.js Read-Eval-Print-Loop (REPL)?
+How does the fs module enable interaction with the operating system's file system?
+What is the key difference between synchronous and asynchronous operations in Node.js file system operations?
+What is the purpose of the package.json file in a Node.js project
+What is Retrieval Augmented Generation (RAG) primarily described as?
+How does RAG address the limitations of base Large Language Models (LLMs)?
+What are common external data sources used in RAG systems?
+What are the key steps in the RAG workflow pipeline?
+How does the Data Preprocessing step prepare data for RAG?
+What is the function of vector embeddings and where are they stored in RAG?
+What are the two main components of a RAG system, and what do they do?
+When is RAG considered a more suitable approach compared to fine-tuning an LLM?
+Why are PDF documents particularly important as a data source for RAG applications?
+What challenges arise when extracting text from PDFs for RAG applications?
+How does the complexity of PDF layouts affect text extraction accuracy?
+What is a recommended practice after extracting text from PDFs?
+Why is chunking necessary for processing PDF text in RAG, and what methods are used?
+How can PDF metadata and annotations be utilized in the RAG process?
+What are the two distinct approaches to building RAG systems discussed?
+What tool is used for implementing RAG with OpenAI's Assistant API?
+How does the OpenAI Assistant API handle data preprocessing and vectorization for RAG?
+What are some common mistakes and best practices when working with data quality in PDFs for RAG?
+What are OpenAI Vector Stores used for in the Assistant API approach?
+How can one avoid naming conflicts when creating OpenAI Vector Stores?
+What are the default chunk size and overlap used by OpenAI for Vector Stores?
+What is the purpose of providing specialized instructions to the AI assistant?
+What parameters can be adjusted when creating an OpenAI Assistant to influence response style?
+What is a conversation Thread in the OpenAI Assistant API and why is it important?
+What does a "Run" represent in the context of the OpenAI Assistant API?
+What open-source framework is used to incorporate Llama models for RAG?
+What is the purpose of the pdf to text.py script in the open-source approach?
+What is FAISS used for in the open-source RAG implementation?
+Which specific embedding model is mentioned for creating the FAISS index?
+What happens if incompatible embedding models are used between indexing and querying?
+What happens when using an incorrect or unsupported model version in the open-source approach?
+How can overly general prompts impact the generated responses?
+What can lead to language models generating incorrect or hallucinated responses in RAG?
+What was a common technical issue encountered during the guide's evaluation related to code snippets?
+What are some other open-source frameworks mentioned for developing RAG models?
+What is VDocRAG and what kind of documents does it focus on?
+How does VDocRAG process documents differently from conventional text-based RAG to avoid information loss?
+What novel pre-training tasks are introduced in VDocRAG?
+What is OpenDocVQA and what does it provide?
+What types of documents and modalities are included in OpenDocVQA?
+How does OpenDocVQA reflect real-world scenarios better than some existing datasets?
+How does VDocRAG handle high-resolution images with various aspect ratios?
+What is the purpose of the RCR pre-training task in VDocRetriever?
+What is the purpose of the RCG pre-training task in VDocRetriever?
+How did VDocRetriever† (VDocRetriever without pre-training) perform compared to text-based retrievers?
+How did VDocRAG perform on the DocumentVQA task compared to closed-book and text-based RAG?
+What does VDocRAG's performance when given ground-truth documents suggest?
+How does increasing image resolution impact VDocRAG's performance and efficiency?
+How can Generative AI applications like RAG help in the field of education?
+What are embeddings and how are they used in RAG systems?
+According to the guiding principles, what is considered the best way to learn Python in the Hands-on Python Tutorials?
+What are four guiding principles for the Hands-on Python Tutorials regarding problem-solving and solution clarity?
+What does the >>> symbol represent in the Python Shell or IDLE window?
+What is the Python Shell loop of reading, evaluating, and printing code commonly referred to?
+How do you determine the type of a value in the Python Shell?
+What is the result of the expression 6+3 when entered into the Python Shell?
+How are strings delimited in Python?
+What is the purpose of the parameter inside the parentheses when using the input() function?
+How does the input() function interact with the user and what type of value does it return?
+What are two reasons why variables are fundamental to programming?
+What is the assignment operator in Python?
+What is the default behavior of the print() function regarding the end of the output, and how can this be overridden?
+What are the two main approaches mentioned for combining strings and variable values for printing, besides the plus sign (+)?
+How does string formatting using the .format() method with curly braces {} work when substituting values?
+How can you use a dictionary with string formatting to substitute values into a format string?
+What is the special syntax used before a dictionary name when using it with the .format() method for keyword arguments?
+What is a Python method, and how is it syntactically associated with an object?
+What does a function definition (def) do?
+What is a documentation comment (docstring), and where is an example shown for the addPick definition?
+What does the return statement do in a Python function?
+What Python data type is used to create a tiny English to Spanish dictionary in the example spanish2.py?
+What are the more general Python terms for the "word" and "definition" in a dictionary?
+What is the restriction on a Python object being used as a key in a dictionary?
+What is the difference between mutable and immutable types, according to the discussion of dictionaries?
+Why is repetition or looping necessary for keeping a computer busy with useful work?
+What are the two Python statement types mentioned for creating loops?
+How does a for statement in Python iterate, according to one document?
+What is the basic syntax for a for loop iterating over a sequence?
+When iterating through a list like  using for count in:, what values does the variable count take on during each repetition?
+How can a for loop be used to repeat an action a specific number of times, even if the loop variable isn't used?
+What does the range(n) function generate?
+What is the purpose of the append method when working with lists in a loop?
+What are the key components of a successive modification loop pattern?
+How can you test whether a sequence contains a certain value, as shown in the ask_ok function example?
+What does the *arguments syntax in a function definition allow?
+What does the **keywords syntax in a function definition allow?
+How can you retrieve both the position index and corresponding value simultaneously when looping through a sequence?
+What function can be used to loop over two or more sequences at the same time, pairing up their entries?
+What is the purpose of the split() string method?
+What is the purpose of the join() string method, and what is unusual about its syntax?
+How can the string methods split() and join() be used together to replace whitespace with underscores in a phrase?
+What is an acronym, and what are some steps involved in writing a program to generate one from a phrase?
+What is the purpose of the getKeys function introduced in the revisited Mad Libs section?
+How does the getKeys function, specifically the return set(keyList) line, handle potential duplicate keys found in the format string?
+What type of control flow statement is useful when you want to distinguish between more than two distinct cases?
+What is the purpose of the and operator in a conditional statement?
+How can for and if statements be combined, for example, to print only positive numbers from a list?
+When might a while loop be more appropriate than a for loop, especially regarding the number of repetitions?
+What are the steps involved in creating dynamic web pages using Python CGI scripts, according to the summary?
+How do you extract values submitted by a user from a web form when using the cgi module?

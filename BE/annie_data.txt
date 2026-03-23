@@ -1,0 +1,81 @@
+# Annie - TFT Set 16 (Lore & Legends)
+
+## Thông Tin Tổng Quan
+- **Tên:** Annie
+- **API Name:** TFT16_Annie
+- **Cost (giá):** 5 vàng
+- **Set:** Set 16 - Lore & Legends
+- **Trait (hệ):** Dark Child (Origin), Arcanist (Class)
+
+## Trang Bị Cho Annie
+
+### Build chính (khuyến nghị):
+- **Giáo Shojin** (Spear of Shojin) - hồi mana sau mỗi đòn
+- **Mũ Giáp Thích Nghi** (Adaptive Helm) - tăng sát thương khi bị tấn công
+- **Trượng hư vô** (Statikk Shiv) - hồi mana và sát thương diện rộng
+
+### Build thay thế:
+- **Trượng hư vô Huyền Thoại** (Artifact Statikk Shiv)
+- **Ngọc Tàn Héo** (Blighting Jewel)
+
+### Linh kiện ưu tiên (theo thứ tự):
+1. Giọt Lệ Nữ Thần (Tear of the Goddess)
+2. Cung Cong (Recurve Bow)
+3. Áo Choàng Negatron (Negatron Cloak)
+4. Thắt Lưng Khổng Lồ (Giant Belt)
+
+## Kỹ Năng: Enraged Inferno (Cuồng Nộ Địa Ngục)
+
+**Loại:** Active (kỹ năng chủ động)
+**Mana:** 0 mana ban đầu / 160 mana tổng
+
+### Lần Cast Đầu Tiên:
+- Thiêu đốt toàn bộ chiến trường, áp dụng **Thiêu Đốt (Burn)** và **Vết Thương (Wound)** vĩnh viễn lên tất cả kẻ địch
+- Gây sát thương phép **1500 / 2250 / 8000** (tăng theo AP) trong 45 giây
+- Mana tối đa của Annie giảm 140 cho đến hết trận
+
+### Các Lần Cast Tiếp Theo:
+- Bắn cầu lửa gây sát thương phép **240 / 360 / 3000** (tăng theo AP) vào mục tiêu
+
+### Chỉ Số Theo Sao:
+| Cấp Sao | Lần Cast Đầu | Các Lần Sau |
+|---------|-------------|------------|
+| 1 sao   | 1500 sát thương | 240 sát thương |
+| 2 sao   | 2250 sát thương | 360 sát thương |
+| 3 sao   | 8000 sát thương | 3000 sát thương |
+
+### Hiệu Ứng Trạng Thái:
+- **Thiêu Đốt (Burn):** Gây sát thương thật mỗi giây bằng % máu tối đa của mục tiêu
+- **Vết Thương (Wound):** Giảm lượng hồi máu nhận được 33%
+
+## Trang Bị Cho Tibbers
+- **Vuốt Rồng** (Dragon Claw) - kháng phép
+- **Áo Giáp Gai** (Bramble Vest) - giáp và phản sát thương  
+- **Giáp Warmog** (Warmog Armor) - máu tối đa
+
+## Trait - Đặc Điểm
+
+### Dark Child (Origin - 1 unit):
+Annie triệu hồi Tibbers lên ghế dự bị, có thể đặt ra chiến đấu và gắn trang bị riêng. Tibbers cùng cấp sao với Annie.
+
+### Arcanist (Class) - Buff cho toàn đội:
+| Số Arcanist | AP Toàn Đội | AP Cho Arcanist |
+|-------------|------------|----------------|
+| 2 Arcanist  | +18 AP     | +25 AP         |
+| 4 Arcanist  | +25 AP     | +45 AP         |
+| 6 Arcanist  | +40 AP     | +70 AP         |
+
+## Vị Trí Đặt
+- **Annie:** Ô số 27 (hàng sau, carry chính)
+- **Tibbers:** Ô số 5 (tiền tuyến, tank)
+
+## Đội Hình Tiêu Biểu: Arcanist Annie
+- **Tier:** S (meta mạnh nhất)
+- Chiến thuật: Annie là carry AP chính, Tibbers tank tiền tuyến, build full AP và hồi mana
+
+## Mẹo Chơi
+- Annie cần đủ 160 mana để cast lần đầu → ưu tiên Giáo Shojin / Trượng hư vô
+- Sau lần cast đầu mana giảm 140, các lần sau chỉ cần 20 mana → spam cầu lửa liên tục
+- Thiêu Đốt + Vết Thương lần đầu cực kỳ mạnh chống đội hình hồi máu
+- Mũ Giáp Thích Nghi giúp tăng sát thương khi bị tấn công
+- Tibbers nên cầm Vuốt Rồng + Áo Giáp Gai + Giáp Warmog để tank tốt nhất
