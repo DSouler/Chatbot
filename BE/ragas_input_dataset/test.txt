@@ -1,0 +1,32 @@
+What is a documentation comment (docstring), and where is an example shown for the addPick definition?
+What does the return statement do in a Python function?
+What Python data type is used to create a tiny English to Spanish dictionary in the example spanish2.py?
+What are the more general Python terms for the "word" and "definition" in a dictionary?
+What is the restriction on a Python object being used as a key in a dictionary?
+What is the difference between mutable and immutable types, according to the discussion of dictionaries?
+Why is repetition or looping necessary for keeping a computer busy with useful work?
+What are the two Python statement types mentioned for creating loops?
+How does a for statement in Python iterate, according to one document?
+What is the basic syntax for a for loop iterating over a sequence?
+When iterating through a list like  using for count in:, what values does the variable count take on during each repetition?
+How can a for loop be used to repeat an action a specific number of times, even if the loop variable isn't used?
+What does the range(n) function generate?
+What is the purpose of the append method when working with lists in a loop?
+What are the key components of a successive modification loop pattern?
+How can you test whether a sequence contains a certain value, as shown in the ask_ok function example?
+What does the *arguments syntax in a function definition allow?
+What does the **keywords syntax in a function definition allow?
+How can you retrieve both the position index and corresponding value simultaneously when looping through a sequence?
+What function can be used to loop over two or more sequences at the same time, pairing up their entries?
+What is the purpose of the split() string method?
+What is the purpose of the join() string method, and what is unusual about its syntax?
+How can the string methods split() and join() be used together to replace whitespace with underscores in a phrase?
+What is an acronym, and what are some steps involved in writing a program to generate one from a phrase?
+What is the purpose of the getKeys function introduced in the revisited Mad Libs section?
+How does the getKeys function, specifically the return set(keyList) line, handle potential duplicate keys found in the format string?
+What type of control flow statement is useful when you want to distinguish between more than two distinct cases?
+What is the purpose of the and operator in a conditional statement?
+How can for and if statements be combined, for example, to print only positive numbers from a list?
+When might a while loop be more appropriate than a for loop, especially regarding the number of repetitions?
+What are the steps involved in creating dynamic web pages using Python CGI scripts, according to the summary?
+How do you extract values submitted by a user from a web form when using the cgi module?

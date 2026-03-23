@@ -1,0 +1,34 @@
+_format_version: "3.0"
+
+services:
+  - name: admin-service-local
+    url: http://host.docker.internal:8090
+    routes:
+      - name: admin-service-local-route
+        paths:
+          - /api/v1/admin-service
+        strip_path: true
+
+  - name: ai-service-local
+    url: http://host.docker.internal:8096
+    routes:
+      - name: ai-service-local-route
+        paths:
+          - /api/v1/ai-service
+        strip_path: true
+
+  - name: auth-service-local
+    url: http://host.docker.internal:8092
+    routes:
+      - name: auth-service-local-route
+        paths:
+          - /api/v1/auth-service
+        strip_path: true
+
+  - name: embedding-service-local
+    url: http://host.docker.internal:8093
+    routes:
+      - name: embedding-service-local-route
+        paths:
+          - /api/v1/embedding-service
+        strip_path: true

@@ -1,0 +1,303 @@
+# Đấu Trường Chân Lý - Thông Tin Bản Cập Nhật 16.6
+## Set 16 - Truyền Thuyết & Huyền Thoại (Mùa Chính)
+Nguồn: https://teamfighttactics.leagueoflegends.com/vi-vn/news/game-updates/teamfight-tactics-patch-16-6/
+
+---
+
+## TÓM TẮT NHANH - TƯỚNG BUFF/NERF
+
+### TƯỚNG ĐƯỢC BUFF (TĂNG SỨC MẠNH):
+- **Lulu** (1 vàng) - BUFF: Tăng sát thương kỹ năng
+- **Ashe** (2 vàng) - BUFF: Tăng SMCK và Tốc Độ Đánh
+- **Ekko** (2 vàng) - BUFF: Tăng sát thương kỹ năng
+- **Ahri** (3 vàng) - BUFF: Tăng sát thương 3 sao
+- **Draven** (3 vàng) - BUFF: Tăng sát thương 3 sao
+- **Gangplank** (3 vàng) - BUFF: Tăng sát thương kỹ năng
+- **Leona** (3 vàng) - BUFF: Tăng giảm sát thương và số mục tiêu
+- **Vayne** (3 vàng) - BUFF: Tăng sát thương kỹ năng
+- **Zoe** (3 vàng) - BUFF: Tăng sát thương 3 sao
+- **Diana** (4 vàng) - BUFF: Tăng sát thương phụ
+- **Lissandra** (4 vàng) - BUFF: Giảm năng lượng cần
+- **Nidalee** (4 vàng) - BUFF: Tăng máu
+- **Singed** (4 vàng) - BUFF: Tăng chống chịu theo sao
+- **Warwick** (4 vàng) - BUFF: Giảm năng lượng, tăng sát thương
+- **Annie & Tibbers** (5 vàng) - BUFF: Tăng tốc đánh và lá chắn Tibbers
+- **Azir** (5 vàng) - BUFF: Tăng tốc đánh và sát thương Lính Cát
+- **Ryze** (5 vàng) - BUFF: Tăng sát thương kỹ năng cơ bản
+
+### TƯỚNG BỊ NERF (GIẢM SỨC MẠNH):
+- **Yorick** (2 vàng) - NERF: Giảm hồi máu 1 sao
+- **Kalista** (4 vàng) - NERF: Giảm sát thương, tăng giáo chậm hơn
+- **Nidalee** (4 vàng) - NERF: Giảm tốc đánh và sát thương
+- **Veigar** (4 vàng) - NERF: Giảm sát thương
+- **Yone** (4 vàng) - NERF: Giảm tốc đánh và sát thương toàn bộ
+- **Aatrox** (5 vàng) - NERF: Giảm sát thương kỹ năng
+- **Azir** (5 vàng) - NERF: Giảm máu Lính Cát
+- **Mel** (5 vàng) - NERF: Tăng ngưỡng trang bị ánh sáng
+- **Ryze** (5 vàng) - NERF: Giảm sức mạnh các tộc Bilgewater/Yordle/Freljord
+- **Sett** (5 vàng) - NERF: Giảm sát thương kỹ năng
+- **Sylas** (5 vàng) - NERF: Giảm máu và sát thương
+- **Tahm Kench** (5 vàng) - NERF: Giảm máu và Phàm Ăn
+- **T-Hex** (5 vàng) - NERF MẠNH: Giảm máu, sát thương, tên lửa
+- **Thresh** (5 vàng) - NERF: Giảm chống chịu và tăng tiến
+- **Xerath** (5 vàng) - NERF: Giảm SMCK và xuyên giáp
+
+---
+
+## ĐIỀU KIỆN MỞ KHÓA (DỄ HƠN)
+
+Nhiều tướng giờ dễ Mở Khóa hơn đáng kể:
+
+- Bard: 4 lượt đổi ⇒ 3 lượt đổi trước Vòng Đi Chợ Giai Đoạn 2
+- Graves: Twisted Fate mang 2 trang bị ⇒ Bất kỳ tướng Bilgewater nào mang 2 trang bị
+- Yorick: Viego 2 sao ⇒ Viego 1 sao mang 1 trang bị
+- Darius: Khi Draven rơi 1 vàng ⇒ Draven mang 1 trang bị + Cấp 5
+- Gwen: 20 linh hồn ⇒ 10 linh hồn & Cấp 5
+- Kennen: 7 cấp sao tướng Ionia/Yordle/Vệ Quân ⇒ 5 cấp sao tướng Ionia/Yordle/Vệ Quân & Cấp 5
+- Kobuko & Yuumi: 6 cấp sao tướng Đấu Sĩ/Thuật Sĩ/Yordle & Cấp 7 ⇒ 6 cấp sao tướng Đấu Sĩ/Thuật Sĩ/Yordle & Cấp 6
+- Diana: Leona 2 sao & Cấp 6 ⇒ Leona 1 sao mang 3 trang bị & Cấp 7
+- Kai'Sa: 1 tướng Viễn Kích mang 3 trang bị ⇒ 1 tướng Viễn Kích mang 2 trang bị
+- Kalista: 70 linh hồn ⇒ 30 linh hồn & Cấp 7
+- Nidalee: 2 Neeko 2 sao ⇒ Neeko 2 sao mang 3 trang bị & Cấp 7
+- Sứ Giả Khe Nứt: Triển khai Hư Không trong 8 giao tranh ⇒ Triển khai Hư Không trong 2 giao tranh + Cấp 7
+- Skarner: Tướng không phải Đỡ Đòn mang Thú Tượng Thạch Giáp ⇒ Pháp Sư hoặc Xạ Thủ mang 1 trang bị Giáp Lưới
+- Veigar: Tướng mang 2 Mũ Phù Thủy ⇒ Tướng Yordle mang 1 Mũ Phù Thủy
+- Yone: Yasuo 3 sao ⇒ Yasuo 2 sao mang 3 trang bị & Cấp 7
+- Aatrox: 40% Hút Máu Toàn Phần ⇒ 30% Hút Máu Toàn Phần
+- Galio: 12 cấp sao tướng Demacia ⇒ 8 cấp sao & Cấp 8
+- Mel: Ambessa 2 sao mang 1 trang bị tử trận ⇒ Ambessa mang 1 trang bị tử trận & Cấp 8
+- Ryze: 4 Tộc/Hệ Khu Vực + Cấp 9 ⇒ 3 Tộc/Hệ Khu Vực + Cấp 9
+- Sylas: Bán Jarvan & Garen 2 sao + Cấp 9 ⇒ Bán Garen 2 sao + Cấp 9
+- Tahm Kench: 450 Đồng Ngân Xà ⇒ 350 Đồng Ngân Xà + Cấp 8
+- T-Hex: 9 cấp sao tướng Piltover ⇒ 7 cấp sao tướng Piltover + Cấp 8
+- Thresh: 175 linh hồn ⇒ 5 cấp sao tướng Quần Đảo Bóng Đêm + Cấp 8
+- Volibear: 3.800 Máu ⇒ 3.400 Máu + Cấp 8
+- Ziggs: 3 trang bị trên một tướng Zaun/Yordle ⇒ 2 trang bị trên một tướng Zaun/Yordle
+
+---
+
+## TỘC/HỆ (TRAITS)
+
+### NERF:
+- **Đấu Sĩ** - NERF: % Máu Tối Đa: 25/45/65 ⇒ 25/40/60
+- **Ionia (10)** - NERF: Giảm Tốc Độ Đánh Của Kẻ Địch: 40% ⇒ 30%
+- **Ionia - Đạo Phú Quý** - NERF: Mạng hạ gục mỗi Vàng: 3 ⇒ 4 (khó farm vàng hơn)
+- **Ionia - Đạo Kiếm** - THAY ĐỔI: Không còn cho sát thương đòn đánh, thay bằng 15/25/50/100% SMPT
+- **Ixtal** - NERF: Số lần bị hạ gục: 105/125/175/225 ⇒ 100/100/140/230
+- **Ixtal** - NERF: Số lần hạ gục tướng: 70/90/110/140 ⇒ 70/70/90/110
+- **Đồ Tể** - NERF: SMCK cộng thêm: 22/33/44% ⇒ 20/30/40%
+- **Hư Không - Hạch Hút Hạ** - NERF: Tối đa 15 cộng dồn ⇒ 10 cộng dồn
+- **Yordle (8)** - NERF: Vàng Rơi: 6 ⇒ 5 Vàng
+- **Piltover** - NERF: Tỉ lệ nhận vàng từ Khoan Khai Thác đã giảm
+
+### BUFF:
+- **Demacia** - BUFF: Chống Chịu: 12/30/30 ⇒ 12/35/35
+- **Ionia - Đạo Siêu Việt** - BUFF: Thưởng 3 sao: 100% ⇒ 130%
+- **Hư Không - Mô-đun Adrenaline** - BUFF: Khuếch Đại Sát Thương: 15% ⇒ 18%
+- **Yordle (8)** - BUFF: 2 Yordle 2 Vàng được thêm vào danh sách phần thưởng
+
+---
+
+## TƯỚNG BẬC 1 (1 VÀNG)
+
+### Lulu - BUFF
+- Sát Thương Chính: 285/425/635/845 SMPT ⇒ **330/500/750/1000 SMPT** (+15-18%)
+- Sát Thương Phụ: 120/180/270/360 SMPT ⇒ **140/210/315/420 SMPT** (+16%)
+
+---
+
+## TƯỚNG BẬC 2 (2 VÀNG)
+
+### Ashe - BUFF
+- SMCK Cơ Bản: 58 ⇒ **60** (+2)
+- Tốc Độ Đánh Cơ Bản: 0,7 ⇒ **0,75** (+7%)
+
+### Ekko - BUFF
+- Sát Thương Kỹ Năng: 150/225/340/455 SMPT ⇒ **160/240/380/520 SMPT** (+7-14%)
+
+### Yorick - NERF (do dễ mở khóa hơn)
+- Hồi Máu: 325/370/500 SMPT ⇒ **250/350/500 SMPT** (-23% ở 1 sao)
+
+---
+
+## TƯỚNG BẬC 3 (3 VÀNG)
+
+### Ahri - BUFF
+- Sát Thương Kỹ Năng: 82/125/195 SMPT ⇒ **82/125/225 SMPT** (+15% ở 3 sao)
+
+### Draven - BUFF
+- Sát Thương Kỹ Năng: 120/170/290 SMCK ⇒ **120/180/350 SMCK** (+6% 2 sao, +21% 3 sao)
+
+### Gangplank - BUFF
+- Sát Thương Kỹ Năng: 190/285/450 SMCK ⇒ **205/310/500 SMCK** (+8-11%)
+
+### Leona - BUFF
+- Giảm Sát Thương Cố Định: 15/30/70 ⇒ **15/30/80** (+14% ở 3 sao)
+- Số Lượng Mục Tiêu: 3 ⇒ **3/3/4** (3 sao đánh 4 mục tiêu!)
+
+### Vayne - BUFF
+- Sát Thương Kỹ Năng: 100/150/250 SMCK ⇒ **110/165/285 SMCK** (+10-14%)
+
+### Zoe - BUFF
+- Sát Thương Kỹ Năng: 330/500/900 SMPT ⇒ **330/500/1.000 SMPT** (+11% ở 3 sao)
+
+---
+
+## TƯỚNG BẬC 4 (4 VÀNG)
+
+### Diana - BUFF
+- Sát Thương Phụ Của Kỹ Năng: 140/210/1.350 SMPT ⇒ **160/240/1.500 SMPT** (+11-14%)
+
+### Kalista - NERF
+- Sát Thương Kỹ Năng: 32/48 SMCK ⇒ **30/48 SMCK** (-6% ở 1 sao)
+- Ngọn Giáo Ban Đầu: 20 ⇒ **25** (+5)
+- Tỉ Lệ Tăng Giáo: +1 giáo mỗi 25 Linh Hồn ⇒ **+1 giáo mỗi 50 Linh Hồn** (chậm gấp đôi)
+
+### Lissandra - BUFF
+- Năng Lượng: 20/70 ⇒ **20/65** (dùng skill nhanh hơn)
+
+### Nidalee - BUFF/NERF (điều chỉnh)
+- BUFF: Máu: 1.100 ⇒ **1.200** (+9%)
+- NERF: Tốc Độ Đánh Cơ Bản: 0,9 ⇒ **0,85** (-6%)
+- NERF: Sát Thương Kỹ Năng: 320/500/2.000 SMPT ⇒ **290/470/2.000 SMPT** (-6-9%)
+
+### Singed - BUFF
+- Kỹ Năng - Thưởng Chống Chịu: 20 ⇒ **20/60/100** (buff lớn ở 2-3 sao)
+
+### Veigar - NERF (do dễ mở khóa)
+- Sát Thương: 62/93/199 ⇒ **56/84/199** (-10% ở 1-2 sao)
+
+### Warwick - BUFF
+- Năng Lượng: 0/90 ⇒ **0/70** (dùng skill nhanh hơn 22%)
+- Sát Thương Kỹ Năng: 45/70/550 SMCK ⇒ **55/85/550 SMCK** (+22%)
+
+### Yone - NERF MẠNH (do dễ mở khóa với Yasuo 2 sao)
+- Tốc Độ Đánh Cơ Bản: 0,9 ⇒ **0,85** (-6%)
+- Kỹ Năng - Sát Thương Phân Chia: 160/240 SMCK & SMPT ⇒ **140/210** (-12.5%)
+- SMCK - Sát Thương Nội Tại: 80/120 SMCK ⇒ **55/85** (-31%)
+- SMPT - Sát Thương Nội Tại: 140/210 SMPT ⇒ **110/165** (-21%)
+
+---
+
+## TƯỚNG BẬC 5 (5 VÀNG)
+
+### Aatrox - NERF
+- Sát Thương Kỹ Năng: 95/185 SMCK ⇒ **85/170 SMCK** (-8-11%)
+
+### Annie & Tibbers - BUFF
+- Annie - Tốc Độ Đánh Cơ Bản: 0,8 ⇒ **0,85** (+6%)
+- Tibbers - Tạo Lá Chắn: 1.000/1.200 SMPT ⇒ **1.200/1.400 SMPT** (+17-20%)
+
+### Azir - BUFF/NERF (điều chỉnh sang carry)
+- BUFF: Tốc Độ Đánh Cơ Bản: 0,8 ⇒ **0,85** (+6%)
+- BUFF: Sát thương của Lính Cát: 70/105 ⇒ **90/135** (+29%)
+- NERF: Lính Cát - Máu: 750/1.350 ⇒ **600/1.080** (-20%)
+
+### Mel - NERF
+- Ngưỡng Trang Bị Ánh Sáng: 225 ⇒ **235** (cần thêm 10 điểm)
+
+### Ryze - BUFF cơ bản, NERF các tộc
+- BUFF: Sát Thương Kỹ Năng: 235/435 SMPT ⇒ **255/460 SMPT** (+6-9%)
+- NERF: Bilgewater - Sát Thương Đại Bác: 25% ⇒ **18%** (-28%)
+- NERF: Yordle - Giảm Sát thương: 12% ⇒ **8%** (-33%)
+- NERF: Freljord - Thời Gian Tác Dụng Tê Tái: 4 giây ⇒ **2 giây** (-50%)
+- BUFF: Freljord - Sát Thương Cộng Thêm: 6% Máu ⇒ **8% Máu** (+33%)
+
+### Sett - NERF
+- Sát Thương Kỹ Năng: 220/350 + 3/9% Máu ⇒ **200/350 + 2/5% Máu** (-9% base, -44% % máu)
+
+### Sylas - NERF
+- Máu Cơ Bản: 1.600 ⇒ **1.450** (-9%)
+- Công Lý Demacia - Sát thương: 700/1.050 SMPT ⇒ **630/950 SMPT** (-10%)
+
+### Tahm Kench - NERF
+- Máu: 1.100 ⇒ **1.000** (-9%)
+- Phàm Ăn - Máu từ tướng 1 vàng: 55 ⇒ **40** (-27%)
+- Phàm Ăn - Máu từ tướng 2 vàng: 85 ⇒ **70** (-18%)
+- Phàm Ăn - Máu từ tướng 3 vàng: 115 ⇒ **100** (-13%)
+- Phàm Ăn - SMPT từ tướng 1 vàng: 10 ⇒ **8** (-20%)
+- Phàm Ăn - SMPT từ tướng 2 vàng: 12 ⇒ **10** (-17%)
+
+### T-Hex - NERF MẠNH
+- Máu: 1.400 ⇒ **1.100** (-21%)
+- Sát Thương Kỹ Năng: 360/540 SMCK ⇒ **280/420 SMCK** (-22%)
+- Sát Thương Tên Lửa: 10% cơ bản ⇒ **6% cơ bản** (-40%)
+- Năng Lượng Tiêu Hao Mỗi Giây: 25 ⇒ **30** (+20% tiêu hao)
+
+### Thresh - NERF
+- Chống Chịu: 75 ⇒ **65** (-13%)
+- Tăng Tiến Linh Hồn: +1 Sát thương mỗi 15 Linh hồn ⇒ **+1 Sát thương mỗi 30 Linh hồn** (chậm gấp đôi)
+
+### Xerath - NERF
+- Bùa Người Đá - SMCK cộng thêm: 40 ⇒ **25** (-38%)
+- Bùa Người Đá - Xuyên Giáp & Kháng Phép cộng thêm: 60 ⇒ **45** (-25%)
+
+---
+
+## NÂNG CẤP KINH TẾ - NERF DIỆN RỘNG
+
+- **Đội Hình Tối Ưu** - ĐÃ BỊ VÔ HIỆU HÓA
+- **Thanh Lý Toàn Bộ** - ĐÃ BỊ LOẠI BỎ
+- Kỳ Vọng Bất Ngờ - Thưởng Vàng: 11/15/20 ⇒ **9/12/18** (-18-10%)
+- Thích Mở Rộng - Vàng Ban Đầu: 15 ⇒ **8** (-47%)
+- Được Cái Này Mất Cái Kia - Tỉ lệ rớt: 50% ⇒ **40%** (-20%)
+- Lượt Đổi từ Kỷ Nguyên: 3 ⇒ **2** (-33%)
+- Thương Vụ Khó Xơi - Vàng: 10 ⇒ **8** (-20%)
+- Sống Vội - Vàng Ban Đầu: 6 ⇒ **3** (-50%)
+- Do Dự I - Vàng: 5 ⇒ **4** (-20%)
+- Do Dự II - Vàng: 8 ⇒ **6** (-25%)
+- Khuyến Mãi Kinh Nghiệm XP: 12 ⇒ **8** (-33%)
+- Dòng Tiền Mờ Ám - Vàng: 2 ⇒ **10** (+400%) - BUFF
+- Dòng Tiền Mờ Ám - Vòng Kích Hoạt: 3 ⇒ **2** (sớm hơn)
+- Ăn Trộm - Chỉ cho vòng 3-2, Yêu cầu: 35 ⇒ **25 vàng** (-29%)
+- Vận Mệnh Kim Cương - Vàng: 4 ⇒ **3** (-25%)
+- Vận Mệnh Kim Cương+ - Vàng: 10 ⇒ **7** (-30%)
+- Tôi Thăng Cấp Một Mình - Máu: 666 ⇒ **525** (-21%)
+- Chiến Lợi Phẩm III - Tỉ lệ: 45% ⇒ **40%** (-11%)
+- Khu Giao Dịch - Vàng: 4 ⇒ **2** (-50%)
+- 2 Vàng Là Nhất - Tướng 2 Vàng: 2 ⇒ **1** (-50%)
+
+---
+
+## NÂNG CẤP KHÁC
+
+### LOẠI BỎ:
+- **Kho Báu Bandle I** - ĐÃ BỊ LOẠI BỎ
+- **Hành Trình Chính Đạo I** - ĐÃ BỊ LOẠI BỎ
+
+### NERF:
+- Kho Báu Bandle II - Vàng mỗi Yordle: 4 ⇒ **2** (-50%)
+- Tiến Hóa & Tiến Bộ - Mạng Hạ Gục: 5 ⇒ **6** (+20%)
+- Tôi Luyện Sức Mạnh - Ngưỡng Máu: 35 ⇒ **40** (+14%)
+- Hành Trình Chính Đạo II - Tướng: Shen + Jhin ⇒ **Yasuo**
+- Hành Trình Chính Đạo II - Trang Bị: Vô Cực Kiếm ⇒ **Kiếm B.F**
+
+### BUFF:
+- Nồi Nấu Ăn - Máu Đã Nhận: 50 ⇒ **60** (+20%)
+- Tiền Vệ Trung Tâm - Máu Tối Đa: 15% ⇒ **25%** (+67%)
+- Người Đá Càn Quét - Giá Tướng: 3 ⇒ **2** (rẻ hơn)
+- Bước Nhảy Niềm Tin - Sát Thương: 220/330/500/670 ⇒ **240/360/550/740** (+9-10%)
+- Làm Nóng II - SMCK/SMPT: 4% ⇒ **5%** (+25%)
+- Khiên Đơn Đấu - Máu: 15% ⇒ **20%** (+33%)
+- Kề Vai Sát Cánh - Tốc Đánh: 20% ⇒ **25%** (+25%)
+- Cây Tộc Hệ - Thêm **1 Búa Rèn**
+
+---
+
+## NHIỆM VỤ IXTAL - ĐIỀU CHỈNH
+
+- Mua XP (Dễ): 40/40/40/40 ⇒ **20/20/20/20** (-50%)
+- Mua XP (Khó): 125/125/100/100 ⇒ **125/100/80/80** (giảm)
+- Reroll (Trung bình): 90/90/50/50 ⇒ **80/70/50/50** (giảm)
+- Reroll (Khó): 135/135/70/70 ⇒ **135/120/70/70** (giảm)
+- Làm Trống Hàng Chờ: 80/80/100/120 ⇒ **70/70/80/120** (giảm)
+- Chuỗi Thua (Nhỏ): 120/200/200/300 ⇒ **120/170/200/300** (giảm)
+- Qiyana 3*: 150/150/200/200 ⇒ **120/120/160/160** (giảm)
+
+---
+
+## SỬA LỖI
+
+- Đã sửa lỗi khiến Galio đồng minh có thể loại bỏ hiệu ứng Freljord của đồng minh trong giao tranh.
+- Đã sửa lỗi khiến nhiệm vụ "Gần Mà Xa" không thể ghi nhận tiến trình.
+- Đã sửa lỗi bảng điểm không hiển thị trong phần giới thiệu sân đấu Mã Đáo Thành Công.

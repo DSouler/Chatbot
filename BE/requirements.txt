@@ -1,0 +1,33 @@
+fastapi
+uvicorn
+openai
+python-dotenv
+jinja2
+websockets
+# pydantic==1.10.7 (adjusted to resolve conflicts)
+python-multipart
+aiohttp
+playwright
+duckduckgo-search
+qdrant-client
+langchain==0.1.20
+langchain-qdrant==0.1.4
+# langchain_text_splitters==0.3.9 (incompatible with langchain 0.0.208)
+langchain-openai==0.1.0
+# langchain-docling==2.18.0 (removed due to Python version incompatibility)
+pypdf
+python-docx
+boto3
+beautifulsoup4
+fastembed
+docstring_parser
+python-decouple
+theflow
+openai
+anthropic
+google-generativeai
+# aisuite[all] - removed due to excessive dependencies
+tiktoken
+sentence-transformers
+psycopg2
+numpy==1.24.3

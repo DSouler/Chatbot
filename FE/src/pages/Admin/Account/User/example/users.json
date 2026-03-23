@@ -1,0 +1,122 @@
+[
+  {
+    "key": "1",
+    "name": "Thang",
+    "email": "thang.nguyenduc1@abc.com",
+    "department": "D2",
+    "position": "Developer",
+    "status": "Active",
+    "date_created": "2025-06-13 17:02:21",
+    "last_login_date": "2025-06-13 17:02:21",
+    "level": 2,
+    "company": "VTI"
+  },
+  {
+    "key": "2",
+    "name": "Tuan",
+    "email": "tuan.nguyenvan2@dce.com",
+    "department": "D3",
+    "position": "Manager",
+    "status": "Blocked",
+    "date_created": "2025-06-13 17:02:21",
+    "last_login_date": "2025-06-13 17:02:21",
+    "level": 2,
+    "company": "VTI"
+  },
+  {
+    "key": "3",
+    "name": "Linh",
+    "email": "linh.tran@vjp.com",
+    "department": "G3",
+    "position": "Designer",
+    "status": "Active",
+    "date_created": "2025-06-14 09:00:00",
+    "last_login_date": "2025-06-15 08:45:00",
+    "level": 3,
+    "company": "VJP"
+  },
+  {
+    "key": "4",
+    "name": "Minh",
+    "email": "minh.nguyen@vap.com",
+    "department": "Sales",
+    "position": "Sales Executive",
+    "status": "Active",
+    "date_created": "2025-06-14 10:30:00",
+    "last_login_date": "2025-06-15 11:00:00",
+    "level": 1,
+    "company": "VAP"
+  },
+  {
+    "key": "5",
+    "name": "Hoa",
+    "email": "hoa.le@vti.com",
+    "department": "D2",
+    "position": "QA Engineer",
+    "status": "Active",
+    "date_created": "2025-06-15 14:15:00",
+    "last_login_date": "2025-06-15 16:00:00",
+    "level": 2,
+    "company": "VTI"
+  },
+  {
+    "key": "6",
+    "name": "An",
+    "email": "an.vo@edu.com",
+    "department": "Training",
+    "position": "Trainer",
+    "status": "Blocked",
+    "date_created": "2025-06-15 13:00:00",
+    "last_login_date": "2025-06-16 09:30:00",
+    "level": 3,
+    "company": "EDU"
+  },
+  {
+    "key": "7",
+    "name": "Duc",
+    "email": "duc.pham@vti.com",
+    "department": "D3",
+    "position": "Backend Developer",
+    "status": "Active",
+    "date_created": "2025-06-16 08:00:00",
+    "last_login_date": "2025-06-16 12:00:00",
+    "level": 2,
+    "company": "VTI"
+  },
+  {
+    "key": "8",
+    "name": "Trang",
+    "email": "trang.a@vti.com",
+    "department": "D2",
+    "position": "Developer",
+    "status": "Active",
+    "date_created": "2025-06-15 15:20:00",
+    "last_login_date": "2025-06-16 09:45:00",
+    "level": 2,
+    "company": "VTI"
+  },
+  {
+    "key": "9",
+    "name": "Trang",
+    "email": "trang.b@vjp.com",
+    "department": "G5",
+    "position": "Developer",
+    "status": "Active",
+    "date_created": "2025-06-15 15:20:00",
+    "last_login_date": "2025-06-16 09:45:00",
+    "level": 1,
+    "company": "VJP"
+  },
+  {
+    "key": "10",
+    "name": "Trang",
+    "email": "trang.c@vap.com",
+    "department": "Sales",
+    "position": "Sales Manager",
+    "status": "Active",
+    "date_created": "2025-06-15 15:20:00",
+    "last_login_date": "2025-06-16 09:45:00",
+    "level": 3,
+    "company": "VAP"
+  }
+]

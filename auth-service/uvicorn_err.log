@@ -1,0 +1,7 @@
+INFO:     Will watch for changes in these directories: ['C:\\Users\\quan2\\Downloads\\chatbot\\Chatbot\\auth-service']
+INFO:     Uvicorn running on http://0.0.0.0:8093 (Press CTRL+C to quit)
+INFO:     Started reloader process [1700] using WatchFiles
+DEBUG:passlib.registry:registered 'bcrypt' handler: <class 'passlib.handlers.bcrypt.bcrypt'>
+INFO:     Started server process [23648]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
