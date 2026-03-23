@@ -153,3 +153,11 @@ export const updateLastBotMessage = (conversationId, content, sources = null) =>
   if (sources) body.sources = sources;
   return axios.patch(`${baseUrl}/messages/${conversationId}/last-bot`, body);
 };
+
+// Submit thumbs-up or thumbs-down feedback for a bot message
+export const submitFeedback = (messageId, userId, feedback) =>
+  axios.post(`${baseUrl}/messages/${messageId}/feedback`, { user_id: userId || null, feedback });
+
+// Get feedback stats for multiple messages
+export const getBatchFeedback = (messageIds, userId = null) =>
+  axios.post(`${baseUrl}/messages/feedback/batch`, { message_ids: messageIds, user_id: userId || null });

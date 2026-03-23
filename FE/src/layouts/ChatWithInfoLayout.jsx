@@ -17,6 +17,7 @@ const ChatWithInfoLayout = ({
   onModeChange = () => {},
   guestLimitReached = false,
   isGuest = false,
+  userId = null,
 }) => {
   return (
     <div
@@ -49,6 +50,7 @@ const ChatWithInfoLayout = ({
           onModeChange={onModeChange}
           guestLimitReached={guestLimitReached}
           isGuest={isGuest}
+          userId={userId}
         />
       </div>
       <InformationPanel

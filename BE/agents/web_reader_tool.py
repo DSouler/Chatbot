@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 # JS-heavy sites that require Playwright
 JS_SITES = [
     "op.gg", "lolchess.gg", "tftactics.gg", "metasrc.com",
-    "mobalytics.gg", "tactics.tools", "liquidlegends.net"
+    "mobalytics.gg", "tactics.tools", "liquidlegends.net",
+    "tftacademy.com",
 ]
 
 # Context hints cho các site mà tier labels không có trong text
@@ -20,6 +21,10 @@ SITE_CONTEXT_HINTS = {
         "Các đội hình được sắp xếp theo thứ tự: OP Tier (đầu tiên, Top 4 rate >70%, Avg. place <3.5), "
         "S Tier (tiếp theo, Top 4 rate 65-70%), A Tier (Top 4 rate 55-65%), B/C Tier (thấp hơn). "
         "Hãy xác định tier dựa trên Top 4 rate và Avg. place.]\n\n"
+    ),
+    "tftacademy.com": (
+        "[GHI CHÚ: Trang tftacademy.com dùng SvelteKit (JS-rendered). "
+        "Dữ liệu tier list được phân loại theo tier: S+, S, A, B, C bởi chuyên gia.]\n\n"
     ),
 }
 

@@ -46,6 +46,11 @@ from db.db_utils import (
     get_usage_stats,
     init_messages_images_column,
     update_last_bot_message,
+    init_message_feedback_table,
+    upsert_message_feedback,
+    get_feedback_stats,
+    get_batch_feedback_stats,
+    get_message_with_context,
 )
 
 from metadata_extractor.engine import MetaDataFilterEngine
@@ -56,9 +61,17 @@ from agents.opgg_scraper import scrape_opgg_meta
 from agents.comp_evaluator import (
     is_comp_eval_request,
     extract_champions_from_text,
+    extract_champions_from_image,
     build_known_champions,
     find_similar_comps,
     format_eval_context,
+)
+from agents.tft_meta_crawler import (
+    is_tft_meta_request,
+    detect_content_type,
+    crawl_tft_meta,
+    format_meta_context,
+    get_cache as get_meta_cache,
 )
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -114,6 +127,7 @@ web_reader_tool = WebReaderTool(max_length=getattr(config, "WEB_READER_MAX_LENGT
 try:
     init_token_usage_table()
     init_messages_images_column()
+    init_message_feedback_table()
 except Exception:
     pass  # Non-critical: table may already exist or DB may be unavailable
 
@@ -236,13 +250,48 @@ async def _generate_stream(request: QuestionRequest):
                 known_champs = build_known_champions(meta_comps)
                 user_champions = extract_champions_from_text(original_question, known_champs)
 
-                if not user_champions:
+                vision_data = {}
+
+                # Vision fallback: nếu không tìm thấy tướng trong text nhưng có ảnh
+                if not user_champions and request.images:
                     yield "data: " + json.dumps({
                         "type": "info",
-                        "message": "⚠️ Không nhận ra tên tướng nào trong câu hỏi. Hãy liệt kê tên tướng cụ thể (ví dụ: Thresh, Braum, Kalista, ...)."
+                        "message": "Đang nhận diện tướng từ ảnh chụp màn hình..."
                     }) + "\n\n"
-                    yield "data: " + json.dumps({"type": "done"}) + "\n\n"
-                    return
+
+                    vision_data = await asyncio.to_thread(
+                        extract_champions_from_image,
+                        llm_client, llm_settings.model,
+                        request.images, known_champs
+                    )
+                    user_champions = vision_data.get("champions", [])
+
+                if not user_champions:
+                    if request.images:
+                        # Không nhận diện được tướng cụ thể → LLM phân tích ảnh trực tiếp
+                        yield "data: " + json.dumps({
+                            "type": "info",
+                            "message": "Đang phân tích ảnh trực tiếp..."
+                        }) + "\n\n"
+
+                        messages[0] = {"role": "system", "content": config.COMP_EVAL_IMAGE_ONLY_PROMPT}
+                        messages.append({"role": "user", "content": user_content})
+
+                        async for chunk in simple_pipeline.stream_completion(
+                            model_name=llm_settings.model,
+                            llm_client=llm_client,
+                            messages=messages
+                        ):
+                            yield "data: " + json.dumps(chunk) + "\n\n"
+                        yield "data: " + json.dumps({"type": "done"}) + "\n\n"
+                        return
+                    else:
+                        yield "data: " + json.dumps({
+                            "type": "token",
+                            "content": "⚠️ Không nhận ra tên tướng nào. Hãy **gõ tên tướng cụ thể** hoặc **gửi kèm ảnh chụp toàn màn hình**.\n\nVí dụ: `đánh giá đội hình: Thresh, Braum, Kalista, Annie, Sett, Azir, Ryze, Nidalee, Diana`"
+                        }) + "\n\n"
+                        yield "data: " + json.dumps({"type": "done"}) + "\n\n"
+                        return
 
                 yield "data: " + json.dumps({
                     "type": "info",
@@ -252,7 +301,27 @@ async def _generate_stream(request: QuestionRequest):
                 similar = find_similar_comps(user_champions, meta_comps, top_k=3)
                 eval_context = format_eval_context(user_champions, similar)
 
-                eval_prompt = config.COMP_EVAL_PROMPT.format(eval_context=eval_context)
+                # Thêm thông tin trang bị từ vision vào context
+                if vision_data.get("items_observed"):
+                    items_lines = ["\n=== TRANG BỊ HIỆN TẠI (từ ảnh chụp) ==="]
+                    for champ, items in vision_data["items_observed"].items():
+                        if items:
+                            items_lines.append(f"  {champ}: {', '.join(items)}")
+                    eval_context += "\n".join(items_lines)
+
+                if vision_data.get("board_level"):
+                    eval_context += f"\nLevel hiện tại: {vision_data['board_level']}"
+                if vision_data.get("gold"):
+                    eval_context += f"\nVàng hiện tại: {vision_data['gold']}"
+                if vision_data.get("stage"):
+                    eval_context += f"\nGiai đoạn: {vision_data['stage']}"
+
+                # Dùng prompt phù hợp
+                if request.images:
+                    eval_prompt = config.COMP_EVAL_WITH_IMAGE_PROMPT.format(eval_context=eval_context)
+                else:
+                    eval_prompt = config.COMP_EVAL_PROMPT.format(eval_context=eval_context)
+
                 messages[0] = {"role": "system", "content": eval_prompt}
                 messages.append({"role": "user", "content": user_content})
 
@@ -270,6 +339,80 @@ async def _generate_stream(request: QuestionRequest):
                 yield "data: " + json.dumps({
                     "type": "info",
                     "message": f"⚠️ Không thể đánh giá đội hình: {e}. Tiếp tục với mode thường..."
+                }) + "\n\n"
+
+        # =========================
+        # TFT META — crawl live từ tftacademy + op.gg
+        # =========================
+        if is_tft_meta_request(original_question) and not request.images:
+            yield "data: " + json.dumps({"type": "status", "message": "Đang crawl dữ liệu meta TFT..."}) + "\n\n"
+
+            try:
+                content_type = detect_content_type(original_question)
+                tftacademy_result, opgg_result = await crawl_tft_meta(content_type)
+
+                tftacademy_data = tftacademy_result.get("data", []) if tftacademy_result.get("success") else []
+                opgg_data = opgg_result.get("data", []) if opgg_result.get("success") else []
+
+                # Info messages about crawl results
+                info_parts = []
+                if tftacademy_data:
+                    cached_tag = " (cached)" if tftacademy_result.get("from_cache") else ""
+                    info_parts.append(f"tftacademy.com: {len(tftacademy_data)} entries{cached_tag}")
+                elif tftacademy_result.get("error"):
+                    info_parts.append(f"tftacademy.com: ⚠️ {tftacademy_result['error']}")
+                if opgg_data:
+                    cached_tag = " (cached)" if opgg_result.get("from_cache") else ""
+                    info_parts.append(f"op.gg: {len(opgg_data)} entries{cached_tag}")
+                elif opgg_result.get("error") and opgg_result["error"] != "N/A for this content type":
+                    info_parts.append(f"op.gg: ⚠️ {opgg_result['error']}")
+
+                if info_parts:
+                    yield "data: " + json.dumps({"type": "info", "message": "📊 " + " | ".join(info_parts)}) + "\n\n"
+
+                meta_context = format_meta_context(content_type, tftacademy_data, opgg_data, original_question)
+
+                if meta_context:
+                    lang = reasoning_settings.language if reasoning_settings else "Vietnamese"
+                    meta_sys_prompt = config.TFT_META_SYS_PROMPT.replace("{lang}", lang)
+                    meta_qa_prompt = config.TFT_META_QA_PROMPT.format(
+                        meta_context=meta_context,
+                        query=original_question
+                    )
+
+                    messages[0] = {"role": "system", "content": meta_sys_prompt}
+                    messages.append({"role": "user", "content": meta_qa_prompt})
+
+                    # Sources
+                    sources = []
+                    if tftacademy_data:
+                        from agents.tft_meta_crawler import TFTACADEMY_URLS
+                        sources.append({"title": "TFT Academy", "url": TFTACADEMY_URLS.get(content_type, "")})
+                    if opgg_data:
+                        sources.append({"title": "OP.GG TFT", "url": "https://op.gg/tft/meta-trends/comps"})
+                    if sources:
+                        yield "data: " + json.dumps({"type": "sources", "data": sources}) + "\n\n"
+
+                    async for chunk in simple_pipeline.stream_completion(
+                        model_name=llm_settings.model,
+                        llm_client=llm_client,
+                        messages=messages
+                    ):
+                        yield "data: " + json.dumps(chunk) + "\n\n"
+
+                    yield "data: " + json.dumps({"type": "done"}) + "\n\n"
+                    return
+                else:
+                    yield "data: " + json.dumps({
+                        "type": "info",
+                        "message": "⚠️ Không crawl được dữ liệu meta. Chuyển sang RAG..."
+                    }) + "\n\n"
+
+            except Exception as e:
+                logger.error(f"TFT Meta crawl error: {e}")
+                yield "data: " + json.dumps({
+                    "type": "info",
+                    "message": f"⚠️ Lỗi crawl meta: {e}. Chuyển sang mode thường..."
                 }) + "\n\n"
 
         # =========================
@@ -678,6 +821,10 @@ async def chat_message(request: QuestionRequest):
                 "assistant"
             )
 
+            # Auto-cache successful RAG answers to Qdrant for cross-user knowledge sharing
+            if request.mode == "RAG" and len(bot_answer.strip()) > 200:
+                _auto_cache_to_qdrant(request.question, bot_answer)
+
         if usage_data and conversation_id:
             model_name = getattr(getattr(getattr(request, "reasoning_settings", None), "llm", None), "model", config.DEFAULT_MODEL_NAME)
             try:
@@ -1021,6 +1168,151 @@ async def get_saved_images():
     return {"names": names}
 
 
+def _feedback_qdrant_id(message_id: int) -> str:
+    """Generate a deterministic UUID for a feedback-boosted Qdrant point."""
+    import hashlib
+    return str(uuid.UUID(hashlib.md5(f"feedback_{message_id}".encode()).hexdigest()))
+
+
+def _auto_cache_qdrant_id(question: str) -> str:
+    """Generate a deterministic UUID based on the question text (deduplication)."""
+    import hashlib
+    normalized = question.strip().lower()
+    return str(uuid.UUID(hashlib.md5(f"auto_cache_{normalized}".encode()).hexdigest()))
+
+
+def _auto_cache_to_qdrant(question: str, answer: str):
+    """Auto-cache a successful RAG Q&A pair to Qdrant for cross-user knowledge sharing.
+    Runs in a background thread to avoid blocking the response."""
+    import concurrent.futures as _cf
+    import threading
+
+    def _do_cache():
+        try:
+            q_text = question.strip()
+            a_text = answer.strip()
+            if not q_text or not a_text:
+                return
+
+            doc_text = f"Câu hỏi: {q_text}\n\nCâu trả lời: {a_text}"
+            qdrant_id = _auto_cache_qdrant_id(q_text)
+
+            openai_embeddings = OpenAIEmbeddings(
+                openai_api_key=config.LLM_API_KEY,
+                model="text-embedding-ada-002"
+            )
+            vec = openai_embeddings.embed_query(q_text)
+            _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
+
+            from qdrant_client.models import PointStruct
+            vectordb_engine.qdrant_client.upsert(
+                collection_name=config.QDRANT_COLLECTION_NAME,
+                points=[PointStruct(
+                    id=qdrant_id,
+                    vector={"dense": vec},
+                    payload={
+                        "page_content": doc_text,
+                        "metadata": {
+                            "source": "auto_cached_answer",
+                            "file_name": "Câu trả lời đã được xác nhận",
+                            "is_auto_cached": True,
+                        }
+                    }
+                )]
+            )
+            logger.info(f"Auto-cached Q&A to Qdrant: '{q_text[:80]}...'")
+        except Exception as e:
+            logger.warning(f"Auto-cache to Qdrant failed: {e}")
+
+    threading.Thread(target=_do_cache, daemon=True).start()
+
+
+@app.post("/messages/{message_id}/feedback")
+def api_submit_feedback(message_id: int, body: dict = Body(...)):
+    """Submit thumbs-up or thumbs-down for a bot message."""
+    user_id = body.get("user_id")
+    feedback = body.get("feedback")
+    if feedback not in ("up", "down"):
+        raise HTTPException(status_code=400, detail="feedback must be 'up' or 'down'")
+    upsert_message_feedback(message_id, user_id, feedback)
+    stats = get_feedback_stats(message_id, user_id)
+    net_score = stats['up'] - stats['down']
+
+    # Sync to Qdrant: upsert if net positive, delete if not
+    try:
+        msg, question = get_message_with_context(message_id)
+        if msg and msg.get('role') == 'assistant' and question:
+            qdrant_id = _feedback_qdrant_id(message_id)
+            if net_score > 0:
+                q_text = question.get('content', '').strip()
+                a_text = msg.get('content', '').strip()
+                doc_text = f"Câu hỏi: {q_text}\n\nCâu trả lời: {a_text}"
+                openai_embeddings = OpenAIEmbeddings(
+                    openai_api_key=config.LLM_API_KEY,
+                    model="text-embedding-ada-002"
+                )
+                import concurrent.futures as _cf
+                with _cf.ThreadPoolExecutor() as _pool:
+                    vec = _pool.submit(openai_embeddings.embed_query, q_text).result()
+                _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
+                from qdrant_client.models import PointStruct
+                vectordb_engine.qdrant_client.upsert(
+                    collection_name=config.QDRANT_COLLECTION_NAME,
+                    points=[PointStruct(
+                        id=qdrant_id,
+                        vector={"dense": vec},
+                        payload={
+                            "page_content": doc_text,
+                            "metadata": {
+                                "source": "feedback_community",
+                                "file_name": "⭐ Câu trả lời được cộng đồng đánh giá tốt",
+                                "is_feedback_boosted": True,
+                                "feedback_score": net_score,
+                                "feedback_message_id": message_id,
+                            }
+                        }
+                    )]
+                )
+                logger.info(f"Upserted feedback-boosted doc for message {message_id} (net={net_score})")
+            else:
+                # Remove from Qdrant if score drops to 0 or below
+                try:
+                    vectordb_engine.qdrant_client.delete(
+                        collection_name=config.QDRANT_COLLECTION_NAME,
+                        points_selector=qdrant_models.FilterSelector(
+                            filter=qdrant_models.Filter(
+                                must=[qdrant_models.FieldCondition(
+                                    key="metadata.feedback_message_id",
+                                    match=qdrant_models.MatchValue(value=message_id)
+                                )]
+                            )
+                        )
+                    )
+                    logger.info(f"Removed feedback-boosted doc for message {message_id} (net={net_score})")
+                except Exception:
+                    pass
+    except Exception as e:
+        logger.warning(f"Qdrant feedback sync error: {e}")
+
+    return stats
+
+
+@app.get("/messages/{message_id}/feedback")
+def api_get_feedback(message_id: int, user_id: int = None):
+    """Get thumbs-up/down counts and user's own vote for a message."""
+    return get_feedback_stats(message_id, user_id)
+
+
+@app.post("/messages/feedback/batch")
+def api_batch_feedback(body: dict = Body(...)):
+    """Get feedback stats for multiple messages at once."""
+    message_ids = body.get("message_ids", [])
+    user_id = body.get("user_id")
+    if not message_ids:
+        return {}
+    return get_batch_feedback_stats(message_ids, user_id)
+
+
 @app.get("/report/usage")
 def api_usage_stats(user_id: int = None, days: int = 30):
     try:
@@ -1028,6 +1320,74 @@ def api_usage_stats(user_id: int = None, days: int = 30):
         return stats
     except Exception as e:
         return {"summary": {}, "daily": [], "error": str(e)}
+
+
+# =========================
+# META CACHE MANAGEMENT
+# =========================
+
+@app.get("/meta-cache/stats")
+def meta_cache_stats():
+    """Return TFT meta cache statistics."""
+    return get_meta_cache().stats()
+
+
+@app.post("/meta-cache/clear")
+def meta_cache_clear():
+    """Clear all TFT meta cache entries."""
+    get_meta_cache().clear()
+    return {"success": True, "message": "Meta cache cleared"}
+
+
+# =========================
+# QDRANT DATA CLEANUP
+# =========================
+
+QDRANT_ITEM_REPLACEMENTS = [
+    ("Dao Statikk Huyền Thoại", "Thú Tượng Thạch Giáp"),
+    ("Artifact Statikk Shiv", "Gargoyle Stoneplate"),
+    ("Dao Statikk", "Thú Tượng Thạch Giáp"),
+    ("Statikk Shiv", "Thú Tượng Thạch Giáp"),
+]
+
+
+@app.post("/qdrant/cleanup-removed-items")
+def cleanup_removed_items():
+    """Find and replace removed items (e.g. Statikk Shiv) in Qdrant entries."""
+    try:
+        updated = []
+        offset = None
+        while True:
+            results = vectordb_engine.qdrant_client.scroll(
+                collection_name=config.QDRANT_COLLECTION_NAME,
+                limit=100,
+                with_payload=True,
+                with_vectors=False,
+                offset=offset,
+            )
+            points, next_offset = results
+            for p in points:
+                content = p.payload.get("page_content", "") or ""
+                if "statikk" not in content.lower():
+                    continue
+                original = content
+                for old, new in QDRANT_ITEM_REPLACEMENTS:
+                    content = re.sub(re.escape(old), new, content, flags=re.IGNORECASE)
+                if content != original:
+                    vectordb_engine.qdrant_client.set_payload(
+                        collection_name=config.QDRANT_COLLECTION_NAME,
+                        payload={"page_content": content},
+                        points=[p.id],
+                    )
+                    src = p.payload.get("metadata", {}).get("source", "?")
+                    updated.append({"id": str(p.id), "source": src})
+            if next_offset is None:
+                break
+            offset = next_offset
+        return {"success": True, "updated_count": len(updated), "updated": updated}
+    except Exception as e:
+        logger.error(f"Qdrant cleanup error: {e}")
+        return JSONResponse({"success": False, "error": str(e)}, status_code=500)
 
 
 # =========================

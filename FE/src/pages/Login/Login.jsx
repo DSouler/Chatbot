@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Typography, Card, Row, Col, message } from 'antd';
+import { Form, Input, Button, Typography, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useUser } from '../../hooks/useUser';
 import { useNavigate, Link } from 'react-router-dom';
+import logoUrl from '../../assets/logo.svg';
 
 const TFTLogo = ({ size = 48 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width={size} height={size}>
-    <polygon points="60,4 110,32 110,88 60,116 10,88 10,32" fill="#5B4FCF"/>
-    <polygon points="60,10 104,35 104,85 60,110 16,85 16,35" fill="none" stroke="white" strokeWidth="5"/>
-    <path d="M30,44 L38,60 L48,50 L55,36 L60,30 L65,36 L72,50 L82,60 L90,44 L90,76 L30,76 Z" fill="white"/>
-    <rect x="36" y="60" width="48" height="16" rx="4" fill="#5B4FCF"/>
-    <rect x="39" y="63" width="18" height="9" rx="2" fill="white"/>
-    <rect x="63" y="63" width="18" height="9" rx="2" fill="white"/>
-    <polygon points="60,75 55,81 60,84 65,81" fill="white"/>
-  </svg>
+  <img src={logoUrl} alt="TFT Logo" width={size} height={size} style={{ objectFit: 'contain', display: 'block' }} />
 );
 
 const { Title, Text } = Typography;
@@ -60,83 +53,59 @@ const Login = () => {
   };
 
   return (
-    <Row>
-      {/* Left side - TFT Cover */}
-      <Col 
-        lg={12}
-        xs={0}
-        style={{
-          flex: 1,
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #1a0533 0%, #2d1b69 30%, #c4506a 65%, #e8a87c 100%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Decorative orbs */}
-        <div style={{ position: 'absolute', top: '15%', left: '10%', width: 180, height: 180, borderRadius: '50%', background: 'radial-gradient(circle, rgba(180,100,220,0.45) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,160,255,0.35) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', top: '40%', right: '25%', width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,180,100,0.3) 0%, transparent 70%)' }} />
-        {/* TFT Logo + Title */}
-        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '0 40px' }}>
-          <div style={{ marginBottom: 24 }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width={90} height={90}>
-              <polygon points="60,4 110,32 110,88 60,116 10,88 10,32" fill="rgba(255,255,255,0.15)"/>
-              <polygon points="60,10 104,35 104,85 60,110 16,85 16,35" fill="none" stroke="white" strokeWidth="4"/>
-              <path d="M30,44 L38,60 L48,50 L55,36 L60,30 L65,36 L72,50 L82,60 L90,44 L90,76 L30,76 Z" fill="white"/>
-              <rect x="36" y="60" width="48" height="16" rx="4" fill="rgba(255,255,255,0.15)"/>
-              <rect x="39" y="63" width="18" height="9" rx="2" fill="white"/>
-              <rect x="63" y="63" width="18" height="9" rx="2" fill="white"/>
-              <polygon points="60,75 55,81 60,84 65,81" fill="white"/>
-            </svg>
-          </div>
-          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.5)', marginBottom: 8 }}>
-            TEAMFIGHT
-          </div>
-          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.5)', marginBottom: 24 }}>
-            TACTICS
-          </div>
-          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15, letterSpacing: 1 }}>
-            Trợ lý AI chuyên biệt cho game TFT
-          </div>
-        </div>
-      </Col>
+    <div
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        background: 'linear-gradient(135deg, #0B2A4A 0%, #1B4B6E 30%, #5BA8D4 65%, #B8E0F5 100%)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+        padding: '40px 16px',
+      }}
+    >
+      {/* Decorative orbs */}
+      <div style={{ position: 'absolute', top: '8%', left: '5%', width: 260, height: 260, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,180,230,0.45) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', bottom: '10%', right: '6%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,160,255,0.35) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: '45%', right: '18%', width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(180,220,255,0.3) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: '20%', left: '30%', width: 130, height: 130, borderRadius: '50%', background: 'radial-gradient(circle, rgba(120,200,240,0.2) 0%, transparent 70%)' }} />
 
-      {/* Right side - Login Form */}
-      <Col 
-        lg={12}
-        xs={24}
+      {/* TFT Branding */}
+      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginBottom: 32 }}>
+        <div style={{ marginBottom: 16 }}>
+          <img src={logoUrl} alt="TFT Logo" width={140} height={140} style={{ objectFit: 'contain', display: 'block', margin: '0 auto' }} />
+        </div>
+        <div style={{ fontFamily: "'Georgia', serif", fontSize: 32, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.4)', marginBottom: 4 }}>
+          TEAMFIGHT TACTICS
+        </div>
+        <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, letterSpacing: 1 }}>
+          Trợ lý AI chuyên biệt cho game TFT
+        </div>
+      </div>
+
+      <Card
         style={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
-          padding: '40px',
-          minHeight: '100vh'
+          position: 'relative',
+          zIndex: 1,
+          width: '100%',
+          maxWidth: '420px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
+          borderRadius: '16px',
+          border: 'none',
+          background: 'rgba(255,255,255,0.97)',
         }}
+        bodyStyle={{ padding: '40px' }}
       >
-        <Card
-          style={{
-            width: '100%',
-            maxWidth: '400px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-            borderRadius: '12px',
-            border: 'none'
-          }}
-          bodyStyle={{ padding: '40px' }}
-        >
           <div style={{ 
             display: 'flex', 
             flexDirection: 'column', 
             alignItems: 'center', 
             marginBottom: '32px' 
             }}>
-            <TFTLogo size={52} />
+            <TFTLogo size={80} />
             
             <Text 
               type="secondary" 
@@ -257,13 +226,12 @@ const Login = () => {
           {/* Register link */}
           <div style={{ marginTop: 24, textAlign: 'center', borderTop: '1px solid #f0f0f0', paddingTop: 20 }}>
             <Text type="secondary" style={{ fontSize: 14 }}>Chưa có tài khoản? </Text>
-            <Link to="/register" style={{ fontSize: 14, color: '#5B4FCF', fontWeight: 600 }}>
+            <Link to="/register" style={{ fontSize: 14, color: '#3B82C4', fontWeight: 600 }}>
               Đăng ký ngay
             </Link>
           </div>
         </Card>
-      </Col>
-    </Row>
+    </div>
   );
 };
 

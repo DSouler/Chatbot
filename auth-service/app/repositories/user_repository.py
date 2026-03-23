@@ -44,6 +44,29 @@ class UserRepository:
         self.db.commit()
         self.db.refresh(user)
         return user
+
+    def update_profile(self, user_id: int, first_name: str, last_name: str) -> Optional[User]:
+        """Update user display name"""
+        user = self.get_user_by_id(user_id)
+        if not user:
+            return None
+        user.first_name = first_name
+        user.last_name = last_name
+        user.updated_at = datetime.utcnow()
+        self.db.commit()
+        self.db.refresh(user)
+        return user
+
+    def update_password(self, user_id: int, new_password_hash: str) -> Optional[User]:
+        """Update user password hash"""
+        user = self.get_user_by_id(user_id)
+        if not user:
+            return None
+        user.password_hash = new_password_hash
+        user.updated_at = datetime.utcnow()
+        self.db.commit()
+        self.db.refresh(user)
+        return user
     
     def update_last_login(self, user_id: int) -> None:
         """Update user's last login timestamp"""

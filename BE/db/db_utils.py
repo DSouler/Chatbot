@@ -349,6 +349,107 @@ def record_token_usage(user_id, conversation_id, model, prompt_tokens, completio
     conn.commit(); cur.close(); conn.close()
 
 
+def get_message_with_context(message_id: int):
+    """Get an assistant message and the preceding user question in the same conversation."""
+    conn = get_connection(); cur = conn.cursor()
+    cur.execute("SELECT * FROM messages WHERE id = %s", (message_id,))
+    msg = cur.fetchone()
+    if not msg:
+        cur.close(); conn.close()
+        return None, None
+    msg = dict(msg)
+    cur.execute("""
+        SELECT * FROM messages
+        WHERE conversation_id = %s AND role = 'user' AND created_at < %s
+        ORDER BY created_at DESC LIMIT 1
+    """, (msg['conversation_id'], msg['created_at']))
+    question_row = cur.fetchone()
+    cur.close(); conn.close()
+    return msg, dict(question_row) if question_row else None
+
+
+# --- message_feedback table ---
+
+def init_message_feedback_table():
+    """Create message_feedback table if not exists."""
+    conn = get_connection(); cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS message_feedback (
+            id SERIAL PRIMARY KEY,
+            message_id BIGINT NOT NULL,
+            user_id BIGINT,
+            feedback VARCHAR(4) NOT NULL CHECK (feedback IN ('up', 'down')),
+            created_at TIMESTAMP DEFAULT NOW(),
+            UNIQUE (message_id, user_id)
+        )
+    """)
+    conn.commit(); cur.close(); conn.close()
+
+
+def upsert_message_feedback(message_id: int, user_id, feedback: str):
+    """Insert or update a user's feedback on a message."""
+    conn = get_connection(); cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO message_feedback (message_id, user_id, feedback)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (message_id, user_id) DO UPDATE SET feedback = EXCLUDED.feedback
+    """, (message_id, user_id, feedback))
+    conn.commit(); cur.close(); conn.close()
+
+
+def get_feedback_stats(message_id: int, user_id=None):
+    """Get up/down counts and optional user vote for a single message."""
+    conn = get_connection(); cur = conn.cursor()
+    cur.execute("""
+        SELECT
+            COUNT(*) FILTER (WHERE feedback = 'up')   AS up_count,
+            COUNT(*) FILTER (WHERE feedback = 'down') AS down_count
+        FROM message_feedback WHERE message_id = %s
+    """, (message_id,))
+    row = cur.fetchone()
+    up = int(row['up_count']) if row else 0
+    down = int(row['down_count']) if row else 0
+    user_vote = None
+    if user_id is not None:
+        cur.execute(
+            "SELECT feedback FROM message_feedback WHERE message_id = %s AND user_id = %s",
+            (message_id, user_id)
+        )
+        vrow = cur.fetchone()
+        if vrow:
+            user_vote = vrow['feedback']
+    cur.close(); conn.close()
+    return {'up': up, 'down': down, 'user_vote': user_vote}
+
+
+def get_batch_feedback_stats(message_ids: list, user_id=None):
+    """Get feedback stats for multiple messages in one query."""
+    if not message_ids:
+        return {}
+    conn = get_connection(); cur = conn.cursor()
+    cur.execute("""
+        SELECT message_id,
+               COUNT(*) FILTER (WHERE feedback = 'up')   AS up_count,
+               COUNT(*) FILTER (WHERE feedback = 'down') AS down_count
+        FROM message_feedback
+        WHERE message_id = ANY(%s)
+        GROUP BY message_id
+    """, (message_ids,))
+    result = {mid: {'up': 0, 'down': 0, 'user_vote': None} for mid in message_ids}
+    for row in cur.fetchall():
+        result[row['message_id']]['up'] = int(row['up_count'])
+        result[row['message_id']]['down'] = int(row['down_count'])
+    if user_id is not None:
+        cur.execute("""
+            SELECT message_id, feedback FROM message_feedback
+            WHERE message_id = ANY(%s) AND user_id = %s
+        """, (message_ids, user_id))
+        for vrow in cur.fetchall():
+            result[vrow['message_id']]['user_vote'] = vrow['feedback']
+    cur.close(); conn.close()
+    return result
+
+
 def get_usage_stats(user_id=None, days=30):
     conn = get_connection(); cur = conn.cursor()
     where = "WHERE created_at >= NOW() - INTERVAL '%s days'" % int(days)

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.services.auth_service import AuthService
-from app.schemas.auth import LoginRequest, LoginResponse, TokenData, RegisterRequest, RegisterResponse
+from app.schemas.auth import LoginRequest, LoginResponse, TokenData, RegisterRequest, RegisterResponse, UpdateProfileRequest, UpdatePasswordRequest
 from app.dependencies import get_current_user, get_auth_service
 
 router = APIRouter(tags=["authentication"])
@@ -82,4 +82,36 @@ def verify_token(current_user: TokenData = Depends(get_current_user)):
         "user_id": current_user.user_id,
         "username": current_user.username,
         "message": "Token is valid"
-    } 
+    }
+
+@router.put("/me/profile")
+def update_profile(
+    request: UpdateProfileRequest,
+    current_user: TokenData = Depends(get_current_user),
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """Update display name (first_name, last_name). Username is not changeable."""
+    user = auth_service.update_profile(
+        current_user.user_id,
+        first_name=request.first_name or "",
+        last_name=request.last_name or ""
+    )
+    return {
+        "message": "Cập nhật tên hiển thị thành công",
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+    }
+
+@router.put("/me/password")
+def update_password(
+    request: UpdatePasswordRequest,
+    current_user: TokenData = Depends(get_current_user),
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """Change current user's password."""
+    auth_service.update_password(
+        current_user.user_id,
+        current_password=request.current_password,
+        new_password=request.new_password
+    )
+    return {"message": "Đổi mật khẩu thành công"}

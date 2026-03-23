@@ -111,22 +111,27 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
         }}
       />
       {!collapsed && (
-        <div style={{ flex: 1, height: '90vh', overflowY: 'auto' }}>
-          <h3 style={{ fontWeight: 600, marginBottom: 8 }}>Information Panel</h3>
-          <Divider style={{ margin: '8px 0' }} />
-          <Table
-            columns={columns}
-            dataSource={info}
-            rowKey={record => record.name + (record.id || '')}
-            size="small"
-            pagination={false}
-            style={{
-              background: 'transparent',
-              borderRadius: 8,
-            }}
-            bordered={false}
-            scroll={{ x: 500 }}
-          />
+        <div style={{ flex: 1, height: '90vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <div style={{ padding: '0 12px', flexShrink: 0 }}>
+            <h3 style={{ fontWeight: 600, marginBottom: 8 }}>Information Panel</h3>
+            <Divider style={{ margin: '8px 0' }} />
+          </div>
+          <div style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
+            <Table
+              columns={columns}
+              dataSource={info}
+              rowKey={record => record.name + (record.id || '')}
+              size="small"
+              pagination={false}
+              style={{
+                background: 'transparent',
+                borderRadius: 8,
+              }}
+              bordered={false}
+              scroll={{ x: 500 }}
+              sticky
+            />
+          </div>
         </div>
       )}
     </Sider>

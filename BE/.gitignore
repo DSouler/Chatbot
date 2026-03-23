@@ -34,4 +34,4 @@ myenv
 *~
 .*.sw?
 .cache
-docker-compose-ai.yml
+docker-compose.yml

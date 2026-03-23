@@ -1,0 +1,103 @@
+INFO:     Will watch for changes in these directories: ['C:\\Users\\quan2\\Downloads\\chatbot\\Chatbot\\BE']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [21852] using WatchFiles
+INFO:vectordb.engine:Creating new VectorDBEngine instance
+2026-03-20 13:25:21.738 | WARNING  | fastembed.common.model_management:download_files_from_huggingface:225 - Local file sizes do not match the metadata.
+INFO:httpx:HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+INFO:vectordb.engine:VectorDBEngine initialized
+INFO:metadata_extractor.engine:Creating new MetaDataFilterEngine instance
+INFO:metadata_extractor.engine:MetaDataFilterEngine initialized
+INFO:hyde.engine:Creating new HyDEEngine instance
+INFO:hyde.engine:Initialized Reflection Engine
+INFO:reflection.engine:Creating new ReflectionEngine instance
+INFO:reflection.engine:Initialized Reflection Engine
+INFO:llm_chatbot.simple:Creating new RAGChatbot instance
+INFO:llm_chatbot.simple:Initialized RAG Chatbot
+INFO:     Started server process [15856]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'config.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [15856]
+WARNING:  WatchFiles detected changes in 'config.py'. Reloading...
+INFO:vectordb.engine:Creating new VectorDBEngine instance
+2026-03-20 13:28:03.744 | WARNING  | fastembed.common.model_management:download_files_from_huggingface:225 - Local file sizes do not match the metadata.
+INFO:httpx:HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+INFO:vectordb.engine:VectorDBEngine initialized
+INFO:metadata_extractor.engine:Creating new MetaDataFilterEngine instance
+INFO:metadata_extractor.engine:MetaDataFilterEngine initialized
+INFO:hyde.engine:Creating new HyDEEngine instance
+INFO:hyde.engine:Initialized Reflection Engine
+INFO:reflection.engine:Creating new ReflectionEngine instance
+INFO:reflection.engine:Initialized Reflection Engine
+INFO:llm_chatbot.simple:Creating new RAGChatbot instance
+INFO:llm_chatbot.simple:Initialized RAG Chatbot
+INFO:     Started server process [16816]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [16816]
+INFO:vectordb.engine:Creating new VectorDBEngine instance
+2026-03-20 13:28:18.217 | WARNING  | fastembed.common.model_management:download_files_from_huggingface:225 - Local file sizes do not match the metadata.
+INFO:httpx:HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+INFO:vectordb.engine:VectorDBEngine initialized
+INFO:metadata_extractor.engine:Creating new MetaDataFilterEngine instance
+INFO:metadata_extractor.engine:MetaDataFilterEngine initialized
+INFO:hyde.engine:Creating new HyDEEngine instance
+INFO:hyde.engine:Initialized Reflection Engine
+INFO:reflection.engine:Creating new ReflectionEngine instance
+INFO:reflection.engine:Initialized Reflection Engine
+INFO:llm_chatbot.simple:Creating new RAGChatbot instance
+INFO:llm_chatbot.simple:Initialized RAG Chatbot
+INFO:     Started server process [9576]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'config.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9576]
+WARNING:  WatchFiles detected changes in 'config.py'. Reloading...
+INFO:vectordb.engine:Creating new VectorDBEngine instance
+2026-03-20 13:34:56.474 | WARNING  | fastembed.common.model_management:download_files_from_huggingface:225 - Local file sizes do not match the metadata.
+INFO:httpx:HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+INFO:vectordb.engine:VectorDBEngine initialized
+INFO:metadata_extractor.engine:Creating new MetaDataFilterEngine instance
+INFO:metadata_extractor.engine:MetaDataFilterEngine initialized
+INFO:hyde.engine:Creating new HyDEEngine instance
+INFO:hyde.engine:Initialized Reflection Engine
+INFO:reflection.engine:Creating new ReflectionEngine instance
+INFO:reflection.engine:Initialized Reflection Engine
+INFO:llm_chatbot.simple:Creating new RAGChatbot instance
+INFO:llm_chatbot.simple:Initialized RAG Chatbot
+INFO:     Started server process [9524]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9524]
+INFO:vectordb.engine:Creating new VectorDBEngine instance
+2026-03-20 13:35:09.112 | WARNING  | fastembed.common.model_management:download_files_from_huggingface:225 - Local file sizes do not match the metadata.
+INFO:httpx:HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+INFO:vectordb.engine:VectorDBEngine initialized
+INFO:metadata_extractor.engine:Creating new MetaDataFilterEngine instance
+INFO:metadata_extractor.engine:MetaDataFilterEngine initialized
+INFO:hyde.engine:Creating new HyDEEngine instance
+INFO:hyde.engine:Initialized Reflection Engine
+INFO:reflection.engine:Creating new ReflectionEngine instance
+INFO:reflection.engine:Initialized Reflection Engine
+INFO:llm_chatbot.simple:Creating new RAGChatbot instance
+INFO:llm_chatbot.simple:Initialized RAG Chatbot
+INFO:     Started server process [16796]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+forrtl: error (200): program aborting due to window-CLOSE event
+Image              PC                Routine            Line        Source             
+KERNELBASE.dll     00007FFFF730C24D  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFFF81FE8D7  Unknown               Unknown  Unknown
+ntdll.dll          00007FFFF9B6C53C  Unknown               Unknown  Unknown

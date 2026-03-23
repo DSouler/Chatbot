@@ -124,6 +124,27 @@ class AuthService:
         """Get user by ID"""
         return self.user_repository.get_user_by_id(user_id)
 
+    def update_profile(self, user_id: int, first_name: str, last_name: str):
+        """Update user's display name (first_name, last_name)"""
+        user = self.user_repository.update_profile(user_id, first_name, last_name)
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        return user
+
+    def update_password(self, user_id: int, current_password: str, new_password: str):
+        """Change user password after verifying current password"""
+        user = self.user_repository.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        if user.is_ldap_user:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Tài khoản LDAP không thể đổi mật khẩu tại đây")
+        if not user.password_hash or not self.verify_password(current_password, user.password_hash):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Mật khẩu hiện tại không đúng")
+        if len(new_password) < 6:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Mật khẩu mới phải có ít nhất 6 ký tự")
+        new_hash = self.get_password_hash(new_password)
+        return self.user_repository.update_password(user_id, new_hash)
+
     def register_user(self, register_request: RegisterRequest) -> User:
         """Register a new local user"""
         if self.user_repository.get_user_by_username(register_request.username):

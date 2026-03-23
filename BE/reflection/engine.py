@@ -72,11 +72,13 @@ class ReflectionEngine:
         Returns:
             Enhanced query that incorporates chat history context
         """
-        # If no chat history, return the original query
+        # If no chat history, enrich query with TFT Set 16 context
+        # to improve Qdrant retrieval for first-message users
         if not chat_history or len(chat_history) == 0:
-            logger.info("No chat history available, using original query")
+            enriched = f"TFT Set 16 Truyền Thuyết & Huyền Thoại: {query}"
+            logger.info(f"No chat history — enriched query: '{enriched}'")
             return {
-                "enhanced_query": query,
+                "enhanced_query": enriched,
             }
         
         # Limit history to most recent items

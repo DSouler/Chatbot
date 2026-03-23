@@ -1,6 +1,7 @@
 from http.client import responses
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
+import asyncio
 import logging
 import json
 from typing import List, Dict, Any, Optional, AsyncGenerator, Callable
@@ -76,15 +77,26 @@ class SimplePipeline(BasePipeline):
                 seen_contents.add(content)
                 unique_docs.append(doc)
 
+        # Ưu tiên feedback-boosted docs lên đầu
+        boosted = [d for d in unique_docs if d.get('metadata', {}).get('is_feedback_boosted')]
+        normal  = [d for d in unique_docs if not d.get('metadata', {}).get('is_feedback_boosted')]
+        unique_docs = boosted + normal
+
         formatted_docs = []
         for doc in unique_docs:
             metadata = doc.get('metadata', {})
-            file_name = metadata.get('file_name', 'Unknown file')
-            ref = metadata.get('ref', "https://vms.vti.com.vn/myvti")
-            similarity_score = f"{doc.get('embedding_score', 0.0):.2f}"
-            formatted_docs.append(
-                f"[{file_name}]({ref}) (Similarity: {similarity_score})\n{doc['content']}\n"
-            )
+            if metadata.get('is_feedback_boosted'):
+                score = metadata.get('feedback_score', 1)
+                formatted_docs.append(
+                    f"[⭐ ĐƯỢC CỘNG ĐỒNG ĐÁNH GIÁ TỐT (👍 {score} lượt) — ƯU TIÊN SỬ DỤNG NẾU PHÙ HỢP]\n{doc['content']}\n"
+                )
+            else:
+                file_name = metadata.get('file_name', 'Unknown file')
+                ref = metadata.get('ref', "https://vms.vti.com.vn/myvti")
+                similarity_score = f"{doc.get('embedding_score', 0.0):.2f}"
+                formatted_docs.append(
+                    f"[{file_name}]({ref}) (Similarity: {similarity_score})\n{doc['content']}\n"
+                )
 
         context = "\n\n".join(formatted_docs)
 
@@ -145,29 +157,33 @@ class SimplePipeline(BasePipeline):
         model_name = reasoning_settings.llm.model if reasoning_settings.llm.model else config.DEFAULT_MODEL_NAME
         lang = reasoning_settings.language
 
-        with ThreadPoolExecutor(max_workers=2) as executor:
-            future_enhanced_query = executor.submit(
+        # Run query enhancement and metadata filter in parallel (non-blocking)
+        enhanced_query_result, filter_metadata_result = await asyncio.gather(
+            asyncio.to_thread(
                 self.reflection_engine.enhance_query,
                 model_name,
                 original_question,
                 chat_history,
                 config.DEFAULT_N_LAST_INTERACTIONS,
                 config.DEFAULT_MAX_CONTENT_REWRITE_LENGTH
-            )
-            future_filter_metadata = executor.submit(
+            ),
+            asyncio.to_thread(
                 self.filter_pipeline,
                 original_question
             )
-
-            enhanced_query_result = future_enhanced_query.result()
-            filter_metadata_result = future_filter_metadata.result()
+        )
 
         logger.info("Filtered Metadata:", filter_metadata_result)
 
         # Extract the enhanced query text
         enhanced_query_text = enhanced_query_result.get("enhanced_query", original_question)
 
-        hyDE_document= self.hyde_engine._create_hyde_documents(model_name=model_name,question=enhanced_query_text)
+        # Run HyDE document creation (also in thread to avoid blocking event loop)
+        hyDE_document = await asyncio.to_thread(
+            self.hyde_engine._create_hyde_documents,
+            model_name=model_name,
+            question=enhanced_query_text
+        )
 
         hyDE_document_text = hyDE_document.get("hyDE_documents", enhanced_query_text)
 
@@ -186,6 +202,22 @@ class SimplePipeline(BasePipeline):
         except Exception as e:
             logger.warning(f"Retrieval failed (no vector store context): {e}")
             relevant_docs = []
+
+        # Fallback: nếu hyDE query không tìm được docs, thử lại với original question
+        if not relevant_docs and hyDE_document_text != original_question:
+            logger.info(f"HyDE query returned no docs, retrying with original question: {original_question}")
+            try:
+                res_retrive_fallback = await self.retrieve(
+                    embedding=self.embedding,
+                    retrieval_settings=retrieval_settings,
+                    query=original_question,
+                    top_k=config.DEFAULT_TOP_K,
+                    filter_payload=None
+                )
+                relevant_docs = res_retrive_fallback["docs"]
+            except Exception as e:
+                logger.warning(f"Fallback retrieval also failed: {e}")
+                relevant_docs = []
 
         if relevant_docs:
             # Remove duplicate documents for consistent numbering
@@ -212,14 +244,19 @@ class SimplePipeline(BasePipeline):
             async for chunk in self.stream_completion(model_name, llm_client, messages):
                 yield "data: " + json.dumps(chunk) + "\n\n"
         else:
-            # No documents found — fall back to LLM general knowledge
+            # No documents found — fall back but still try to answer
             yield "data: " + json.dumps({
                 "type": "info",
-                "message": "Không tìm thấy tài liệu liên quan. Đang trả lời từ kiến thức chung của AI..."
+                "message": "Không tìm thấy tài liệu liên quan trong database. Đang trả lời bằng kiến thức có sẵn..."
             }) + "\n\n"
 
             fallback_text = (
-                f"Hãy trả lời câu hỏi sau bằng {lang} dựa trên kiến thức của bạn:\n\n"
+                f"Hãy trả lời câu hỏi sau về TFT Set 16 bằng {lang}.\n\n"
+                f"QUY TẮC:\n"
+                f"- Câu hỏi này về TFT Set 16 - Truyền Thuyết & Huyền Thoại. Hãy TRẢ LỜI dựa trên kiến thức của bạn về TFT Set 16.\n"
+                f"- KHÔNG được từ chối trả lời. Nếu không có thông tin chính xác, hãy cung cấp thông tin chung và gợi ý người dùng hỏi cụ thể hơn.\n"
+                f"- KHÔNG sử dụng kiến thức về Set cũ (Set 14, Set 15, patch 14.x, patch 15.x)\n"
+                f"- BẮT BUỘC dùng tên trang bị tiếng Việt\n\n"
                 f"Câu hỏi: {original_question}\nTrả lời:"
             )
             messages[-1]["content"] = self._build_content_with_images(fallback_text, user_content)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { Layout, Input, Typography, Button, message, Spin } from 'antd';
 import { SendOutlined, PictureOutlined, CloseCircleFilled } from '@ant-design/icons';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { getMessages, getConversations, createConversation, sendMessageStream, g
 import { createRequestData, getCurrentChatConfig, CHAT_MODES } from '../../config/chatConfig';
 import { useUser } from '../../hooks/useUser';
 import { SiderContext } from '../../contexts/SiderContext';
+import logoUrl from '../../assets/logo.svg';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -17,14 +18,14 @@ const GuestLimitBanner = ({ navigate }) => (
   <div style={{
     width: '100%',
     maxWidth: 600,
-    background: 'linear-gradient(135deg, #f0edff 0%, #ede8ff 100%)',
+    background: 'linear-gradient(135deg, #E5F0F8 0%, #ede8ff 100%)',
     border: '1.5px solid #b9acf5',
     borderRadius: 16,
     padding: '18px 24px',
     display: 'flex',
     alignItems: 'center',
     gap: 16,
-    boxShadow: '0 4px 20px rgba(91,79,207,0.13)',
+    boxShadow: '0 4px 20px rgba(59,130,196,0.13)',
   }}>
     <span style={{ fontSize: 28 }}>🔒</span>
     <div style={{ flex: 1 }}>
@@ -41,7 +42,7 @@ const GuestLimitBanner = ({ navigate }) => (
         padding: '8px 20px',
         borderRadius: 10,
         border: 'none',
-        background: '#5B4FCF',
+        background: '#3B82C4',
         color: '#fff',
         fontWeight: 700,
         fontSize: 13,
@@ -80,6 +81,7 @@ const Chat = () => {
   const [isComposingNewMessage, setIsComposingNewMessage] = useState(false);
   const [isRestoringConversation, setIsRestoringConversation] = useState(false);
   const [chatMode, setChatMode] = useState('RAG');
+  const [welcomeInputFocused, setWelcomeInputFocused] = useState(false);
   const [serverChampions, setServerChampions] = useState([]);
 
 
@@ -101,7 +103,36 @@ const Chat = () => {
   const currentStreamRef = useRef(null);
   const pendingAbilityImageRef = useRef(null); // URL ảnh kỹ năng cần inject vào response
   const streamSourcesRef = useRef([]); // sources from current stream for DB persistence
+
+  // Throttled streaming updates — batch token renders at ~30ms intervals
+  const streamingRafRef = useRef(null);
+  const pendingStreamRef = useRef(null);
+  const pendingThinkingStreamRef = useRef(null);
+
+  const flushStreaming = useCallback(() => {
+    streamingRafRef.current = null;
+    if (pendingStreamRef.current !== null) {
+      setStreamingMessage(pendingStreamRef.current);
+      pendingStreamRef.current = null;
+    }
+    if (pendingThinkingStreamRef.current !== null) {
+      setStreamingThinking(pendingThinkingStreamRef.current);
+      pendingThinkingStreamRef.current = null;
+    }
+  }, []);
+
+  const scheduleStreamingUpdate = useCallback((content, type) => {
+    if (type === 'thinking') {
+      pendingThinkingStreamRef.current = content;
+    } else {
+      pendingStreamRef.current = content;
+    }
+    if (!streamingRafRef.current) {
+      streamingRafRef.current = requestAnimationFrame(flushStreaming);
+    }
+  }, [flushStreaming]);
   const isFetchingConversationsRef = useRef(false); // prevent duplicate fetchConversations calls
+  const fetchConvGenRef = useRef(0); // generation counter to discard stale responses
   const lastLoadedConvIdRef = useRef(null); // prevent duplicate getMessages on int→string id change
 
   const currentMessages = conversationMessages[selectedConversationId] || [];
@@ -132,9 +163,13 @@ const Chat = () => {
 
   useEffect(() => {
     if (userId && !isGuest) {
+      // Reset guard và tăng gen để hủy fetch cũ (if any) khi userId thay đổi
+      isFetchingConversationsRef.current = false;
+      fetchConvGenRef.current++;
       fetchConversations();
     } else {
-      // Clear conversation list when user logs out or in guest mode
+      // Hủy fetch đang chạy và xóa list khi logout / guest mode
+      fetchConvGenRef.current++;
       setConversationList([]);
     }
   }, [userId, urlConversationId, isGuest]);
@@ -162,8 +197,11 @@ const Chat = () => {
   const fetchConversations = async () => {
     if (isFetchingConversationsRef.current) return;
     isFetchingConversationsRef.current = true;
+    const myGen = fetchConvGenRef.current; // snapshot gen tại thời điểm bắt đầu fetch
     try {
       const res = await getConversations(userId);
+      // Bỏ qua nếu đã có fetch mới hơn được kích hoạt (userId thay đổi)
+      if (myGen !== fetchConvGenRef.current) return;
       const conversations = res.conversations || [];
       setConversationList(conversations);
 
@@ -179,10 +217,13 @@ const Chat = () => {
         setIsRestoringConversation(false);
       }
     } catch (err) {
+      if (myGen !== fetchConvGenRef.current) return;
       setConversationList([]);
       setIsRestoringConversation(false);
     } finally {
-      isFetchingConversationsRef.current = false;
+      if (myGen === fetchConvGenRef.current) {
+        isFetchingConversationsRef.current = false;
+      }
     }
   };
 
@@ -456,7 +497,7 @@ const Chat = () => {
     if (matchedChampion) {
       // Hiện portrait ở đầu response
       botMessageRef.current = `![${matchedChampion}](${getImageUrl(matchedChampion)})\n\n`;
-      setStreamingMessage(botMessageRef.current);
+      scheduleStreamingUpdate(botMessageRef.current, 'token');
 
       // Chuẩn bị inject ảnh kỹ năng sau phần trang bị
       const abilityImg = allChampionNames.find(n =>
@@ -477,11 +518,11 @@ const Chat = () => {
         if (data.type === 'thinking') {
           setStreamingType('thinking');
           thinkingRef.current += data.content;
-          setStreamingThinking(thinkingRef.current);
+          scheduleStreamingUpdate(thinkingRef.current, 'thinking');
         } else if (data.type === 'token') {
           setStreamingType('token');
           botMessageRef.current += data.content;
-          setStreamingMessage(botMessageRef.current);
+          scheduleStreamingUpdate(botMessageRef.current, 'token');
         } else if (data.type === 'status') {
           setStreamingStatus(data.message);
         } else if (data.type === 'info') {
@@ -491,7 +532,7 @@ const Chat = () => {
         } else if (data.type === 'error') {
           setStreamingError(data.message);
           botMessageRef.current = `⚠️ **Lỗi:** ${data.message}`;
-          setStreamingMessage(botMessageRef.current);
+          scheduleStreamingUpdate(botMessageRef.current, 'token');
         } else if (data.type === 'sources') {
           const mapped = (data.data || []).map((src, idx) => ({
             name: src.metadata?.file_name || `Source ${idx + 1}`,
@@ -506,6 +547,11 @@ const Chat = () => {
       },
       () => {
         if (currentStreamRef.current !== pendingUserMessage.conversationId) return;
+        // Cancel any pending RAF and flush final content
+        if (streamingRafRef.current) {
+          cancelAnimationFrame(streamingRafRef.current);
+          streamingRafRef.current = null;
+        }
         if (botMessageRef.current.trim()) {
           let finalContent = botMessageRef.current;
 
@@ -602,7 +648,35 @@ const Chat = () => {
   };
 
   return (
-    <Layout style={{ height: '100vh', background: 'linear-gradient(135deg, #b8cde6 0%, #c8b8dc 100%)' }}>
+    <Layout style={{ height: '100vh', background: 'linear-gradient(160deg, #7EB3D4 0%, #96C6E2 30%, #A8D2EA 60%, #B4DAF0 100%)', position: 'relative' }}>
+      {/* Subtle geometric background pattern */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
+        backgroundImage: `
+          radial-gradient(circle at 20% 30%, rgba(59,130,196,0.04) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(96,165,224,0.04) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 70%)`,
+        backgroundSize: '100% 100%',
+      }} />
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', opacity: 0.025 }}>
+        <defs>
+          <pattern id="geo-pattern" x="0" y="0" width="160" height="160" patternUnits="userSpaceOnUse">
+            <polygon points="80,15 88,38 112,38 93,52 100,75 80,62 60,75 67,52 48,38 72,38" fill="currentColor" opacity="0.6" />
+            <circle cx="30" cy="120" r="6" fill="currentColor" opacity="0.3" />
+            <rect x="130" y="110" width="14" height="14" rx="3" fill="currentColor" opacity="0.25" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#geo-pattern)" />
+      </svg>
+      <style>{`
+        .chat-input-wrapper .ant-input:focus,
+        .chat-input-wrapper .ant-input-focused,
+        .chat-input-wrapper textarea:focus { box-shadow: none !important; }
+        .send-btn:hover:not(:disabled) { transform: scale(1.08); box-shadow: 0 4px 16px rgba(124,58,237,0.45) !important; }
+        .send-btn:active:not(:disabled) { transform: scale(0.95); }
+        .img-btn:hover { color: #3B82C4 !important; background: rgba(59,130,196,0.08) !important; }
+        .chat-mode-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+      `}</style>
       <CustomSider 
         collapsed={collapsedSider} 
         onToggle={() => setCollapsedSider(!collapsedSider)} 
@@ -612,7 +686,20 @@ const Chat = () => {
         conversationList={conversationList}
         onDeleteConversation={handleDeleteConversation}
       />
-      <Layout style={{ position: 'relative', height: '100%', marginLeft: collapsedSider ? '79px' : '259px', background: 'transparent', overflow: 'hidden' }}>
+      <Layout style={{
+          position: 'relative',
+          height: 'calc(100vh - 24px)',
+          marginLeft: collapsedSider ? '91px' : '271px',
+          marginTop: 12,
+          marginRight: 12,
+          marginBottom: 12,
+          background: '#EEF4FA',
+          overflow: 'hidden',
+          zIndex: 1,
+          borderRadius: 20,
+          boxShadow: '0 10px 40px rgba(0,0,0,0.12), 0 2px 10px rgba(0,0,0,0.06)',
+          border: '2px solid #A8CCE8',
+        }}>
         <Content className="relative" style={{ height: '100%', background: 'transparent', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {isRestoringConversation ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
@@ -624,16 +711,8 @@ const Chat = () => {
           ) : (showWelcome || isComposingNewMessage) ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
               <div style={{ width: '100%', maxWidth: 420, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width={64} height={64}>
-                  <polygon points="60,4 110,32 110,88 60,116 10,88 10,32" fill="#5B4FCF"/>
-                  <polygon points="60,10 104,35 104,85 60,110 16,85 16,35" fill="none" stroke="white" strokeWidth="5"/>
-                  <path d="M30,44 L38,60 L48,50 L55,36 L60,30 L65,36 L72,50 L82,60 L90,44 L90,76 L30,76 Z" fill="white"/>
-                  <rect x="36" y="60" width="48" height="16" rx="4" fill="#5B4FCF"/>
-                  <rect x="39" y="63" width="18" height="9" rx="2" fill="white"/>
-                  <rect x="63" y="63" width="18" height="9" rx="2" fill="white"/>
-                  <polygon points="60,75 55,81 60,84 65,81" fill="white"/>
-                </svg>
-                <Title level={2} style={{ marginBottom: 0, color: '#5B4FCF' }}>Welcome to TFTChat!</Title>
+                <img src={logoUrl} alt="TFT Logo" width={120} height={120} style={{ objectFit: 'contain', display: 'block' }} />
+                <Title level={2} style={{ marginBottom: 0, color: '#3B82C4' }}>Welcome to TFTChat!</Title>
                 <Text style={{ color: '#6b7280', marginBottom: 0 }}>
                 Chatbot hỗ trợ thông tin nội bộ – luôn sẵn sàng giải đáp thắc mắc của bạn!
                 </Text>
@@ -644,17 +723,23 @@ const Chat = () => {
                         <button
                           key={m.value}
                           onClick={() => setChatMode(m.value)}
+                          className="chat-mode-btn"
                           style={{
-                            padding: '4px 14px',
+                            padding: '5px 16px',
                             borderRadius: 20,
-                            border: '1px solid',
-                            borderColor: chatMode === m.value ? '#5B4FCF' : '#d9d9d9',
-                            background: chatMode === m.value ? '#5B4FCF' : '#fff',
+                            background: chatMode === m.value
+                              ? 'linear-gradient(135deg, #7C3AED, #9B59FF)'
+                              : '#ffffff',
                             color: chatMode === m.value ? '#fff' : '#555',
                             cursor: 'pointer',
                             fontSize: 13,
-                            fontWeight: chatMode === m.value ? 600 : 400,
-                            transition: 'all 0.2s',
+                            fontWeight: chatMode === m.value ? 600 : 500,
+                            transition: 'all 0.25s ease',
+                            boxShadow: chatMode === m.value
+                              ? '0 2px 10px rgba(124,58,237,0.25)'
+                              : '0 1px 4px rgba(0,0,0,0.08)',
+                            border: chatMode === m.value ? 'none' : '1px solid #D4E4F0',
+                            letterSpacing: 0.2,
                           }}
                         >{m.label}</button>
                       ))}
@@ -684,10 +769,10 @@ const Chat = () => {
                         }}
                       />
                       {welcomeImages.length > 0 && (
-                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', padding: '4px 8px' }}>
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', padding: '8px 12px', background: 'rgba(235,245,255,0.6)', borderRadius: 12 }}>
                           {welcomeImages.map((img, idx) => (
                             <div key={idx} style={{ position: 'relative' }}>
-                              <img src={img.preview} alt={img.name} style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8, display: 'block' }} />
+                              <img src={img.preview} alt={img.name} style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 10, display: 'block', border: '2px solid rgba(59,130,196,0.15)' }} />
                               <CloseCircleFilled
                                 onClick={() => setWelcomeImages(prev => prev.filter((_, i) => i !== idx))}
                                 style={{ position: 'absolute', top: -6, right: -6, color: '#ff4d4f', cursor: 'pointer', fontSize: 16, background: '#fff', borderRadius: '50%' }}
@@ -696,7 +781,23 @@ const Chat = () => {
                           ))}
                         </div>
                       )}
-                      <div style={{ padding: '12px', background: '#fff', borderRadius: 24, boxShadow: '0 2px 12px rgba(0,0,0,0.08)', display: 'flex', alignItems: 'center', border: '1px solid #f0f0f0' }}>
+                      <div
+                        className="chat-input-wrapper"
+                        style={{
+                          padding: '12px 14px 12px 18px',
+                          background: '#ffffff',
+                          borderRadius: 24,
+                          display: 'flex',
+                          alignItems: 'center',
+                          border: welcomeInputFocused
+                            ? '1.5px solid #7C3AED'
+                            : '1.5px solid #C8DCF0',
+                          boxShadow: welcomeInputFocused
+                            ? '0 8px 32px rgba(124,58,237,0.12), 0 0 0 3px rgba(124,58,237,0.06)'
+                            : '0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04)',
+                          transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
+                        }}
+                      >
                       {!isGuest && (
                         <Button
                           icon={<PictureOutlined />}
@@ -704,12 +805,13 @@ const Chat = () => {
                           shape="circle"
                           onClick={() => welcomeFileInputRef.current?.click()}
                           disabled={isLoading}
-                          style={{ marginRight: 4, color: '#8c8c8c', flexShrink: 0 }}
+                          className="img-btn"
+                          style={{ marginRight: 6, color: '#7BAAC4', flexShrink: 0, fontSize: 18 }}
                           title="Đính kèm ảnh"
                         />
                       )}
                       <Input.TextArea
-                        placeholder="Type your message..."
+                        placeholder="Nhập tin nhắn..."
                         value={inputValue}
                         onChange={e => {
                           setInputValue(e.target.value);
@@ -733,6 +835,8 @@ const Chat = () => {
                             reader.readAsDataURL(file);
                           });
                         }}
+                        onFocus={() => setWelcomeInputFocused(true)}
+                        onBlur={() => setWelcomeInputFocused(false)}
                         onPressEnter={(e) => {
                           if (e.shiftKey) return;
                           if (inputValue.trim() || welcomeImages.length > 0) {
@@ -742,13 +846,11 @@ const Chat = () => {
                           }
                         }}
                         autoSize={{ minRows: 1, maxRows: 6 }}
-                        style={{ border: 'none', background: 'transparent', resize: 'none', fontSize: 16, flex: 1 }}
+                        style={{ border: 'none', background: 'transparent', resize: 'none', fontSize: 15, flex: 1, lineHeight: 1.5 }}
                         disabled={isLoading}
                       />
-                      <Button
-                        icon={isLoading ? <Spin size="small" /> : <SendOutlined />}
-                        type="primary"
-                        shape="circle"
+                      <button
+                        className="send-btn"
                         onClick={() => {
                           if (inputValue.trim() || welcomeImages.length > 0) {
                             const imgs = welcomeImages.map(img => ({ data: img.base64, media_type: img.media_type }));
@@ -756,8 +858,30 @@ const Chat = () => {
                             handleSend(inputValue, imgs);
                           }
                         }}
-                        disabled={!inputValue.trim() && welcomeImages.length === 0}
-                      />
+                        disabled={(!inputValue.trim() && welcomeImages.length === 0) || isLoading}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: '50%',
+                          border: 'none',
+                          background: (!inputValue.trim() && welcomeImages.length === 0)
+                            ? 'rgba(200,200,200,0.3)'
+                            : 'linear-gradient(135deg, #7C3AED, #9B59FF)',
+                          color: '#fff',
+                          cursor: (!inputValue.trim() && welcomeImages.length === 0) ? 'not-allowed' : 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          boxShadow: (!inputValue.trim() && welcomeImages.length === 0)
+                            ? 'none'
+                            : '0 3px 12px rgba(124,58,237,0.35)',
+                          transition: 'all 0.25s ease',
+                          marginLeft: 8,
+                        }}
+                      >
+                        {isLoading ? <Spin size="small" /> : <SendOutlined style={{ fontSize: 16 }} />}
+                      </button>
                       </div>
                       </div>
                     )}
@@ -782,6 +906,7 @@ const Chat = () => {
                 onModeChange={setChatMode}
                 guestLimitReached={guestLimitReached}
                 isGuest={isGuest}
+                userId={userId}
               />
               {guestLimitReached && (
                 <div style={{ position: 'absolute', bottom: 80, left: collapsedSider ? '79px' : '259px', right: 0, display: 'flex', justifyContent: 'center', zIndex: 10, padding: '0 24px' }}>

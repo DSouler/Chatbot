@@ -34,10 +34,20 @@ export const register = async (username, password, email) => {
     return authInstance.post('/register', { username, password, email });
 };
 
+export const updateProfile = async (first_name, last_name) => {
+    return authInstance.put('/me/profile', { first_name, last_name });
+};
+
+export const updatePassword = async (current_password, new_password) => {
+    return authInstance.put('/me/password', { current_password, new_password });
+};
+
 const authService = {
     getCurrentUser,
     login,
-    register
+    register,
+    updateProfile,
+    updatePassword,
 };
 
 export default authService;
