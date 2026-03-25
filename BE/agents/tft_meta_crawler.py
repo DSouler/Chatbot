@@ -29,6 +29,130 @@ def _is_removed_item(name: str) -> bool:
 
 
 # ================================================================
+# Base component items (nguồn: ggmeo.com/trang-bi-dtcl)
+# Maps Riot apiName → Vietnamese display name
+# ================================================================
+BASE_ITEMS = {
+    "TFT_Item_BFSword": "Kiếm BF",
+    "TFT_Item_RecurveBow": "Cung Dài",
+    "TFT_Item_NeedlesslyLargeRod": "Gậy Phép Lớn",
+    "TFT_Item_TearOfTheGoddess": "Nước Mắt Nữ Thần",
+    "TFT_Item_ChainVest": "Áo Giáp Xích",
+    "TFT_Item_NegatronCloak": "Áo Choàng Phép",
+    "TFT_Item_GiantsBelt": "Đai Khổng Lồ",
+    "TFT_Item_SparringGloves": "Găng Tay",
+    "TFT_Item_Spatula": "Thìa Vàng",
+}
+
+# ================================================================
+# Item image file names (served via /image/{name} endpoint)
+# ================================================================
+ITEM_IMAGE_MAP = {
+    # Base items
+    "Kiếm BF": "item_bf_sword",
+    "Cung Dài": "item_recurve_bow",
+    "Gậy Phép Lớn": "item_needlessly_large_rod",
+    "Nước Mắt Nữ Thần": "item_tear_of_the_goddess",
+    "Áo Giáp Xích": "item_chain_vest",
+    "Áo Choàng Phép": "item_negatron_cloak",
+    "Đai Khổng Lồ": "item_giants_belt",
+    "Găng Tay": "item_sparring_gloves",
+    "Thìa Vàng": "item_spatula",
+    # Crafted items (image mapped to existing files; "" = text fallback)
+    "Kiếm Tử Thần": "item_deathblade",
+    "Diệt Khổng Lồ": "",
+    "Kiếm Súng Hextech": "item_hextechgunblade",
+    "Ngọn Giáo Shojin": "item_spearofshojin",
+    "Huyết Kiếm": "item_bloodthirster",
+    "Vô Cực Kiếm": "item_infinityedge",
+    "Bùa Đỏ": "item_rapidfirecannon",
+    "Cuồng Đao Guinsoo": "item_guinsoosrageblade",
+    "Trượng Hư Vô": "item_statikkshiv",
+    "Bùa Xanh": "item_bluebuff",
+    "Mũ Phù Thủy Rabadon": "item_rabadonsdeathcap",
+    "Quyền Trượng Thiên Thần": "item_archangelsstaff",
+    "Nỏ Sét": "item_ionicspark",
+    "Quỷ Thư Morello": "item_morellonomicon",
+    "Găng Bảo Thạch": "item_jeweledgauntlet",
+    "Áo Choàng Gai": "item_bramblevest",
+    "Vuốt Rồng": "item_dragonsclaw",
+    "Giáp Máu Warmog": "item_warmogsarmor",
+    "Áo Choàng Thủy Ngân": "item_quicksilver",
+    "Bàn Tay Công Lý": "item_unstableconcoction",
+    "Mũ Thích Nghi": "item_adaptivehelm",
+    "Thú Tượng Thạch Giáp": "item_gargoylestoneplate",
+    "Trái Tim Kiên Định": "",
+    "Vương Miện Chiến Thuật Gia": "item_forceofnature",
+    "Lời Thề Hộ Vệ": "",
+    "Áo Choàng Lửa": "item_redbuff",
+    "Găng Đạo Tặc": "item_thiefsgloves",
+    "Giáp Tâm Linh": "item_redemption",
+    "Cung Xanh": "item_lastwhisper",
+    "Vương Miện Hoàng Gia": "item_crownguard",
+    "Móng Vuốt Sterak": "",
+    "Giáp Vai Nguyệt Thần": "",
+    "Chùy Đoản Côn": "",
+    "Áo Choàng Bóng Tối": "item_guardianangel",
+    "Nanh Nashor": "",
+    "Thịnh Nộ Thủy Quái": "item_runaanshurricane",
+    "Quyền Năng Khổng Lồ": "item_titansresolve",
+}
+
+# ================================================================
+# Item recipes — cách ghép trang bị (nguồn: ggmeo.com/trang-bi-dtcl)
+# Maps Vietnamese item name → (component1_VN, component2_VN)
+# ================================================================
+ITEM_RECIPES = {
+    # BF Sword combos
+    "Kiếm Tử Thần": ("Kiếm BF", "Kiếm BF"),
+    "Diệt Khổng Lồ": ("Kiếm BF", "Cung Dài"),
+    "Kiếm Súng Hextech": ("Kiếm BF", "Gậy Phép Lớn"),
+    "Ngọn Giáo Shojin": ("Kiếm BF", "Nước Mắt Nữ Thần"),
+    "Áo Choàng Bóng Tối": ("Kiếm BF", "Áo Giáp Xích"),
+    "Huyết Kiếm": ("Kiếm BF", "Áo Choàng Phép"),
+    "Móng Vuốt Sterak": ("Kiếm BF", "Đai Khổng Lồ"),
+    "Vô Cực Kiếm": ("Kiếm BF", "Găng Tay"),
+    # Recurve Bow combos
+    "Bùa Đỏ": ("Cung Dài", "Cung Dài"),
+    "Cuồng Đao Guinsoo": ("Cung Dài", "Gậy Phép Lớn"),
+    "Trượng Hư Vô": ("Cung Dài", "Nước Mắt Nữ Thần"),
+    "Quyền Năng Khổng Lồ": ("Cung Dài", "Áo Giáp Xích"),
+    "Thịnh Nộ Thủy Quái": ("Cung Dài", "Áo Choàng Phép"),
+    "Nanh Nashor": ("Cung Dài", "Đai Khổng Lồ"),
+    "Cung Xanh": ("Cung Dài", "Găng Tay"),
+    # Needlessly Large Rod combos
+    "Mũ Phù Thủy Rabadon": ("Gậy Phép Lớn", "Gậy Phép Lớn"),
+    "Quyền Trượng Thiên Thần": ("Gậy Phép Lớn", "Nước Mắt Nữ Thần"),
+    "Vương Miện Hoàng Gia": ("Gậy Phép Lớn", "Áo Giáp Xích"),
+    "Nỏ Sét": ("Gậy Phép Lớn", "Áo Choàng Phép"),
+    "Quỷ Thư Morello": ("Gậy Phép Lớn", "Đai Khổng Lồ"),
+    "Găng Bảo Thạch": ("Gậy Phép Lớn", "Găng Tay"),
+    # Tear of the Goddess combos
+    "Bùa Xanh": ("Nước Mắt Nữ Thần", "Nước Mắt Nữ Thần"),
+    "Lời Thề Hộ Vệ": ("Nước Mắt Nữ Thần", "Áo Giáp Xích"),
+    "Mũ Thích Nghi": ("Nước Mắt Nữ Thần", "Áo Choàng Phép"),
+    "Giáp Tâm Linh": ("Nước Mắt Nữ Thần", "Đai Khổng Lồ"),
+    "Bàn Tay Công Lý": ("Nước Mắt Nữ Thần", "Găng Tay"),
+    # Chain Vest combos
+    "Áo Choàng Gai": ("Áo Giáp Xích", "Áo Giáp Xích"),
+    "Thú Tượng Thạch Giáp": ("Áo Giáp Xích", "Áo Choàng Phép"),
+    "Áo Choàng Lửa": ("Áo Giáp Xích", "Đai Khổng Lồ"),
+    "Trái Tim Kiên Định": ("Áo Giáp Xích", "Găng Tay"),
+    # Negatron Cloak combos
+    "Vuốt Rồng": ("Áo Choàng Phép", "Áo Choàng Phép"),
+    "Giáp Vai Nguyệt Thần": ("Áo Choàng Phép", "Đai Khổng Lồ"),
+    "Áo Choàng Thủy Ngân": ("Áo Choàng Phép", "Găng Tay"),
+    # Giant's Belt combos
+    "Giáp Máu Warmog": ("Đai Khổng Lồ", "Đai Khổng Lồ"),
+    "Chùy Đoản Côn": ("Đai Khổng Lồ", "Găng Tay"),
+    # Sparring Gloves combo
+    "Găng Đạo Tặc": ("Găng Tay", "Găng Tay"),
+    # Spatula combo
+    "Vương Miện Chiến Thuật Gia": ("Thìa Vàng", "Thìa Vàng"),
+}
+
+
+# ================================================================
 # SECTION 1: Intent Detection
 # ================================================================
 
@@ -47,6 +171,11 @@ META_KEYWORDS = [
     "trang bị top tier", "trang bi top tier", "top tier item", "top tier trang bị",
     "trang bị top", "item top", "trang bi top",
     "trang bi nao manh", "trang bi nao tot", "trang bi manh",
+    # Item recipes
+    "cách ghép", "cach ghep", "công thức ghép", "cong thuc ghep",
+    "ghép được", "ghep duoc", "ghép từ", "ghep tu",
+    "ghép bằng", "ghep bang", "ghép đồ", "ghep do",
+    "các thành phần", "thanh phan trang bi",
     # Augments
     "augment mạnh", "augment tốt", "best augment", "augment meta",
     "lõi mạnh", "lõi tốt", "lõi meta", "augment tier list",
@@ -70,6 +199,9 @@ META_INTENT_PATTERNS = [
     r"(những|các|danh sách)\s*(item|trang bị|trang bi|augment|lõi|đội hình|comp)\s*(top|mạnh|tốt|tier)",
     r"(item|trang bị|trang bi|augment|lõi)\s*(nào|gì)\s*(mạnh|tốt|op)",
     r"top\s*tier\s*(item|trang bị|trang bi|augment|lõi)?",
+    r"(cách|cach)\s*(ghép|ghep)\s*(trang bị|item|trang bi)?",
+    r"(ghép|ghep)\s*(trang bị|item|trang bi|trang bị này|trang bị nào|từ gì|như thế nào)",
+    r"(công thức|cong thuc)\s*(ghép|ghep)?",
 ]
 
 
@@ -82,7 +214,9 @@ class MetaContentType:
 CONTENT_KEYWORDS = {
     MetaContentType.ITEMS: [
         "item", "trang bị", "ghép đồ", "đồ", "cách ghép", "nên ghép",
-        "equipment", "trang bi",
+        "equipment", "trang bi", "ghep do", "cach ghep", "nen ghep",
+        "công thức", "cong thuc", "recipe", "trang bị nào", "trang bi nao",
+        "ghép", "ghep",
     ],
     MetaContentType.AUGMENTS: [
         "augment", "lõi", "augments", "core", "hex",
@@ -636,6 +770,11 @@ def format_meta_context(content_type: str, tftacademy_data: List[Dict], opgg_dat
 
     elif content_type == MetaContentType.ITEMS:
         parts.append("=== DỮ LIỆU TIER LIST TRANG BỊ TFT (CẬP NHẬT TRỰC TIẾP) ===\n")
+        show_recipes = _is_recipe_query(user_question)
+        # Only include recipe table when user asks about recipes
+        if show_recipes:
+            parts.append(format_recipe_table())
+            parts.append("")
         if tftacademy_data:
             parts.append("--- Nguồn: tftacademy.com/tierlist/items ---")
             # Group by item_type if available (API data has it)
@@ -647,6 +786,16 @@ def format_meta_context(content_type: str, tftacademy_data: List[Dict], opgg_dat
                 "emblems": "Huy hiệu (Emblems)",
             }
             has_types = any(item.get("item_type") for item in tftacademy_data)
+            # Determine which item types to show based on user question
+            want_radiant = _is_radiant_query(user_question)
+            want_artifact = _is_artifact_query(user_question)
+            allowed_types = set()
+            allowed_types.add("craftables")  # always show craftables
+            if want_radiant:
+                allowed_types.add("radiants")
+            if want_artifact:
+                allowed_types.add("artifacts")
+                allowed_types.add("ornns")
             if has_types:
                 current_type = None
                 current_tier = None
@@ -654,24 +803,34 @@ def format_meta_context(content_type: str, tftacademy_data: List[Dict], opgg_dat
                     if _is_removed_item(item.get("name", "")):
                         continue
                     itype = item.get("item_type", "craftables")
+                    if itype not in allowed_types:
+                        continue
                     if itype != current_type:
                         current_type = itype
                         current_tier = None
-                        parts.append(f"\n=== {type_labels.get(itype, itype)} ===")
+                        if len(allowed_types) > 1:
+                            parts.append(f"\n=== {type_labels.get(itype, itype)} ===")
                     tier = item.get("tier", "?")
                     if tier != current_tier:
                         current_tier = tier
                         parts.append(f"\n** {tier} Tier **")
                     name = item['name']
                     desc = ITEM_DESCRIPTIONS.get(name)
+                    recipe = ITEM_RECIPES.get(name) if show_recipes else None
+                    recipe_str = f" [Ghép: {recipe[0]} + {recipe[1]}]" if recipe else ""
                     if desc:
-                        parts.append(f"  - {name}: {desc}")
+                        parts.append(f"  - {name}{recipe_str}: {desc}")
                     else:
-                        parts.append(f"  - {name}")
+                        parts.append(f"  - {name}{recipe_str}")
             else:
                 current_tier = None
                 for item in tftacademy_data:
                     if _is_removed_item(item.get("name", "")):
+                        continue
+                    # Filter radiant items from non-typed data by name
+                    item_name = item.get("name", "")
+                    is_radiant = "Ánh Sáng" in item_name or "Radiant" in item_name
+                    if is_radiant and not want_radiant:
                         continue
                     tier = item.get("tier", "?")
                     if tier != current_tier:
@@ -679,10 +838,12 @@ def format_meta_context(content_type: str, tftacademy_data: List[Dict], opgg_dat
                         parts.append(f"\n** {tier} Tier **")
                     name = item['name']
                     desc = ITEM_DESCRIPTIONS.get(name)
+                    recipe = ITEM_RECIPES.get(name) if show_recipes else None
+                    recipe_str = f" [Ghép: {recipe[0]} + {recipe[1]}]" if recipe else ""
                     if desc:
-                        parts.append(f"  - {name}: {desc}")
+                        parts.append(f"  - {name}{recipe_str}: {desc}")
                     else:
-                        parts.append(f"  - {name}")
+                        parts.append(f"  - {name}{recipe_str}")
             parts.append("")
 
     elif content_type == MetaContentType.AUGMENTS:
@@ -701,6 +862,105 @@ def format_meta_context(content_type: str, tftacademy_data: List[Dict], opgg_dat
     if not tftacademy_data and not opgg_data:
         return ""
     return "\n".join(parts)
+
+
+def format_recipe_table() -> str:
+    """Generate a full item recipe reference table in Vietnamese."""
+    parts = ["=== BẢNG CÔNG THỨC GHÉP TRANG BỊ DTCL MÙA 16 (nguồn: ggmeo.com) ===\n"]
+    parts.append("--- Trang bị cơ bản (thành phần) ---")
+    for api_name, vn_name in BASE_ITEMS.items():
+        parts.append(f"  • {vn_name}")
+    parts.append("")
+    parts.append("--- Công thức ghép ---")
+    for item_name, (comp1, comp2) in ITEM_RECIPES.items():
+        desc = ITEM_DESCRIPTIONS.get(item_name, "")
+        desc_str = f" — {desc}" if desc else ""
+        parts.append(f"  • {item_name} = {comp1} + {comp2}{desc_str}")
+    return "\n".join(parts)
+
+
+def format_recipe_card(query: str, backend_base_url: str) -> Optional[str]:
+    """Generate a visual recipe card with item images for a specific item query.
+    Returns markdown string with inline images, or None if no item matched."""
+    query_lower = query.lower()
+    matched_item = None
+    for item_name in ITEM_RECIPES:
+        if item_name.lower() in query_lower:
+            matched_item = item_name
+            break
+    if not matched_item:
+        # Try fuzzy: strip diacritics for matching
+        import unicodedata
+        def _strip(s):
+            s = s.lower().replace('đ', 'd').replace('Đ', 'D')
+            return unicodedata.normalize('NFD', s).encode('ascii', 'ignore').decode()
+        q_stripped = _strip(query)
+        for item_name in ITEM_RECIPES:
+            if _strip(item_name) in q_stripped:
+                matched_item = item_name
+                break
+    if not matched_item:
+        return None
+
+    comp1, comp2 = ITEM_RECIPES[matched_item]
+    desc = ITEM_DESCRIPTIONS.get(matched_item, "")
+    base_url = backend_base_url.rstrip("/")
+
+    def _img(name: str, size: str = "") -> str:
+        img_file = ITEM_IMAGE_MAP.get(name, "")
+        if img_file:
+            return f"![{name}]({base_url}/image/{img_file})"
+        return f"**{name}**"
+
+    result_img = _img(matched_item)
+    comp1_img = _img(comp1)
+    comp2_img = _img(comp2)
+
+    parts = [
+        f"## 🔧 Cách ghép {matched_item}\n",
+        f"Để ghép được **{matched_item}**, bạn cần các thành phần sau:\n",
+        f"> {comp1_img} **{comp1}** + {comp2_img} **{comp2}**\n",
+        f"### 📐 Công thức ghép:\n",
+        f"> {result_img} **{matched_item}** = {comp1_img} {comp1} + {comp2_img} {comp2}\n",
+    ]
+    if desc:
+        parts.append(f"### ⚡ Hiệu ứng của {matched_item}:\n")
+        parts.append(f"- {desc}\n")
+
+    return "\n".join(parts)
+
+
+def _is_recipe_query(text: str) -> bool:
+    """Check if user is specifically asking about item recipes/combinations."""
+    text_lower = text.lower()
+    recipe_patterns = [
+        "ghép", "ghep", "công thức", "cong thuc", "recipe",
+        "cách ghép", "cach ghep", "ghép đồ", "ghep do",
+        "cần gì để", "can gi de", "làm từ", "lam tu",
+        "thành phần", "thanh phan", "component",
+        "ghép từ", "ghep tu", "ghép bằng", "ghep bang",
+        "cách làm", "cach lam", "tạo từ", "tao tu",
+    ]
+    return any(p in text_lower for p in recipe_patterns)
+
+
+def _is_radiant_query(text: str) -> bool:
+    """Check if user is specifically asking about radiant items."""
+    text_lower = text.lower()
+    radiant_patterns = [
+        "ánh sáng", "anh sang", "radiant",
+    ]
+    return any(p in text_lower for p in radiant_patterns)
+
+
+def _is_artifact_query(text: str) -> bool:
+    """Check if user is specifically asking about artifact/ornn items."""
+    text_lower = text.lower()
+    artifact_patterns = [
+        "tạo tác", "tao tac", "artifact", "ornn",
+        "hiện vật", "hien vat", "cổ vật", "co vat",
+    ]
+    return any(p in text_lower for p in artifact_patterns)
 
 
 def get_cache() -> MetaCache:

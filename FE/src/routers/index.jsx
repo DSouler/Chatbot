@@ -21,7 +21,7 @@ const createProtectedRoute = (component) => (
 
 const createAdminProtectedRoute = (component) => (
   <ProtectedRoute>
-    <AdminLayout>{component}</AdminLayout>
+    {component}
   </ProtectedRoute>
 );
 
@@ -39,13 +39,13 @@ const routes = [
   },
   {
     path: "/admin",
-    element: <AdminLayout/>,
+    element: <ProtectedRoute><AdminLayout/></ProtectedRoute>,
     children: [
-      { path: "/admin", element: createProtectedRoute(<Navigate to="/admin/tenant" replace />) },
-      { path: "/admin/tenant", element: createAdminProtectedRoute(<Tenant/>) },
-      { path: "/admin/account/user", element: createAdminProtectedRoute(<User />) },
-      { path: "/admin/account/group", element: createAdminProtectedRoute(<Group />) },
-      { path: "/admin/settings", element: createAdminProtectedRoute(<Settings/>) }
+      { path: "/admin", element: <Navigate to="/admin/tenant" replace /> },
+      { path: "/admin/tenant", element: <Tenant/> },
+      { path: "/admin/account/user", element: <User /> },
+      { path: "/admin/account/group", element: <Group /> },
+      { path: "/admin/settings", element: <Settings/> }
     ]
   },
   { path: "*", element: <NotFoundPage /> }

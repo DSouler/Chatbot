@@ -78,6 +78,8 @@ const Chat = () => {
   const [inputValue, setInputValue] = useState('');
   const [welcomeImages, setWelcomeImages] = useState([]);
   const welcomeFileInputRef = useRef(null);
+  const contentRef = useRef(null);
+  const contentDragState = useRef({ isDragging: false, startY: 0, scrollTop: 0, moved: false });
   const [isComposingNewMessage, setIsComposingNewMessage] = useState(false);
   const [isRestoringConversation, setIsRestoringConversation] = useState(false);
   const [chatMode, setChatMode] = useState('RAG');
@@ -700,7 +702,10 @@ const Chat = () => {
           boxShadow: '0 10px 40px rgba(0,0,0,0.12), 0 2px 10px rgba(0,0,0,0.06)',
           border: '2px solid #A8CCE8',
         }}>
-        <Content className="relative" style={{ height: '100%', background: 'transparent', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <Content
+          className="relative"
+          style={{ height: '100%', background: 'transparent', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+        >
           {isRestoringConversation ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
               <div style={{ textAlign: 'center' }}>
