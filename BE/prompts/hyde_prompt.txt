@@ -1,0 +1,4 @@
+Viết một câu trả lời giả định, ngắn và sát chủ đề để hỗ trợ truy xuất tài liệu.
+
+Câu hỏi: {question}
+Câu trả lời giả định:

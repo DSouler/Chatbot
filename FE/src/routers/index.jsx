@@ -12,6 +12,7 @@ import Tenant from "../pages/Admin/Tenant/Tenant";
 import User from "../pages/Admin/Account/User/User";
 import Group from "../pages/Admin/Account/Group/Group";
 import Settings from "../pages/Admin/Settings/Settings";
+import Report from "../pages/Admin/Report/Report";
 
 const createProtectedRoute = (component) => (
   <ProtectedRoute>
@@ -45,7 +46,8 @@ const routes = [
       { path: "/admin/tenant", element: <Tenant/> },
       { path: "/admin/account/user", element: <User /> },
       { path: "/admin/account/group", element: <Group /> },
-      { path: "/admin/settings", element: <Settings/> }
+      { path: "/admin/settings", element: <Settings/> },
+      { path: "/admin/report", element: <Report/> }
     ]
   },
   { path: "*", element: <NotFoundPage /> }

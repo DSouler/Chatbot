@@ -44,6 +44,7 @@ from db.db_utils import (
     init_token_usage_table,
     record_token_usage,
     get_usage_stats,
+    get_admin_feedback_report,
     init_messages_images_column,
     update_last_bot_message,
     init_message_feedback_table,
@@ -1341,6 +1342,15 @@ def api_usage_stats(user_id: int = None, days: int = 30):
         return stats
     except Exception as e:
         return {"summary": {}, "daily": [], "error": str(e)}
+
+
+@app.get("/report/admin/feedback")
+def api_admin_feedback_report(days: int = 30):
+    """Admin endpoint: aggregated feedback stats (up/down) with daily breakdown and top messages."""
+    try:
+        return get_admin_feedback_report(days=days)
+    except Exception as e:
+        return {"summary": {}, "daily": [], "top_liked": [], "top_disliked": [], "error": str(e)}
 
 
 # =========================

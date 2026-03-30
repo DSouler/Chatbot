@@ -5,6 +5,7 @@ import {
   FileOutlined,
   DatabaseOutlined,
   SettingOutlined,
+  BarChartOutlined,
 } from '@ant-design/icons';
 import { useUser } from '../../hooks/useUser';
 import Footer from '../../components/Layouts/Footer';
@@ -67,6 +68,12 @@ const AdminLayout = ({ children }) => {
       icon: <SettingOutlined />,
       label: 'Settings',
       path: '/admin/settings',
+    },
+    {
+      key: 'report',
+      icon: <BarChartOutlined />,
+      label: 'Report & Statistics',
+      path: '/admin/report',
     },
   ];
 
