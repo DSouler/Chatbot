@@ -48,4 +48,18 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    return token_data 
+    return token_data
+
+
+def require_admin(
+    current_user: TokenData = Depends(get_current_user),
+    user_repository: UserRepository = Depends(get_user_repository),
+) -> TokenData:
+    """Require that the current user has ADMIN role"""
+    user = user_repository.get_user_by_id(current_user.user_id)
+    if not user or (user.role or "").upper() != "ADMIN":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bạn không có quyền truy cập chức năng này",
+        )
+    return current_user

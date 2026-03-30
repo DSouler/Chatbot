@@ -42,12 +42,34 @@ export const updatePassword = async (current_password, new_password) => {
     return authInstance.put('/me/password', { current_password, new_password });
 };
 
+// ── Admin API ──
+
+export const adminGetUsers = async () => {
+    return authInstance.get('/admin/users');
+};
+
+export const adminCreateUser = async (data) => {
+    return authInstance.post('/admin/users', data);
+};
+
+export const adminUpdateUser = async (userId, data) => {
+    return authInstance.put(`/admin/users/${userId}`, data);
+};
+
+export const adminDeleteUser = async (userId) => {
+    return authInstance.delete(`/admin/users/${userId}`);
+};
+
 const authService = {
     getCurrentUser,
     login,
     register,
     updateProfile,
     updatePassword,
+    adminGetUsers,
+    adminCreateUser,
+    adminUpdateUser,
+    adminDeleteUser,
 };
 
 export default authService;

@@ -1,148 +1,180 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table, Button, Modal, Form, Input, message,
-  Card, Select, Space
+  Card, Select, Space, Tag, Popconfirm, Spin
 } from 'antd';
 import {
-  PlusOutlined, EditOutlined, DeleteOutlined
+  PlusOutlined, EditOutlined, DeleteOutlined, ReloadOutlined
 } from '@ant-design/icons';
-import AddUser from './AddUser';
-import EditUser from './EditUser';
-import GrantPermission from './GrantPermission';
-import departments from './example/departments.json';
-import users from './example/users.json';
+import { adminGetUsers, adminCreateUser, adminUpdateUser, adminDeleteUser } from '../../../../services/auth';
 
 const { Option } = Select;
 
-const ALLOW_USER_MANAGEMENT = false;
-
-const groupOptions = Array.from(new Set(Object.values(departments).flat()));
-const initialData = users;
-
 const User = () => {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [groupFilter, setGroupFilter] = useState('');
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [addModalVisible, setAddModalVisible] = useState(false);
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [grantModalVisible, setGrantModalVisible] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
-  const [currentTime, setCurrentTime] = useState('');
   const [pageSize, setPageSize] = useState(10);
-  const intervalRef = useRef(null);
 
-  const selectedUsers = data.filter(user => selectedRowKeys.includes(user.key));
+  // Add modal
+  const [addVisible, setAddVisible] = useState(false);
+  const [addForm] = Form.useForm();
+  const [addLoading, setAddLoading] = useState(false);
+
+  // Edit modal
+  const [editVisible, setEditVisible] = useState(false);
+  const [editForm] = Form.useForm();
+  const [editLoading, setEditLoading] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const users = await adminGetUsers();
+      setData(Array.isArray(users) ? users : []);
+    } catch (err) {
+      message.error('Không thể tải danh sách người dùng');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (addModalVisible) {
-      intervalRef.current = setInterval(() => {
-        const now = new Date();
-        const formatted = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-        setCurrentTime(formatted);
-      }, 1000);
-    } else {
-      clearInterval(intervalRef.current);
+    fetchUsers();
+  }, []);
+
+  // ── Create ──
+  const handleAdd = async () => {
+    try {
+      const values = await addForm.validateFields();
+      setAddLoading(true);
+      await adminCreateUser(values);
+      message.success('Tạo người dùng thành công');
+      setAddVisible(false);
+      addForm.resetFields();
+      fetchUsers();
+    } catch (err) {
+      if (err?.response?.data?.detail) {
+        message.error(err.response.data.detail);
+      } else if (err?.detail) {
+        message.error(err.detail);
+      }
+    } finally {
+      setAddLoading(false);
     }
-    return () => clearInterval(intervalRef.current);
-  }, [addModalVisible]);
-
-  const handleAddUser = (values) => {
-    const newUser = {
-      key: `${Date.now()}`,
-      ...values,
-      date_created: currentTime,
-      last_login_date: currentTime,
-    };
-
-    setData(prev => [newUser, ...prev]);
-    setAddModalVisible(false);
-    message.success('User added');
   };
 
-  const handleEditUser = (updatedUser) => {
-    setData(prev =>
-      prev.map(user =>
-        user.key === updatedUser.key ? updatedUser : user
-      )
+  // ── Update ──
+  const openEdit = (record) => {
+    setEditingUser(record);
+    editForm.setFieldsValue({
+      email: record.email,
+      first_name: record.first_name,
+      last_name: record.last_name,
+      role: record.role,
+      password: undefined,
+    });
+    setEditVisible(true);
+  };
+
+  const handleEdit = async () => {
+    try {
+      const values = await editForm.validateFields();
+      const payload = {};
+      if (values.email !== undefined && values.email !== editingUser.email) payload.email = values.email;
+      if (values.first_name !== undefined) payload.first_name = values.first_name;
+      if (values.last_name !== undefined) payload.last_name = values.last_name;
+      if (values.role !== undefined) payload.role = values.role;
+      if (values.password) payload.password = values.password;
+
+      setEditLoading(true);
+      await adminUpdateUser(editingUser.id, payload);
+      message.success('Cập nhật thành công');
+      setEditVisible(false);
+      editForm.resetFields();
+      fetchUsers();
+    } catch (err) {
+      if (err?.response?.data?.detail) {
+        message.error(err.response.data.detail);
+      } else if (err?.detail) {
+        message.error(err.detail);
+      }
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  // ── Delete ──
+  const handleDelete = async (userId) => {
+    try {
+      await adminDeleteUser(userId);
+      message.success('Xóa người dùng thành công');
+      fetchUsers();
+    } catch (err) {
+      message.error('Không thể xóa người dùng');
+    }
+  };
+
+  // ── Filtering ──
+  const filteredData = data.filter(item => {
+    const q = search.toLowerCase();
+    return (
+      (item.username || '').toLowerCase().includes(q) ||
+      (item.email || '').toLowerCase().includes(q) ||
+      (item.first_name || '').toLowerCase().includes(q) ||
+      (item.last_name || '').toLowerCase().includes(q)
     );
-    setEditModalVisible(false);
-    message.success('User updated');
-  };
-
-  const handleDelete = (key) => {
-    setData(prev => prev.filter(item => item.key !== key));
-    message.success("User deleted");
-  };
-
-  const handleGrant = (values) => {
-    console.log("Granted with:", values);
-    message.success("Permissions granted successfully");
-    setGrantModalVisible(false);
-  };
-
-  const filteredData = data.filter(item =>
-    item.name.toLowerCase().includes(search.toLowerCase()) &&
-    (groupFilter ? item.department === groupFilter : true)
-  );
+  });
 
   const columns = [
+    { title: 'ID', dataIndex: 'id', width: 60 },
+    { title: 'Username', dataIndex: 'username' },
     {
-      title: 'ID',
-      dataIndex: 'index',
-      render: (_, __, index) => index + 1,
+      title: 'Họ tên',
+      render: (_, r) => [r.first_name, r.last_name].filter(Boolean).join(' ') || '—',
     },
-    { title: 'Name', dataIndex: 'name' },
-    { title: 'Email', dataIndex: 'email' },
-    { title: 'Department', dataIndex: 'department' },
-    { title: 'Position', dataIndex: 'position' },
+    { title: 'Email', dataIndex: 'email', render: (v) => v || '—' },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      render: (text) => (
-        <span style={{ color: text === 'Active' ? 'green' : 'red' }}>
-          {text}
-        </span>
+      title: 'Role',
+      dataIndex: 'role',
+      render: (role) => (
+        <Tag color={(role || '').toUpperCase() === 'ADMIN' ? 'red' : 'blue'}>
+          {(role || 'USER').toUpperCase()}
+        </Tag>
       ),
     },
-    { title: 'Date Created', dataIndex: 'date_created' },
-    { title: 'Last Login Date', dataIndex: 'last_login_date' },
     {
-      title: 'Actions',
+      title: 'LDAP',
+      dataIndex: 'is_ldap_user',
+      render: (v) => (v ? <Tag color="green">LDAP</Tag> : <Tag>Local</Tag>),
+      width: 80,
+    },
+    {
+      title: 'Đăng nhập cuối',
+      dataIndex: 'last_login',
+      render: (v) => v ? new Date(v).toLocaleString('vi-VN') : '—',
+    },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'created_at',
+      render: (v) => v ? new Date(v).toLocaleString('vi-VN') : '—',
+    },
+    {
+      title: 'Thao tác',
+      width: 160,
       render: (_, record) => (
         <Space>
-          {ALLOW_USER_MANAGEMENT && (
-            <>
-              <Button
-                icon={<EditOutlined />}
-                size="small"
-                onClick={() => {
-                  setEditingUser(record);
-                  setEditModalVisible(true);
-                }}
-              >
-                Edit
-              </Button>
-              <Button
-                icon={<DeleteOutlined />}
-                size="small"
-                danger
-                onClick={() => handleDelete(record.key)}
-              >
-                Delete
-              </Button>
-            </>
-          )}
-          <Button
-            size="small"
-            type="primary"
-            onClick={() => {
-              setSelectedRowKeys([record.key]);
-              setGrantModalVisible(true);
-            }}
+          <Button icon={<EditOutlined />} size="small" onClick={() => openEdit(record)} />
+          <Popconfirm
+            title="Xóa người dùng này?"
+            description={`Bạn có chắc muốn xóa "${record.username}"?`}
+            onConfirm={() => handleDelete(record.id)}
+            okText="Xóa"
+            cancelText="Hủy"
+            okButtonProps={{ danger: true }}
           >
-            Grant
-          </Button>
+            <Button icon={<DeleteOutlined />} size="small" danger />
+          </Popconfirm>
         </Space>
       ),
     },
@@ -150,93 +182,126 @@ const User = () => {
 
   return (
     <Card
-      title={<span style={{ fontSize: 22, fontWeight: 600 }}>User Management</span>}
+      title={<span style={{ fontSize: 22, fontWeight: 600 }}>Quản lý người dùng</span>}
       extra={
         <Space>
-          <Button
-            type="primary"
-            disabled={selectedRowKeys.length === 0}
-            onClick={() => setGrantModalVisible(true)}
-          >
-            Grant permission
+          <Button icon={<ReloadOutlined />} onClick={fetchUsers} loading={loading}>
+            Làm mới
           </Button>
-          {ALLOW_USER_MANAGEMENT && (
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => setAddModalVisible(true)}
-            >
-              Add User
-            </Button>
-          )}
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddVisible(true)}>
+            Thêm người dùng
+          </Button>
         </Space>
       }
       style={{ margin: 24 }}
     >
       <Space style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
+        <Input
+          placeholder="Tìm kiếm theo tên, email..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={{ width: 300 }}
+          allowClear
+        />
         <Space>
-          <Input
-            placeholder="Search by Name..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{ width: 200 }}
-          />
-          <Select
-            placeholder="Filter by Group"
-            allowClear
-            style={{ width: 200 }}
-            value={groupFilter || undefined}
-            onChange={(value) => setGroupFilter(value || '')}
-          >
-            {groupOptions.map(group => (
-              <Option key={group} value={group}>{group}</Option>
-            ))}
-          </Select>
-        </Space>
-
-        <Space>
-          <span>Total: <strong>{filteredData.length}</strong> users</span>
-          <Select
-            value={pageSize}
-            onChange={(value) => setPageSize(value)}
-            style={{ width: 120 }}
-          >
-            <Option value={5}>5 / page</Option>
-            <Option value={10}>10 / page</Option>
-            <Option value={20}>20 / page</Option>
-            <Option value={50}>50 / page</Option>
+          <span>Tổng: <strong>{filteredData.length}</strong> người dùng</span>
+          <Select value={pageSize} onChange={setPageSize} style={{ width: 120 }}>
+            <Option value={5}>5 / trang</Option>
+            <Option value={10}>10 / trang</Option>
+            <Option value={20}>20 / trang</Option>
+            <Option value={50}>50 / trang</Option>
           </Select>
         </Space>
       </Space>
 
-      <Table
-        rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
-        columns={columns}
-        dataSource={filteredData}
-        rowKey="key"
-        pagination={{ pageSize }}
-        bordered
-      />
+      <Spin spinning={loading}>
+        <Table
+          columns={columns}
+          dataSource={filteredData}
+          rowKey="id"
+          pagination={{ pageSize }}
+          bordered
+          size="middle"
+        />
+      </Spin>
 
-      <AddUser
-        visible={addModalVisible}
-        onCreate={handleAddUser}
-        onCancel={() => setAddModalVisible(false)}
-      />
+      {/* ── Add User Modal ── */}
+      <Modal
+        open={addVisible}
+        title="Thêm người dùng mới"
+        onCancel={() => { setAddVisible(false); addForm.resetFields(); }}
+        onOk={handleAdd}
+        confirmLoading={addLoading}
+        okText="Tạo"
+        cancelText="Hủy"
+      >
+        <Form form={addForm} layout="vertical">
+          <Form.Item
+            name="username"
+            label="Tên đăng nhập"
+            rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            label="Mật khẩu"
+            rules={[
+              { required: true, message: 'Vui lòng nhập mật khẩu' },
+              { min: 6, message: 'Mật khẩu ít nhất 6 ký tự' },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item name="email" label="Email">
+            <Input type="email" />
+          </Form.Item>
+          <Form.Item name="first_name" label="Họ">
+            <Input />
+          </Form.Item>
+          <Form.Item name="last_name" label="Tên">
+            <Input />
+          </Form.Item>
+          <Form.Item name="role" label="Vai trò" initialValue="USER">
+            <Select>
+              <Option value="USER">USER</Option>
+              <Option value="ADMIN">ADMIN</Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
 
-      <EditUser
-        visible={editModalVisible}
-        user={editingUser}
-        onCancel={() => setEditModalVisible(false)}
-        onEdit={handleEditUser}
-      />
-
-      <GrantPermission
-        visible={grantModalVisible}
-        onCancel={() => setGrantModalVisible(false)}
-        onGrant={handleGrant}
-        selectedUsers={selectedUsers}
-      />
+      {/* ── Edit User Modal ── */}
+      <Modal
+        open={editVisible}
+        title={`Sửa người dùng: ${editingUser?.username || ''}`}
+        onCancel={() => { setEditVisible(false); editForm.resetFields(); }}
+        onOk={handleEdit}
+        confirmLoading={editLoading}
+        okText="Lưu"
+        cancelText="Hủy"
+      >
+        <Form form={editForm} layout="vertical">
+          <Form.Item name="email" label="Email">
+            <Input type="email" />
+          </Form.Item>
+          <Form.Item name="first_name" label="Họ">
+            <Input />
+          </Form.Item>
+          <Form.Item name="last_name" label="Tên">
+            <Input />
+          </Form.Item>
+          <Form.Item name="role" label="Vai trò">
+            <Select>
+              <Option value="USER">USER</Option>
+              <Option value="ADMIN">ADMIN</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="password" label="Mật khẩu mới (để trống nếu không đổi)">
+            <Input.Password />
+          </Form.Item>
+        </Form>
+      </Modal>
     </Card>
   );
 };

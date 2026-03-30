@@ -88,9 +88,25 @@ const BOT_MD_COMPONENTS = {
       {children}
     </a>
   ),
-  img: ({ src, alt }) => (
-    <img src={src} alt={alt} style={{ maxWidth: '100%', maxHeight: 320, borderRadius: 12, display: 'block', margin: '10px 0', boxShadow: '0 4px 16px rgba(59,130,196,0.15)', border: '2px solid #E0EFF8' }} />
-  ),
+  img: ({ src, alt }) => {
+    const isItemIcon = src && src.includes('/image/item_');
+    if (isItemIcon) {
+      return (
+        <img src={src} alt={alt} title={alt}
+          style={{
+            width: 40, height: 40, borderRadius: 8, display: 'inline-block',
+            verticalAlign: 'middle', margin: '2px 4px',
+            boxShadow: '0 2px 8px rgba(124,58,237,0.18)',
+            border: '2px solid #DDD6FE',
+            background: '#1a1b2e',
+          }} />
+      );
+    }
+    return (
+      <img src={src} alt={alt}
+        style={{ maxWidth: '100%', maxHeight: 320, borderRadius: 12, display: 'block', margin: '10px 0', boxShadow: '0 4px 16px rgba(59,130,196,0.15)', border: '2px solid #E0EFF8' }} />
+    );
+  },
   table: ({ children }) => (
     <div style={{ overflowX: 'auto', margin: '14px 0', borderRadius: 10, border: '1px solid #D0E4F0', boxShadow: '0 2px 8px rgba(59,130,196,0.08)' }}>
       <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: '0.95em' }}>{children}</table>
@@ -315,25 +331,67 @@ const ChatArea = ({
     setShowThinking(!showThinking);
   };
 
+  // Drag-to-scroll on messages container
+  useEffect(() => {
+    const el = messagesContainerRef.current;
+    if (!el) return;
+    let isDragging = false;
+    let startY = 0;
+    let startScrollTop = 0;
+    const onMouseDown = (e) => {
+      if (e.button !== 0) return;
+      // If click target is the scroll container itself (not a child), it means
+      // the user clicked on the scrollbar track/thumb — let browser handle it
+      if (e.target === el) return;
+      const tag = e.target.tagName.toUpperCase();
+      if (['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SVG', 'PATH'].includes(tag)) return;
+      if (e.target.closest('button, a, input, textarea, svg')) return;
+      isDragging = true;
+      startY = e.clientY;
+      startScrollTop = el.scrollTop;
+    };
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      el.scrollTop = startScrollTop - (e.clientY - startY);
+    };
+    const onMouseUp = () => {
+      isDragging = false;
+    };
+    el.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    return () => {
+      el.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
       {/* Messages */}
       <div
         ref={messagesContainerRef}
+        className="custom-scrollbar"
         style={{
           flex: 1,
           minHeight: 0,
           width: '100%',
           overflowY: 'auto',
+          cursor: 'grab',
         }}
       >
-        <div style={{
-          maxWidth: 965,
-          margin: '0 auto',
-          width: '100%',
-          padding: '24px 24px 16px 24px',
-          position: 'relative',
-        }}>
+        <div
+          style={{
+            maxWidth: 965,
+            margin: '0 auto',
+            width: '100%',
+            padding: '24px 24px 16px 24px',
+            position: 'relative',
+          }}
+        >
         {messages.length === 0 ? (
           <div style={{ textAlign: 'center', color: '#bfbfbf', marginTop: 80 }}>
             <InboxOutlined style={{ fontSize: 48, marginBottom: 8 }} />

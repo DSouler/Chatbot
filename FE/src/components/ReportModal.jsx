@@ -10,8 +10,8 @@ import { getLLMConfig } from '../config/chatConfig';
 
 const { Option } = Select;
 
-const DEFAULT_INPUT_PRICE  = 0.15;   // USD per 1M input tokens
-const DEFAULT_OUTPUT_PRICE = 0.60;   // USD per 1M output tokens
+const DEFAULT_INPUT_PRICE  = 0.20;   // USD per 1M input tokens (gpt-5.4-nano)
+const DEFAULT_OUTPUT_PRICE = 1.25;   // USD per 1M output tokens (gpt-5.4-nano)
 const DEFAULT_USD_VND      = 25400;  // 1 USD = VND
 
 const cardStyle = {
