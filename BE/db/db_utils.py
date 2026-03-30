@@ -463,3 +463,77 @@ def get_usage_stats(user_id=None, days=30):
     daily = [dict(row) for row in cur.fetchall()]
     cur.close(); conn.close()
     return {"summary": summary, "daily": daily}
+
+
+def get_admin_feedback_report(days=30):
+    """Aggregate feedback stats for admin report: summary, daily breakdown, top liked/disliked messages."""
+    conn = get_connection(); cur = conn.cursor()
+    days_int = int(days)
+
+    # Summary totals
+    cur.execute("""
+        SELECT
+            COALESCE(COUNT(*) FILTER (WHERE feedback = 'up'),   0) AS total_up,
+            COALESCE(COUNT(*) FILTER (WHERE feedback = 'down'), 0) AS total_down,
+            COUNT(DISTINCT user_id) AS total_voters
+        FROM message_feedback
+        WHERE created_at >= NOW() - INTERVAL '%s days'
+    """ % days_int)
+    summary = dict(cur.fetchone() or {})
+
+    # Per-day breakdown
+    cur.execute("""
+        SELECT
+            DATE(created_at) AS day,
+            COALESCE(COUNT(*) FILTER (WHERE feedback = 'up'),   0) AS up_count,
+            COALESCE(COUNT(*) FILTER (WHERE feedback = 'down'), 0) AS down_count
+        FROM message_feedback
+        WHERE created_at >= NOW() - INTERVAL '%s days'
+        GROUP BY DATE(created_at)
+        ORDER BY day ASC
+    """ % days_int)
+    daily = [dict(row) for row in cur.fetchall()]
+
+    # Top 10 liked messages
+    cur.execute("""
+        SELECT
+            mf.message_id,
+            COALESCE(COUNT(*) FILTER (WHERE mf.feedback = 'up'),   0) AS up_count,
+            COALESCE(COUNT(*) FILTER (WHERE mf.feedback = 'down'), 0) AS down_count,
+            m.content,
+            m.conversation_id,
+            m.created_at AS message_created_at
+        FROM message_feedback mf
+        LEFT JOIN messages m ON m.id = mf.message_id
+        GROUP BY mf.message_id, m.content, m.conversation_id, m.created_at
+        HAVING COUNT(*) FILTER (WHERE mf.feedback = 'up') > 0
+        ORDER BY up_count DESC, down_count ASC
+        LIMIT 10
+    """)
+    top_liked = [dict(row) for row in cur.fetchall()]
+
+    # Top 10 disliked messages
+    cur.execute("""
+        SELECT
+            mf.message_id,
+            COALESCE(COUNT(*) FILTER (WHERE mf.feedback = 'up'),   0) AS up_count,
+            COALESCE(COUNT(*) FILTER (WHERE mf.feedback = 'down'), 0) AS down_count,
+            m.content,
+            m.conversation_id,
+            m.created_at AS message_created_at
+        FROM message_feedback mf
+        LEFT JOIN messages m ON m.id = mf.message_id
+        GROUP BY mf.message_id, m.content, m.conversation_id, m.created_at
+        HAVING COUNT(*) FILTER (WHERE mf.feedback = 'down') > 0
+        ORDER BY down_count DESC, up_count ASC
+        LIMIT 10
+    """)
+    top_disliked = [dict(row) for row in cur.fetchall()]
+
+    cur.close(); conn.close()
+    return {
+        "summary": summary,
+        "daily": daily,
+        "top_liked": top_liked,
+        "top_disliked": top_disliked,
+    }

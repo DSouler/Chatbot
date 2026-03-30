@@ -147,6 +147,11 @@ export const getUsageStats = (userId = null, days = 30) => {
   return fetch(`${baseUrl}/report/usage?${params}`).then(r => r.json());
 };
 
+export const getAdminFeedbackReport = (days = 30) => {
+  const params = new URLSearchParams({ days });
+  return fetch(`${baseUrl}/report/admin/feedback?${params}`).then(r => r.json());
+};
+
 // Update last bot message content and sources
 export const updateLastBotMessage = (conversationId, content, sources = null) => {
   const body = { content };

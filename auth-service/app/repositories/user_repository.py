@@ -197,3 +197,50 @@ class UserRepository:
             position_id=position.id,
         )
         return self.create_user(user)
+
+    # ── Admin repository methods ──
+
+    def get_all_users(self) -> list[User]:
+        """Get all users"""
+        return self.db.query(User).order_by(User.id).all()
+
+    def delete_user(self, user_id: int) -> bool:
+        """Delete a user by ID"""
+        user = self.get_user_by_id(user_id)
+        if not user:
+            return False
+        self.db.delete(user)
+        self.db.commit()
+        return True
+
+    def admin_update_user(self, user_id: int, **kwargs) -> Optional[User]:
+        """Update user fields (admin)"""
+        user = self.get_user_by_id(user_id)
+        if not user:
+            return None
+        for key, value in kwargs.items():
+            if value is not None and hasattr(user, key):
+                setattr(user, key, value)
+        user.updated_at = datetime.utcnow()
+        self.db.commit()
+        self.db.refresh(user)
+        return user
+
+    def admin_create_user(self, username: str, password_hash: str,
+                          email: Optional[str] = None,
+                          first_name: Optional[str] = None,
+                          last_name: Optional[str] = None,
+                          role: str = "USER") -> User:
+        """Create user with admin-specified fields"""
+        position = self.get_or_create_default_position()
+        user = User(
+            username=username,
+            email=email,
+            password_hash=password_hash,
+            first_name=first_name,
+            last_name=last_name,
+            role=role,
+            is_ldap_user=False,
+            position_id=position.id,
+        )
+        return self.create_user(user)

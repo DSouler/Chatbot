@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.controllers.auth_controller import router as auth_router
+from app.controllers.admin_controller import router as admin_router
 
 app = FastAPI(
     title=settings.app_name,
@@ -20,6 +21,7 @@ app.add_middleware(
 
 # routers
 app.include_router(auth_router)
+app.include_router(admin_router)
 
 @app.get("/")
 def read_root():

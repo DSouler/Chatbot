@@ -44,6 +44,7 @@ from db.db_utils import (
     init_token_usage_table,
     record_token_usage,
     get_usage_stats,
+    get_admin_feedback_report,
     init_messages_images_column,
     update_last_bot_message,
     init_message_feedback_table,
@@ -71,6 +72,10 @@ from agents.tft_meta_crawler import (
     detect_content_type,
     crawl_tft_meta,
     format_meta_context,
+    format_recipe_table,
+    format_recipe_card,
+    ITEM_RECIPES,
+    _is_recipe_query,
     get_cache as get_meta_cache,
 )
 
@@ -393,6 +398,12 @@ async def _generate_stream(request: QuestionRequest):
                     if sources:
                         yield "data: " + json.dumps({"type": "sources", "data": sources}) + "\n\n"
 
+                    # Inject visual recipe card with item images if this is a recipe query
+                    if _is_recipe_query(original_question):
+                        recipe_card = format_recipe_card(original_question, config.BACKEND_BASE_URL)
+                        if recipe_card:
+                            yield "data: " + json.dumps({"type": "token", "content": recipe_card}) + "\n\n"
+
                     async for chunk in simple_pipeline.stream_completion(
                         model_name=llm_settings.model,
                         llm_client=llm_client,
@@ -429,6 +440,13 @@ async def _generate_stream(request: QuestionRequest):
                 prioritize_table=False
             )
 
+            # Prepare recipe card for injection if this is a recipe query
+            _recipe_card_chunk = None
+            if _is_recipe_query(original_question):
+                _rc = format_recipe_card(original_question, config.BACKEND_BASE_URL)
+                if _rc:
+                    _recipe_card_chunk = "data: " + json.dumps({"type": "token", "content": "\n\n" + _rc}) + "\n\n"
+
             async for chunk in simple_pipeline.stream(
                 original_question=original_question,
                 llm_client=llm_client,
@@ -438,6 +456,10 @@ async def _generate_stream(request: QuestionRequest):
                 reasoning_settings=reasoning_settings,
                 user_content=user_content
             ):
+                # Inject recipe card right before the 'done' event
+                if _recipe_card_chunk and '"type": "done"' in chunk:
+                    yield _recipe_card_chunk
+                    _recipe_card_chunk = None
                 yield chunk
 
         # =========================
@@ -1320,6 +1342,15 @@ def api_usage_stats(user_id: int = None, days: int = 30):
         return stats
     except Exception as e:
         return {"summary": {}, "daily": [], "error": str(e)}
+
+
+@app.get("/report/admin/feedback")
+def api_admin_feedback_report(days: int = 30):
+    """Admin endpoint: aggregated feedback stats (up/down) with daily breakdown and top messages."""
+    try:
+        return get_admin_feedback_report(days=days)
+    except Exception as e:
+        return {"summary": {}, "daily": [], "top_liked": [], "top_disliked": [], "error": str(e)}
 
 
 # =========================
