@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.repositories.user_repository import UserRepository
-from app.schemas.auth import LoginRequest, LoginResponse, TokenData, RegisterRequest
+from app.schemas.auth import LoginRequest, LoginResponse, TokenData, RegisterRequest, AdminCreateUserRequest, AdminUpdateUserRequest
 from app.services.ldap_auth import LDAPAuth
 from app.models.user import User
 # Password hashing
@@ -163,3 +163,48 @@ class AuthService:
             password_hash=password_hash,
             email=register_request.email
         )
+
+    # ── Admin service methods ──
+
+    def get_all_users(self) -> list:
+        return self.user_repository.get_all_users()
+
+    def admin_create_user(self, req: AdminCreateUserRequest) -> User:
+        if self.user_repository.get_user_by_username(req.username):
+            raise HTTPException(status_code=400, detail="Tên tài khoản đã tồn tại")
+        if req.email and self.user_repository.get_user_by_email(req.email):
+            raise HTTPException(status_code=400, detail="Email đã được sử dụng")
+        password_hash = self.get_password_hash(req.password)
+        return self.user_repository.admin_create_user(
+            username=req.username,
+            password_hash=password_hash,
+            email=req.email,
+            first_name=req.first_name,
+            last_name=req.last_name,
+            role=req.role,
+        )
+
+    def admin_update_user(self, user_id: int, req: AdminUpdateUserRequest) -> User:
+        user = self.user_repository.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="Không tìm thấy người dùng")
+        kwargs = {}
+        if req.email is not None:
+            dup = self.user_repository.get_user_by_email(req.email)
+            if dup and dup.id != user_id:
+                raise HTTPException(status_code=400, detail="Email đã được sử dụng")
+            kwargs["email"] = req.email
+        if req.first_name is not None:
+            kwargs["first_name"] = req.first_name
+        if req.last_name is not None:
+            kwargs["last_name"] = req.last_name
+        if req.role is not None:
+            kwargs["role"] = req.role
+        if req.password is not None:
+            kwargs["password_hash"] = self.get_password_hash(req.password)
+        return self.user_repository.admin_update_user(user_id, **kwargs)
+
+    def admin_delete_user(self, user_id: int) -> bool:
+        if not self.user_repository.get_user_by_id(user_id):
+            raise HTTPException(status_code=404, detail="Không tìm thấy người dùng")
+        return self.user_repository.delete_user(user_id)

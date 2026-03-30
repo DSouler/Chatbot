@@ -46,12 +46,15 @@ const CustomSider = ({
   const [uploadProgress, setUploadProgress] = useState(null);
   const [collectionStats, setCollectionStats] = useState(null);
   const fileInputRef = useRef(null);
+  const scrollContainerRef = useRef(null);
+  const didDrag = useRef(false);
 
   // Report state
   const [reportModalOpen, setReportModalOpen] = useState(false);
 
   // Search + rename state
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchError, setSearchError] = useState('');
   const [renamingId, setRenamingId] = useState(null);
   const [renameValue, setRenameValue] = useState('');
   const [renames, setRenames] = useState({});
@@ -134,6 +137,44 @@ const CustomSider = ({
     });
   }, [userId]);
 
+  // Drag-to-scroll on sidebar chat list
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    let isDragging = false;
+    let startY = 0;
+    let startScrollTop = 0;
+    const onMouseDown = (e) => {
+      if (e.button !== 0) return;
+      if (e.target === el) return; // scrollbar click
+      if (e.target.closest('button, a, input, textarea, .ant-dropdown')) return;
+      isDragging = true;
+      didDrag.current = false;
+      startY = e.clientY;
+      startScrollTop = el.scrollTop;
+    };
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      const dy = e.clientY - startY;
+      if (Math.abs(dy) > 5) {
+        didDrag.current = true;
+        e.preventDefault();
+        el.scrollTop = startScrollTop - dy;
+      }
+    };
+    const onMouseUp = () => {
+      isDragging = false;
+    };
+    el.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    return () => {
+      el.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  }, []);
+
   const handleDelete = (conversationId) => {
     if (!userId) return;
     deleteConversation(userId, conversationId).then(() => {
@@ -170,6 +211,32 @@ const CustomSider = ({
         return name.includes(q) || idMatch;
       })
     : conversationList;
+
+  const handleSearch = () => {
+    const q = searchQuery.trim();
+    if (!q) {
+      setSearchError('Vui lòng nhập từ khóa tìm kiếm');
+      return;
+    }
+    if (/^\d+$/.test(q)) {
+      const idNum = Number(q);
+      const found = conversationList.some(c => convIdMap[c.id] === idNum);
+      if (!found) {
+        setSearchError('ID không hợp lệ');
+        return;
+      }
+    } else {
+      const ql = q.toLowerCase();
+      const found = conversationList.some(c =>
+        (renames[c.id] || c.name || '').toLowerCase().includes(ql)
+      );
+      if (!found) {
+        setSearchError('Tên lịch sử chat không hợp lệ');
+        return;
+      }
+    }
+    setSearchError('');
+  };
 
   // Group conversations by date
   const groupedConversations = filteredConversations.reduce((acc, conv) => {
@@ -350,28 +417,51 @@ const CustomSider = ({
           {/* Search bar - only for logged-in users */}
           {!isGuest && (
             <div style={{ padding: '0 14px 10px 14px', flexShrink: 0 }}>
-              <Input
-                placeholder="Tìm kiếm đoạn chat..."
-                prefix={<SearchOutlined style={{ color: '#6C9FC0' }} />}
-                allowClear
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                size="small"
-                style={{
-                  borderRadius: 10,
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(130,180,210,0.2)',
-                  color: '#ddd',
-                }}
-                className="sider-search"
-              />
+              <div style={{ display: 'flex', gap: 6 }}>
+                <Input
+                  placeholder="Tìm kiếm đoạn chat..."
+                  prefix={<SearchOutlined style={{ color: '#6C9FC0' }} />}
+                  allowClear
+                  value={searchQuery}
+                  onChange={e => { setSearchQuery(e.target.value); setSearchError(''); }}
+                  onPressEnter={handleSearch}
+                  size="small"
+                  style={{
+                    flex: 1,
+                    borderRadius: 10,
+                    background: 'rgba(255,255,255,0.08)',
+                    border: searchError ? '1px solid #ff4d4f' : '1px solid rgba(130,180,210,0.2)',
+                    color: '#ddd',
+                  }}
+                  className="sider-search"
+                />
+                <Button
+                  type="primary"
+                  size="small"
+                  icon={<SearchOutlined />}
+                  onClick={handleSearch}
+                  style={{
+                    borderRadius: 10,
+                    background: 'linear-gradient(135deg, #3B82C4 0%, #6C9FC0 100%)',
+                    border: 'none',
+                    minWidth: 32,
+                    flexShrink: 0,
+                  }}
+                />
+              </div>
+              {searchError && (
+                <div style={{ color: '#ff4d4f', fontSize: 12, marginTop: 4, paddingLeft: 4 }}>
+                  {searchError}
+                </div>
+              )}
             </div>
           )}
 
           {/* Chat grouped list - only for logged-in users */}
           <div
             className="sider-scrollbar"
-            style={{ flex: 1, overflowY: 'auto', padding: '0 8px', minHeight: 0 }}
+            ref={scrollContainerRef}
+            style={{ flex: 1, overflowY: 'auto', padding: '0 8px', minHeight: 0, cursor: 'grab' }}
           >
             {!isGuest && Object.keys(groupedConversations).length === 0 && searchQuery.trim() && (
               <div style={{ textAlign: 'center', color: '#6C9FC0', padding: '24px 0', fontSize: 13 }}>
@@ -390,7 +480,7 @@ const CustomSider = ({
                   return (
                     <div
                       key={item.id}
-                      onClick={() => { if (renamingId !== item.id) onSelectConversation(item.id); }}
+                      onClick={() => { if (didDrag.current) return; if (renamingId !== item.id) onSelectConversation(item.id); }}
                       style={{
                         display: 'flex',
                         alignItems: 'center',

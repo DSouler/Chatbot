@@ -5,10 +5,11 @@ import {
   FileOutlined,
   DatabaseOutlined,
   SettingOutlined,
+  BarChartOutlined,
 } from '@ant-design/icons';
 import { useUser } from '../../hooks/useUser';
 import Footer from '../../components/Layouts/Footer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 import logoUrl from '../../assets/logo.svg';
 
 const TFTLogo = ({ size = 48 }) => (
@@ -20,6 +21,11 @@ const { Header, Content, Sider } = Layout;
 const AdminLayout = ({ children }) => {
   const { user, logout } = useUser();
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   const menuItems = [
     {
@@ -63,6 +69,12 @@ const AdminLayout = ({ children }) => {
       label: 'Settings',
       path: '/admin/settings',
     },
+    {
+      key: 'report',
+      icon: <BarChartOutlined />,
+      label: 'Report & Statistics',
+      path: '/admin/report',
+    },
   ];
 
   const handleMenuClick = ({ key }) => {
@@ -96,7 +108,7 @@ const AdminLayout = ({ children }) => {
           <div className="flex items-center space-x-4">
             <span className="text-gray-700 font-medium">{user.email}</span>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="text-gray-600 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium border border-gray-200 bg-gray-100 hover:bg-red-50 transition"
             >
               Sign Out
@@ -129,7 +141,7 @@ const AdminLayout = ({ children }) => {
         
         <Layout style={{ marginLeft: 250 }}>
           <Content className="bg-gray-50 overflow-auto">
-            {children}
+            {children || <Outlet />}
           </Content>
           <Footer />
         </Layout>

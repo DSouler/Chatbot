@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Table, Button, Divider, Tooltip } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
@@ -7,6 +7,7 @@ const { Sider } = Layout;
 const InformationPanel = ({ info = [], collapsed, onToggle }) => {
   const [width, setWidth] = useState(300);
   const [isResizing, setIsResizing] = useState(false);
+  const infoPanelScrollRef = useRef(null);
 
   const handleMouseDown = (e) => {
     e.preventDefault();
@@ -33,6 +34,40 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
       document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isResizing]);
+
+  // Drag-to-scroll
+  useEffect(() => {
+    const el = infoPanelScrollRef.current;
+    if (!el) return;
+    let isDragging = false;
+    let startY = 0;
+    let startScrollTop = 0;
+    const onMouseDown = (e) => {
+      if (e.button !== 0) return;
+      if (e.target === el) return; // scrollbar click
+      if (e.target.closest('button, a, input, textarea')) return;
+      isDragging = true;
+      startY = e.clientY;
+      startScrollTop = el.scrollTop;
+    };
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      el.scrollTop = startScrollTop - (e.clientY - startY);
+    };
+    const onMouseUp = () => {
+      isDragging = false;
+    };
+    el.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    return () => {
+      el.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns = [
     {
@@ -80,6 +115,7 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
         flexDirection: 'column',
         boxShadow: '-2px 0 4px rgba(0,0,0,0.05)',
         userSelect: 'none',
+        pointerEvents: collapsed ? 'none' : 'auto',
       }}
     >
       <div
@@ -108,6 +144,7 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
           zIndex: 100,
           background: '#fff',
           border: '1px solid #ddd',
+          pointerEvents: 'auto',
         }}
       />
       {!collapsed && (
@@ -116,7 +153,10 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
             <h3 style={{ fontWeight: 600, marginBottom: 8 }}>Information Panel</h3>
             <Divider style={{ margin: '8px 0' }} />
           </div>
-          <div style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
+          <div
+            ref={infoPanelScrollRef}
+            style={{ flex: 1, minHeight: 0, overflow: 'auto', cursor: 'grab' }}
+          >
             <Table
               columns={columns}
               dataSource={info}

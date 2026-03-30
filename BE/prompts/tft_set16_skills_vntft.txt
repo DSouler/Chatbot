@@ -1,0 +1,647 @@
+TỔNG HỢP TƯỚNG VÀ KỸ NĂNG ĐTCL MÙA 16 - TRUYỀN THUYẾT & HUYỀN THOẠI
+Ghi chú:
+- File này được tổng hợp để dùng cho prompt/RAG, ưu tiên tính đầy đủ và đồng nhất.
+- Cấu trúc mùa gồm 100 tướng, trong đó có 40 tướng Mở Khóa.
+- Tên tướng giữ nguyên theo tên game; mô tả kỹ năng được diễn giải ngắn gọn bằng tiếng Việt để dễ nhúng vào prompt.
+- Tộc/Hệ giữ theo tên phổ biến trong dữ liệu live; một số mục đã Việt hóa một phần để dễ đọc.
+- Nguồn nền: Riot TFT tiếng Việt cho thông tin mùa và TFTSet16.com cho roster 100 tướng, mô tả kỹ năng ngắn và điều kiện Mở Khóa.
+
+Anivia
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Freljord, Invoker
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Bắn mảnh băng; có thể chí mạng lên mục tiêu bị Làm Lạnh. Phối hợp tốt với hiệu ứng Làm Lạnh của Freljord. Nên ghép đồ SMPT và Chí Mạng.
+
+Blitzcrank
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Zaun, Juggernaut
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Kéo mục tiêu và hất tung. Cung cấp mở giao tranh và khống chế. Nên ghép đồ chống chịu và SMPT.
+
+Briar
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Noxus, Juggernaut, Slayer
+- Tóm tắt kỹ năng: Ưu tiên STVL và Máu. Rơi vào cuồng nộ, nhận Tốc Đánh và hút máu. Gây sát thương diện rộng. Nên ghép đồ STVL và chống chịu.
+
+Caitlyn
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Piltover, Longshot
+- Tóm tắt kỹ năng: Ưu tiên STVL. Bắn tầm xa, gây thêm sát thương lên mục tiêu đang bị giữ chân hoặc kẹt vị trí. Nên ghép đồ STVL để tối đa sát thương.
+
+Illaoi
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Bilgewater, Bruiser
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Vừa tự hồi phục vừa gây sát thương vật lý theo đường thẳng. Đồ chống chịu và SMPT cùng tăng độ lì lợm lẫn sát thương.
+
+Jarvan IV
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Demacia, Defender
+- Tóm tắt kỹ năng: Ưu tiên SMPT và Máu. Tạo lá chắn cho bản thân và tăng Tốc Đánh cho đồng minh. Tướng chống chịu hỗ trợ, giúp chủ lực đánh nhanh hơn.
+
+Jhin
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ionia, Gunslinger
+- Tóm tắt kỹ năng: Ưu tiên STVL và Chí Mạng. Phát bắn thứ 4 gây chí mạng rất mạnh và làm chậm. Nên ghép đồ STVL và Chí Mạng để dồn sát thương mạnh.
+
+Kogmaw
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Hư Không, Pháp Sư, Longshot
+- Tóm tắt kỹ năng: Ưu tiên Tốc Đánh và SMPT. Phun đòn đánh phép với tầm bắn tăng thêm. Tốc Đánh và SMPT cùng tăng DPS.
+
+Lulu
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Yordle, Pháp Sư
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Biến hình kẻ địch và cường hóa đồng minh. Cung cấp khống chế và hỗ trợ. SMPT giúp hiệu ứng cường hóa mạnh hơn.
+
+Qiyana
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ixtal, Slayer
+- Tóm tắt kỹ năng: Ưu tiên STVL. Lao tới và tung đòn gây sát thương vật lý. Có thể làm choáng nếu mục tiêu đứng gần địa hình. Nên ghép đồ STVL để dồn sát thương.
+
+Rumble
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Yordle, Defender
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Quá nhiệt và phun lửa gây sát thương phép diện rộng. SMPT giúp tăng đáng kể sát thương đầu ra.
+
+Shen
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ionia, Bruiser
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Tạo lá chắn cho đồng minh và khiêu khích kẻ địch gần đó. Cung cấp bảo kê và khống chế. Đồ chống chịu giúp lá chắn mạnh hơn.
+
+Sona
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Demacia, Invoker
+- Tóm tắt kỹ năng: Ưu tiên SMPT và Máu. Gây sát thương phép lên địch và hồi máu cho đồng minh thấp máu nhất. Tướng hỗ trợ đa dụng, phát huy tốt với đồ SMPT.
+
+Viego
+- Giá: 1
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Quần Đảo Bóng Đêm, Đánh Nhanh
+- Tóm tắt kỹ năng: Ưu tiên STVL. Chiếm hữu kẻ địch bị hạ gục để dùng kỹ năng của chúng. Có thể làm mới nhịp giao tranh khi chiếm hữu thành công. Nên ghép đồ STVL để tăng sát thương.
+
+Aphelios
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Targon
+- Tóm tắt kỹ năng: Ưu tiên STVL. Luân chuyển giữa nhiều dạng vũ khí với hiệu ứng khác nhau. Chủ lực linh hoạt, tăng tiến tốt theo STVL.
+
+Ashe
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Freljord, Đánh Nhanh
+- Tóm tắt kỹ năng: Ưu tiên STVL. Bắn tên gây Làm Lạnh và gây sát thương chuẩn lên mục tiêu thấp máu. Kết hợp tốt với Tryndamere để tăng sức mạnh mũi tên.
+
+Bard
+- Giá: 2
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Caretaker
+- Điều kiện Mở Khóa: Reroll 4 times before Stage 2 Carousel
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Phóng Meeps gây sát thương phép; có thêm Meeps cho mỗi tướng 3 sao trên sân. Phù hợp đội hình đánh mốc cao và lên đồ SMPT.
+
+Chogath
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Hư Không, Juggernaut
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Xé mặt đất, gây sát thương và hất tung. Hạ gục kẻ địch để tăng Máu tối đa. Nên ghép đồ chống chịu và SMPT.
+
+Ekko
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Zaun, Phá Rối
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Ném thiết bị gây sát thương và làm choáng. Tua ngược thời gian để hồi máu. SMPT tăng cả sát thương lẫn hồi máu.
+
+Graves
+- Giá: 2
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Bilgewater, Gunslinger
+- Điều kiện Mở Khóa: Cho Twisted Fate cầm 2 trang bị khi giao tranh
+- Tóm tắt kỹ năng: Ưu tiên STVL. Đòn đánh hình nón theo nội tại trúng nhiều mục tiêu. Kỹ năng chủ động gây sát thương bùng nổ diện rộng. Kết hợp với Twisted Fate để tích lũy thêm Tốc Đánh.
+
+Neeko
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ixtal, Pháp Sư, Defender
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Nhảy vào và gây sát thương phép diện rộng kèm làm choáng. Mở giao tranh và khống chế tốt, hưởng lợi từ SMPT.
+
+Orianna
+- Giá: 2
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Piltover, Invoker
+- Điều kiện Mở Khóa: 3 Piltover or higher
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Điều khiển quả cầu để gây sát thương và tạo hiệu ứng hỗ trợ. Sóng xung kích kéo kẻ địch lại. SMPT khuếch đại sát thương.
+
+Poppy
+- Giá: 2
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Demacia, Yordle, Juggernaut
+- Điều kiện Mở Khóa: Cho một tướng Demacia hoặc Yordle cầm 2 trang bị khi giao tranh.
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Tạo lá chắn cho bản thân và chia lá chắn cho đồng minh. Có hiệu ứng hất tung để khống chế. Đồ chống chịu giúp lá chắn mạnh hơn.
+
+RekSai
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Hư Không, Chinh Phục
+- Tóm tắt kỹ năng: Ưu tiên STVL. Đào xuống rồi trồi lên gây sát thương và hất tung. Nên ghép đồ STVL để dồn sát thương.
+
+Sion
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Noxus, Bruiser
+- Tóm tắt kỹ năng: Ưu tiên Máu. Lao tới gây sát thương và làm choáng. Hạ gục kẻ địch để tăng Máu tối đa vĩnh viễn. Nên dồn đồ Máu để tăng tiến sức mạnh.
+
+Teemo
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Yordle, Longshot
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Đặt nấm gây sát thương phép và làm mù. SMPT tăng sát thương của nấm.
+
+Tristana
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Yordle, Gunslinger
+- Tóm tắt kỹ năng: Ưu tiên STVL. Bắn đạn nổ gây sát thương diện rộng. Nên ghép đồ STVL để vừa dồn sát thương vừa đánh lan.
+
+Tryndamere
+- Giá: 2
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Freljord, Slayer
+- Điều kiện Mở Khóa: Cho Ashe cầm 2 trang bị khi giao tranh
+- Tóm tắt kỹ năng: Ưu tiên STVL. Hóa cuồng với độ cứng cáp cao hơn và đòn đánh cường hóa. Nhận STVL vĩnh viễn từ các mạng hạ gục liên quan Ashe. Nên ghép đồ STVL.
+
+Twisted Fate
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Bilgewater, Đánh Nhanh
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Mỗi đòn đánh thứ 3 tung lá bài diện rộng gây sát thương phép. Kết hợp cùng Graves để đánh dấu mục tiêu và nhận SMPT vĩnh viễn khi hạ gục.
+
+Vi
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Piltover, Zaun, Defender
+- Tóm tắt kỹ năng: Ưu tiên Máu và STVL. Lao tới đấm mạnh, gây sát thương và hất tung. Nên ghép đồ chống chịu và STVL.
+
+Xin Zhao
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Demacia, Ionia, Hộ Vệ
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Đánh ba lần; đòn cuối hồi máu và làm choáng. Tuyến trước cứng cáp, có hồi phục và khống chế.
+
+Yasuo
+- Giá: 2
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ionia, Slayer
+- Tóm tắt kỹ năng: Ưu tiên STVL. Lướt xuyên kẻ địch, gây sát thương và nhận lá chắn. Có hiệu ứng hất tung để khống chế. Nên ghép đồ STVL để tăng sát thương.
+
+Yorick
+- Giá: 2
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Quần Đảo Bóng Đêm, Hộ Vệ
+- Điều kiện Mở Khóa: Cho Viego 2 sao cầm 2 trang bị khi giao tranh.
+- Tóm tắt kỹ năng: Ưu tiên Máu và STVL. Triệu hồi ma con tấn công kẻ địch. Càng nhiều ma con thì sát thương càng lớn. Nên ghép đồ chống chịu và STVL.
+
+Ahri
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ionia, Pháp Sư
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Bắn quả cầu; khi quay về gây sát thương chuẩn. Có thể lướt để đổi vị trí. Sát thương chuẩn bỏ qua kháng và hưởng lợi từ SMPT.
+
+Darius
+- Giá: 3
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Noxus, Defender
+- Điều kiện Mở Khóa: Have Draven drop 1 gold
+- Tóm tắt kỹ năng: Ưu tiên STVL. Kết liễu mục tiêu thấp máu và làm mới hồi chiêu. Nhận thêm STVL khi hạ gục. Nên ghép đồ STVL để ngưỡng kết liễu mạnh hơn.
+
+Dr Mundo
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Zaun, Bruiser
+- Tóm tắt kỹ năng: Ưu tiên Máu. Hồi lượng lớn Máu và nhận STVL theo Máu tối đa. Nên dồn đồ Máu để tăng tiến sức mạnh.
+
+Draven
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Noxus, Đánh Nhanh
+- Tóm tắt kỹ năng: Ưu tiên STVL. Ném rìu xoay gây thêm sát thương. Nhặt lại rìu để duy trì cường hóa. Tỉ lệ tăng tiến theo STVL rất tốt.
+
+Gangplank
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Bilgewater, Slayer, Chinh Phục
+- Tóm tắt kỹ năng: Ưu tiên STVL và Chí Mạng. Kích nổ thùng liên hoàn, giảm Giáp địch và đặc biệt mạnh khi chí mạng. Nên ghép đồ STVL và Chí Mạng.
+
+Gwen
+- Giá: 3
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Quần Đảo Bóng Đêm, Phá Rối
+- Điều kiện Mở Khóa: Collect 20 Souls
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Cắt xé theo vùng, gây sát thương chuẩn. Nhận lá chắn. Sát thương chuẩn bỏ qua kháng và hưởng lợi từ SMPT.
+
+Jinx
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Zaun, Gunslinger
+- Tóm tắt kỹ năng: Ưu tiên STVL và Tốc Đánh. Hạ gục mục tiêu để tăng Tốc Đánh và tái kích hoạt nhịp giao tranh. Nên ghép STVL và Tốc Đánh để tăng tiến sát thương.
+
+Kennen
+- Giá: 3
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Ionia, Yordle, Defender
+- Điều kiện Mở Khóa: 8 star levels of Ionia, Yordle, or Defender
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Lao tới và ném phi tiêu gây làm choáng. Năng lượng thấp giúp tung chiêu thường xuyên. SMPT tăng sát thương và hiệu quả khống chế.
+
+Kobuko & Yuumi
+- Giá: 3
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Yordle, Bruiser, Invoker
+- Điều kiện Mở Khóa: 6 star levels of Brawler, Yordle, or Invoker
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Kobuko chống chịu ở tuyến trước, còn Yuumi hồi máu và gây sát thương phép. SMPT tăng hồi máu và sát thương.
+
+Leblanc
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Noxus, Invoker
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Lướt đi, gây sát thương phép và tạo phân thân. Phân thân mô phỏng các đòn đánh. SMPT giúp tăng đáng kể sát thương đầu ra.
+
+Leona
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Targon
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Làm choáng mục tiêu và gây sát thương phép diện rộng. Đồ chống chịu giúp tăng độ lì lợm và sát thương.
+
+Loris
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Piltover, Hộ Vệ
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Tạo lá chắn cho đồng minh và tăng Giáp/Kháng Phép. Tank support that protects team.
+
+Malzahar
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Hư Không, Phá Rối
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Triệu hồi bọ hư không và áp chế mục tiêu. Bọ hư không hưởng lợi từ SMPT. Khống chế tốt và gây sát thương theo thời gian.
+
+Milio
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ixtal, Invoker
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Hồi máu cho đồng minh và tăng Tốc Đánh. Tướng hỗ trợ giúp chủ lực với hồi máu và tăng Tốc Đánh.
+
+Nautilus
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Bilgewater, Juggernaut, Hộ Vệ
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Nhận lá chắn và định kỳ gây sát thương phép diện rộng mỗi 4 giây. Đồ chống chịu giúp tăng lá chắn và sát thương đầu ra.
+
+Sejuani
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Freljord, Defender
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Tạo lá chắn, đồng thời Làm Lạnh địch theo hình nón và đường thẳng. Làm choáng các mục tiêu đã bị Làm Lạnh. Đồ chống chịu giúp lá chắn mạnh hơn.
+
+Vayne
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Demacia, Longshot
+- Tóm tắt kỹ năng: Ưu tiên STVL. Lộn nhào rồi bắn đòn gây sát thương chuẩn. Sát thương chuẩn bỏ qua kháng. Nên ghép đồ STVL để gây sát thương ổn định.
+
+Zoe
+- Giá: 3
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Targon
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Ném bong bóng khiến mục tiêu ngủ và chịu thêm sát thương. Khống chế tốt và bùng nổ sát thương khi có đồ SMPT.
+
+Ambessa
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Noxus, Chinh Phục
+- Tóm tắt kỹ năng: Ưu tiên STVL và Máu. Lao tới và tung đòn gây sát thương vật lý. Nhận lá chắn. Nên ghép đồ STVL và chống chịu.
+
+Belveth
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Hư Không, Slayer
+- Tóm tắt kỹ năng: Ưu tiên Tốc Đánh và STVL. Lao lướt và tấn công liên tục. Hạ gục mục tiêu để tăng Tốc Đánh. Nên ghép đồ Tốc Đánh và STVL.
+
+Braum
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Freljord, Hộ Vệ
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Giơ khiên, tăng chống chịu và chuyển hướng đạn/phóng vật. Khi bị đánh sẽ gây sát thương diện rộng và Làm Lạnh kẻ địch. Nên xây dựng theo hướng chống chịu kiêm SMPT.
+
+Diana
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Targon
+- Điều kiện Mở Khóa: Cho Leona 2 sao cầm 3 trang bị khi giao tranh
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Lướt tới và gây sát thương phép diện rộng. Hạ gục mục tiêu sẽ tái kích hoạt nhịp ra chiêu. SMPT giúp tăng sát thương để dễ tái kích hoạt hơn.
+
+Fizz
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Bilgewater, Yordle
+- Điều kiện Mở Khóa: Kích hoạt 5 Yordle hoặc Bilgewater và đạt cấp 7
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Trở nên không thể bị chọn làm mục tiêu, sau đó nhận rất nhiều Tốc Đánh và sát thương phép trên đòn đánh. Đồ SMPT tăng cả sát thương dồn lẫn sát thương kéo dài.
+
+Garen
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Demacia, Defender
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Xoay kiếm trong 3 giây, tăng chống chịu, hồi máu và gây sát thương diện rộng. Giảm kháng của kẻ địch. Nên ghép đồ chống chịu và SMPT.
+
+Kaisa
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Đồng Hóa, Hư Không, Longshot
+- Điều kiện Mở Khóa: Cho một tướng Longshot cầm 3 trang bị khi giao tranh và đạt cấp 8
+- Tóm tắt kỹ năng: Ưu tiên STVL và Tốc Đánh. Lùi về vị trí an toàn trong khi gây sát thương vật lý diện rộng. Phù hợp đồ STVL và tận dụng tốt cách xếp vị trí của Longshot.
+
+Kalista
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Quần Đảo Bóng Đêm, Chinh Phục
+- Điều kiện Mở Khóa: Collect 75 Souls
+- Tóm tắt kỹ năng: Ưu tiên STVL. Phóng giáo tích cộng dồn lên mục tiêu. Rút giáo để gây lượng sát thương cực lớn. Nên ghép đồ STVL để tích cộng dồn mạnh hơn.
+
+Lissandra
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Freljord, Invoker
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Nhốt mục tiêu trong băng, gây sát thương theo thời gian và Làm Lạnh địch xung quanh. Khống chế mạnh và gây sát thương phép diện rộng tốt khi có SMPT.
+
+Lux
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Demacia, Pháp Sư
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Trói chân kẻ địch rồi bắn tia năng lượng gây sát thương cực lớn lên mục tiêu bị trói. Sát thương phép bùng nổ rất cao khi có đồ SMPT.
+
+Miss Fortune
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Bilgewater, Gunslinger
+- Tóm tắt kỹ năng: Ưu tiên STVL. Nội tại khiến đạn nảy sang mục tiêu còn nhiều máu. Kỹ năng chủ động bắn nhiều đợt đạn; cứ mỗi lần tung chiêu thứ 3 sẽ có thêm loạt đạn cộng thêm. Nên dồn đồ STVL.
+
+Nasus
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Shurima
+- Điều kiện Mở Khóa: Thua 2/3/4 giao tranh khi dùng Azir
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Hút máu kẻ địch đồng thời gây sát thương phép. Hạ gục mục tiêu để nhận cộng dồn vĩnh viễn. SMPT tăng cả sát thương lẫn hồi máu.
+
+Nidalee
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Ixtal, Thợ Săn
+- Điều kiện Mở Khóa: Cho hai Neeko 2 sao cùng ra sân
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Biến đổi giữa dạng đánh xa và cận chiến. Dạng xa ném lao; dạng gần lao vồ vào mục tiêu. SMPT tăng sức mạnh cho cả hai dạng.
+
+Renekton
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Shurima
+- Điều kiện Mở Khóa: Thắng 2/3/4 giao tranh khi dùng Azir
+- Tóm tắt kỹ năng: Ưu tiên Máu và STVL. Chém quét gây sát thương diện rộng và hồi phục. Tích Nộ để cường hóa kỹ năng. Nên ghép đồ chống chịu và STVL.
+
+Rift Herald
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Hư Không, Bruiser
+- Điều kiện Mở Khóa: Kích hoạt Void trong 8 vòng giao tranh với người chơi
+- Tóm tắt kỹ năng: Ưu tiên Máu và STVL. Lao thẳng, gây sát thương cực lớn lên công trình và kẻ địch. Nên ghép đồ chống chịu và STVL.
+
+Seraphine
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Piltover, Phá Rối
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Cất tiếng hát để hồi máu đồng minh và gây sát thương lên kẻ địch. Hiệu ứng mê hoặc tạo khống chế. SMPT tăng hồi máu và sát thương.
+
+Singed
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Zaun, Juggernaut
+- Điều kiện Mở Khóa: Chịu 30 sát thương và có 4 tướng Zaun hoặc Juggernaut
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Để lại vệt độc gây sát thương theo thời gian. Hất quăng kẻ địch. Nên ghép đồ chống chịu và SMPT.
+
+Skarner
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Ixtal
+- Điều kiện Mở Khóa: Cho một tướng không phải chống chịu cầm Giáp Gai Thạch khi giao tranh
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Tóm lấy và áp chế mục tiêu trong khi gây sát thương. Khống chế đơn mục tiêu rất mạnh. Nên ghép đồ chống chịu và SMPT.
+
+Swain
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Noxus, Pháp Sư, Juggernaut
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Hóa quỷ và hút sinh lực từ kẻ địch. Hồi máu và sát thương cùng tăng theo SMPT.
+
+Taric
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Targon
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Hồi máu cho đồng minh và cho hiệu ứng bất tử trong chốc lát. Tướng hỗ trợ tuyến trước với hồi máu và bảo kê.
+
+Veigar
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Yordle, Pháp Sư
+- Điều kiện Mở Khóa: Cho một tướng cầm 2 Mũ Phù Thủy Rabadon khi giao tranh
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Gây sát thương phép tăng theo Máu tối đa của mục tiêu. Hạ gục mục tiêu để nhận SMPT vĩnh viễn. Nên dồn đồ SMPT.
+
+Warwick
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Zaun, Đánh Nhanh
+- Điều kiện Mở Khóa: 2-star Jinx & 2-star Vi
+- Tóm tắt kỹ năng: Ưu tiên STVL và Tốc Đánh. Tăng vĩnh viễn Tốc Đánh, hút máu toàn phần và sát thương vật lý cộng thêm. Hạ gục hoặc hỗ trợ hạ gục sẽ tăng Tốc Đánh cho cả đội. Nên ghép đồ STVL và Tốc Đánh.
+
+Wukong
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ionia, Bruiser
+- Tóm tắt kỹ năng: Ưu tiên Máu và STVL. Xoay gậy gây sát thương diện rộng và tăng chống chịu. Có hiệu ứng hất tung để khống chế. Nên ghép đồ Máu và STVL.
+
+Yone
+- Giá: 4
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Ionia, Slayer
+- Điều kiện Mở Khóa: 3-star Yasuo
+- Tóm tắt kỹ năng: Ưu tiên STVL. Lướt tới rồi chém gây sát thương diện rộng. Kéo kẻ địch tụ lại. Đồ STVL giúp tăng mạnh sát thương đầu ra.
+
+Yunara
+- Giá: 4
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Ionia, Đánh Nhanh
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Bắn hoa linh hồn gây sát thương phép và hồi máu. SMPT tăng cả sát thương lẫn hồi máu.
+
+Aatrox
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Darkin, Kẻ Diệt Thế, Slayer
+- Điều kiện Mở Khóa: Cho một tướng có 40% hút máu toàn phần khi giao tranh và đạt cấp 8
+- Tóm tắt kỹ năng: Ưu tiên STVL. Luân phiên 3 kiểu tung chiêu: chém Phá Giáp, quét hất tung và nện kết liễu. Năng lượng thấp giúp tung chiêu thường xuyên. Nên ghép đồ STVL.
+
+Annie
+- Giá: 5
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Đứa Trẻ Bóng Tối, Pháp Sư
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Lần tung chiêu đầu tiên gây Thiêu Đốt và Vết Thương Sâu lên toàn bộ kẻ địch trong 45 giây. Các lần sau bắn cầu lửa đơn mục tiêu. SMPT giúp tạo lượng sát thương diện rộng khổng lồ.
+
+Azir
+- Giá: 5
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Hoàng Đế, Shurima, Phá Rối
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Triệu hồi Lính Cát chiến đấu cùng mình. Năng lượng thấp giúp gọi Lính Cát thường xuyên. SMPT tăng sát thương của Lính Cát.
+
+Fiddlesticks
+- Giá: 5
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Kẻ Gặt, Chinh Phục
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Niệm chú để gây Hoảng Sợ và hút máu kẻ địch. Hồi phục tăng theo SMPT. Hiệu ứng Hoảng Sợ tạo khống chế mạnh cho giao tranh.
+
+Galio
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Demacia, Anh Hùng
+- Điều kiện Mở Khóa: 12 star levels of Demacia
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Mỗi đòn đánh thứ 3 gây sát thương phép diện rộng. Kỹ năng chủ động lao tới, tạo lá chắn cho đồng minh và gây sát thương diện rộng. Lai giữa chống chịu và SMPT.
+
+Kindred
+- Giá: 5
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Vĩnh Cửu, Đánh Nhanh
+- Tóm tắt kỹ năng: Ưu tiên STVL. Tạo vùng ngăn đồng minh bị hạ gục, đồng thời tăng gấp đôi Tốc Đánh và bắn thêm tên. Sát thương tăng tốt theo STVL.
+
+Lucian & Senna
+- Giá: 5
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Liên Kết Linh Hồn, Gunslinger
+- Tóm tắt kỹ năng: Ưu tiên STVL. Lucian lướt và xả đạn, còn Senna cung cấp hỗ trợ. Đơn vị đôi, cả hai cùng hưởng lợi từ STVL.
+
+Mel
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Noxus, Phá Rối
+- Điều kiện Mở Khóa: 2-star Ambessa with 1 item dies
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Tạo lá chắn cho đồng minh và phản lại sát thương. Tướng hỗ trợ, lá chắn và sát thương phản lại đều hưởng lợi từ SMPT.
+
+Ornn
+- Giá: 5
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Thợ Rèn, Hộ Vệ
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Triệu hồi nguyên tố, Làm Lạnh kẻ địch và gây sát thương phép. Có thể điều hướng nguyên tố để gây thêm sát thương. Tộc/hệ Blacksmith mang lại trang bị Tạo Tác.
+
+Sett
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Ionia, Ông Chủ
+- Điều kiện Mở Khóa: Đạt cấp 8 và chỉ đặt 1 tướng ở hai hàng đầu khi giao tranh
+- Tóm tắt kỹ năng: Ưu tiên Máu và STVL. Nện mục tiêu, gây sát thương dựa trên lượng máu đã mất. Nhận lá chắn. Đồ chống chịu giúp cú nện mạnh hơn.
+
+Shyvana
+- Giá: 5
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Long Tộc, Juggernaut
+- Tóm tắt kỹ năng: Ưu tiên Máu và STVL. Hóa thành rồng, tăng Máu tối đa và chống chịu. Phun lửa gây sát thương diện rộng liên tục. Nên ghép đồ Máu và STVL.
+
+T-Hex
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: HexMech, Piltover, Gunslinger
+- Điều kiện Mở Khóa: 9 Piltover star levels
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Triệu hồi đơn vị ma hóa phát nổ khi chết. Càng nhiều đơn vị ma hóa, sát thương nổ càng lớn. SMPT khuếch đại toàn bộ sát thương.
+
+Tahm Kench
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Bilgewater, Háu Ăn, Bruiser
+- Điều kiện Mở Khóa: Spend 500 Silver Serpents
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Nuốt chửng kẻ địch để loại khỏi giao tranh và có thể cướp mảnh trang bị hoặc vàng. Nhận thêm chống chịu trong lúc nuốt mục tiêu. Nên xây chống chịu kèm SMPT.
+
+Thresh
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Quần Đảo Bóng Đêm, Hộ Vệ
+- Điều kiện Mở Khóa: Collect 150 Souls
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Móc và kéo kẻ địch lại. Cung cấp khống chế và mở giao tranh. Nên ghép đồ chống chịu kèm SMPT.
+
+Volibear
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Freljord, Bruiser
+- Điều kiện Mở Khóa: Đạt cấp 8 và có một tướng sở hữu 3800 Máu
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Nhảy bổ vào gây sát thương diện rộng và Làm Lạnh. Tăng Máu tối đa và cường hóa đòn đánh. Nên ghép đồ chống chịu và SMPT.
+
+Xerath
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Shurima, Thăng Hoa
+- Điều kiện Mở Khóa: Alternate winning and losing 3/4/5 times with Azir
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Bắn các luồng sát thương phép tầm xa. Tầm đánh xa giúp gây sát thương an toàn. Nên ghép đồ SMPT.
+
+Ziggs
+- Giá: 5
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Yordle, Zaun, Longshot
+- Điều kiện Mở Khóa: Cho một tướng Yordle hoặc Zaun cầm 3 trang bị và đạt cấp 9
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Ném bom gây sát thương phép diện rộng. SMPT tăng sát thương vụ nổ.
+
+Zilean
+- Giá: 5
+- Trạng thái: Tướng mặc định
+- Tộc/Hệ: Người Gác Thời Gian, Invoker
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Bom Thời Gian gây sát thương theo thời gian và phát nổ khi mục tiêu chết. Bom sẽ kích nổ kết liễu sau 18/16/1 giây. SMPT cao giúp hạ mục tiêu nhanh hơn.
+
+Aurelion Sol
+- Giá: 7
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Targon, Tinh Luyện
+- Điều kiện Mở Khóa: Kích hoạt mốc 5 Targon khi giao tranh
+- Tóm tắt kỹ năng: Ưu tiên SMPT. Triệu hồi các vì sao xoay quanh và gây sát thương phép. Kết liễu mục tiêu thấp máu. Nên ghép đồ SMPT để tối đa sát thương.
+
+Baron Nashor
+- Giá: 7
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Hư Không, Tai Ương Khe Nứt
+- Điều kiện Mở Khóa: Level 10 + Void 7
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Gây sát thương phép diện rộng và cường hóa cả đội. Nên xây chống chịu và SMPT.
+
+Brock
+- Giá: 7
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Ixtal
+- Điều kiện Mở Khóa: Collect 500 Ixtal Clues total
+- Tóm tắt kỹ năng: Ưu tiên Máu và SMPT. Triệu hồi khối đá tạo lá chắn cho đồng minh và gây sát thương diện rộng. Đồ chống chịu giúp lá chắn mạnh hơn.
+
+Ryze
+- Giá: 7
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Pháp Sư Cổ Ngữ
+- Điều kiện Mở Khóa: Kích hoạt cùng lúc 4 tộc khu vực khi giao tranh
+- Tóm tắt kỹ năng: Ưu tiên SMPT và Năng Lượng. Gây sát thương phép lan sang các mục tiêu gần đó. Năng lượng càng nhiều thì sát thương càng lớn. Nên ghép đồ SMPT và hồi năng lượng.
+
+Sylas
+- Giá: 7
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Phá Xiềng, Pháp Sư, Defender
+- Điều kiện Mở Khóa: Sell a 2-star Jarvan, a 2-star Garen, and a 2-star Lux
+- Tóm tắt kỹ năng: Ưu tiên SMPT và Máu. Luân phiên 3 phép mạnh: làm choáng diện rộng, kết liễu, hoặc tạo lá chắn kèm tia sát thương. Chủ lực 7 vàng linh hoạt, có thể xây theo hướng SMPT kiêm chống chịu.
+
+Zaahen
+- Giá: 7
+- Trạng thái: Tướng Mở Khóa
+- Tộc/Hệ: Darkin, Bất Tử
+- Điều kiện Mở Khóa: Get the Xin Zhao Champion Augment + field a 3-star Xin Zhao for 5 rounds
+- Tóm tắt kỹ năng: Ưu tiên STVL. Liên tục lướt và chém cho tới khi mục tiêu gục ngã. Sau 25 lần tung chiêu sẽ kết liễu mục tiêu và gây sát thương diện rộng. Gây DPS cực cao khi được lên đồ STVL.
+

@@ -2,7 +2,7 @@
 export const DEFAULT_CHAT_CONFIG = {
   // LLM configuration
   llm: {
-    model: "gpt-4o-mini",
+    model: "gpt-5.4-nano",
   },
 
   // Reasoning configuration
@@ -20,7 +20,7 @@ export const getLLMConfig = () => {
     if (savedConfig) {
       const parsed = JSON.parse(savedConfig);
       return {
-        model: parsed.model || "gpt-4o-mini",
+        model: parsed.model || "gpt-5.4-nano",
         temperature: parsed.temperature || 0.7,
       };
     }
@@ -29,7 +29,7 @@ export const getLLMConfig = () => {
   }
   
   return {
-    model: "gpt-4o-mini",
+    model: "gpt-5.4-nano",
     temperature: 0.7,
   };
 };
