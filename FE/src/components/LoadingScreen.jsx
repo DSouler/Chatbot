@@ -1,24 +1,14 @@
 import React from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-const TFTLogo = ({ size = 60 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width={size} height={size}>
-    <polygon points="60,4 110,32 110,88 60,116 10,88 10,32" fill="#3B82C4"/>
-    <polygon points="60,10 104,35 104,85 60,110 16,85 16,35" fill="none" stroke="white" strokeWidth="5"/>
-    <path d="M30,44 L38,60 L48,50 L55,36 L60,30 L65,36 L72,50 L82,60 L90,44 L90,76 L30,76 Z" fill="white"/>
-    <rect x="36" y="60" width="48" height="16" rx="4" fill="#3B82C4"/>
-    <rect x="39" y="63" width="18" height="9" rx="2" fill="white"/>
-    <rect x="63" y="63" width="18" height="9" rx="2" fill="white"/>
-    <polygon points="60,75 55,81 60,84 65,81" fill="white"/>
-  </svg>
-);
+import logo from '../assets/logo.svg';
 
 const LoadingScreen = () => {
   const antIcon = (
     <LoadingOutlined
       style={{
         fontSize: 32,
-        color: '#ff7a45',
+        color: '#7C3AED',
       }}
       spin
     />
@@ -43,7 +33,7 @@ const LoadingScreen = () => {
           animation: 'fadeInDown 1s ease-out',
         }}
       >
-        <TFTLogo size={60} />
+        <img src={logo} alt="logo" style={{ width: 72, height: 72 }} />
       </div>
 
       {/* Loading Spinner */}
@@ -97,7 +87,7 @@ const LoadingScreen = () => {
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              backgroundColor: '#ff7a45',
+              backgroundColor: '#7C3AED',
               animation: `pulse 1.5s ease-in-out infinite ${index * 0.2}s`,
             }}
           />

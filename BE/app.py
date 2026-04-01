@@ -880,13 +880,13 @@ def api_get_messages(conversation_id: int):
 
 @app.patch("/messages/{conversation_id}/last-bot")
 def api_update_last_bot_message(conversation_id: int, body: dict = Body(...)):
-    """Update the last bot message content and sources."""
+    """Update the last bot message content and sources. Returns the real DB message id."""
     content = body.get("content")
     sources = body.get("sources")
     if not content:
         raise HTTPException(status_code=400, detail="Missing content")
-    update_last_bot_message(conversation_id, content, sources=sources)
-    return {"success": True}
+    message_id = update_last_bot_message(conversation_id, content, sources=sources)
+    return {"success": True, "message_id": message_id}
 
 
 @app.get("/history/{user_id}/{conversation_id}")

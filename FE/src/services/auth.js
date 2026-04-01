@@ -60,6 +60,10 @@ export const adminDeleteUser = async (userId) => {
     return authInstance.delete(`/admin/users/${userId}`);
 };
 
+export const adminUpdateUserStatus = async (userId, status) => {
+    return authInstance.patch(`/admin/users/${userId}/status`, { status });
+};
+
 const authService = {
     getCurrentUser,
     login,
@@ -70,6 +74,7 @@ const authService = {
     adminCreateUser,
     adminUpdateUser,
     adminDeleteUser,
+    adminUpdateUserStatus,
 };
 
 export default authService;

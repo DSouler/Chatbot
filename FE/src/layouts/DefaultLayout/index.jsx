@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import logoUrl from '../../assets/logo.svg';
 import { SiderContext } from '../../contexts/SiderContext';
+import { useUser } from '../../hooks/useUser';
+import { useNavigate } from 'react-router-dom';
 
 const AppLayout = ({ children }) => {
   const [collapsedSider, setCollapsedSider] = useState(false);
   const [collapsedInfoPanel, setCollapsedInfoPanel] = useState(true);
+  const { user } = useUser();
+  const navigate = useNavigate();
 
   return (
     <SiderContext.Provider value={{ collapsedSider, setCollapsedSider, collapsedInfoPanel, setCollapsedInfoPanel }}>
@@ -22,11 +26,21 @@ const AppLayout = ({ children }) => {
               <div className="flex items-center space-x-6">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <img src={logoUrl} alt="TFT Logo" width={48} height={48} style={{ objectFit: 'contain' }} />
-                  <span style={{ color: '#3B82C4', fontWeight: 800, fontSize: 18, letterSpacing: 0.5 }}>TFTChat</span>
+                  <span style={{ background: 'linear-gradient(135deg, #7C3AED, #6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 800, fontSize: 18, letterSpacing: 0.5 }}>TFTChat</span>
                 </div>
-                {/* <Navigation /> */}
               </div>
-              
+              {user && (user.role || '').toUpperCase() === 'ADMIN' && (
+                <button
+                  onClick={() => navigate('/admin')}
+                  style={{
+                    fontSize: 13, color: '#fff', padding: '7px 16px', borderRadius: 8, border: 'none',
+                    background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)',
+                    cursor: 'pointer', fontWeight: 600, boxShadow: '0 2px 8px rgba(124,58,237,0.25)',
+                  }}
+                >
+                  ⚙ Admin Panel
+                </button>
+              )}
             </div>
           </header>
           {children}
@@ -36,4 +50,4 @@ const AppLayout = ({ children }) => {
   );
 };
 
-export default AppLayout; 
+export default AppLayout;

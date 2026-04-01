@@ -108,7 +108,8 @@ def add_message(conversation_id, content, created_by, role="user", images=None):
 
 
 def update_last_bot_message(conversation_id, content, sources=None):
-    """Update the content (and optionally sources) of the last assistant message in a conversation."""
+    """Update the content (and optionally sources) of the last assistant message in a conversation.
+    Returns the real DB id of the updated message."""
     conn = get_connection()
     cur = conn.cursor()
     if sources is not None:
@@ -120,6 +121,7 @@ def update_last_bot_message(conversation_id, content, sources=None):
                 WHERE conversation_id = %s AND role = 'assistant'
                 ORDER BY created_at DESC LIMIT 1
             )
+            RETURNING id
             """,
             (content, Json(sources), conversation_id)
         )
@@ -132,12 +134,16 @@ def update_last_bot_message(conversation_id, content, sources=None):
                 WHERE conversation_id = %s AND role = 'assistant'
                 ORDER BY created_at DESC LIMIT 1
             )
+            RETURNING id
             """,
             (content, conversation_id)
         )
+    row = cur.fetchone()
+    message_id = row[0] if row else None
     conn.commit()
     cur.close()
     conn.close()
+    return message_id
 
 
 # Get all messages

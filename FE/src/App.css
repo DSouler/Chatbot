@@ -18,22 +18,22 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f0f0f0;
+  background: #e8e8f5;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #c0c0c0;
+  background: #c4b5fd;
   border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #a0a0a0;
+  background: #a78bfa;
 }
 
 /* For Firefox */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #c0c0c0 #f0f0f0;
+  scrollbar-color: #c4b5fd #e8e8f5;
 }
 
 .custom-strong-border .ant-table-container table {

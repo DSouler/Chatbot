@@ -9,11 +9,11 @@ const TFTLogo = ({ size = 48 }) => (
 const AnimatedBackground = () => (
   <div style={{
     position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
-    background: 'linear-gradient(135deg, #0B2A4A 0%, #1B4B6E 30%, #5BA8D4 65%, #B8E0F5 100%)',
+    background: 'linear-gradient(135deg, #2D1B69 0%, #4C1D95 30%, #7C3AED 65%, #C4B5FD 100%)',
   }}>
-    <div style={{ position: 'absolute', top: '15%', left: '10%', width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,180,230,0.45) 0%, transparent 70%)' }} />
-    <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: 380, height: 380, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,160,255,0.35) 0%, transparent 70%)' }} />
-    <div style={{ position: 'absolute', top: '40%', right: '25%', width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(180,220,255,0.3) 0%, transparent 70%)' }} />
+    <div style={{ position: 'absolute', top: '15%', left: '10%', width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,92,246,0.45) 0%, transparent 70%)' }} />
+    <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: 380, height: 380, borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,58,237,0.35) 0%, transparent 70%)' }} />
+    <div style={{ position: 'absolute', top: '40%', right: '25%', width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(196,181,253,0.3) 0%, transparent 70%)' }} />
   </div>
 );
 

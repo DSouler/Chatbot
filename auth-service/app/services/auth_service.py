@@ -97,6 +97,11 @@ class AuthService:
                 detail="Incorrect username or password",
                 headers={"WWW-Authenticate": "Bearer"},
             )
+        if (user.status or 'active') == 'blocked':
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.",
+            )
         
         # Update last login timestamp
         self.user_repository.update_last_login(user.id)
@@ -202,6 +207,8 @@ class AuthService:
             kwargs["role"] = req.role
         if req.password is not None:
             kwargs["password_hash"] = self.get_password_hash(req.password)
+        if req.status is not None:
+            kwargs["status"] = req.status
         return self.user_repository.admin_update_user(user_id, **kwargs)
 
     def admin_delete_user(self, user_id: int) -> bool:

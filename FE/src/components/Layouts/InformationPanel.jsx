@@ -103,8 +103,8 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
       collapsible
       trigger={null}
       style={{
-        background: 'transparent',
-        borderRight: '1px solid #f0f0f0',
+        background: '#F0F2FF',
+        borderLeft: '1px solid rgba(56,189,248,0.18)',
         position: 'fixed',
         right: 0,
         minHeight: '100vh',
@@ -113,7 +113,7 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
         padding: 0,
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: '-2px 0 4px rgba(0,0,0,0.05)',
+        boxShadow: '-2px 0 12px rgba(124,58,237,0.06)',
         userSelect: 'none',
         pointerEvents: collapsed ? 'none' : 'auto',
       }}
@@ -143,34 +143,63 @@ const InformationPanel = ({ info = [], collapsed, onToggle }) => {
           transform: 'translateY(-50%)',
           zIndex: 100,
           background: '#fff',
-          border: '1px solid #ddd',
+          border: '1px solid rgba(124,58,237,0.15)',
+          color: '#7C3AED',
           pointerEvents: 'auto',
         }}
       />
       {!collapsed && (
         <div style={{ flex: 1, height: '90vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <div style={{ padding: '0 12px', flexShrink: 0 }}>
-            <h3 style={{ fontWeight: 600, marginBottom: 8 }}>Information Panel</h3>
-            <Divider style={{ margin: '8px 0' }} />
+          <div style={{ padding: '16px 16px 0 16px', flexShrink: 0 }}>
+            <h3 style={{ fontWeight: 700, marginBottom: 8, color: '#4C1D95', fontSize: 16 }}>Knowledge Panel: References</h3>
+            <Divider style={{ margin: '8px 0', borderColor: 'rgba(124,58,237,0.1)' }} />
           </div>
           <div
             ref={infoPanelScrollRef}
-            style={{ flex: 1, minHeight: 0, overflow: 'auto', cursor: 'grab' }}
+            style={{ flex: 1, minHeight: 0, overflow: 'auto', padding: '8px 12px', cursor: 'grab' }}
           >
-            <Table
-              columns={columns}
-              dataSource={info}
-              rowKey={record => record.name + (record.id || '')}
-              size="small"
-              pagination={false}
-              style={{
-                background: 'transparent',
-                borderRadius: 8,
-              }}
-              bordered={false}
-              scroll={{ x: 500 }}
-              sticky
-            />
+            {info.length === 0 ? (
+              <div style={{ textAlign: 'center', color: '#9B8FCC', padding: '32px 0', fontSize: 13 }}>
+                No references yet
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {info.map((item, idx) => (
+                  <div key={item.name + (item.id || idx)} style={{
+                    background: '#fff',
+                    borderRadius: 12,
+                    padding: '14px 16px',
+                    border: '1px solid rgba(124,58,237,0.1)',
+                    boxShadow: '0 2px 8px rgba(124,58,237,0.04)',
+                    transition: 'all 0.2s',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                      <span style={{
+                        width: 28, height: 28, borderRadius: 8,
+                        background: 'linear-gradient(135deg, #7C3AED, #9B59FF)',
+                        color: '#fff', fontSize: 12, fontWeight: 700,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                      }}>📄</span>
+                      <span style={{ fontWeight: 600, fontSize: 13, color: '#4C1D95', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {item.name}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 12, color: '#666', lineHeight: 1.5, marginBottom: 8, maxHeight: 60, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {typeof item.doc === 'string' ? item.doc.slice(0, 150) + (item.doc.length > 150 ? '...' : '') : ''}
+                    </div>
+                    {item.similarity_score && (
+                      <div style={{
+                        display: 'inline-block', padding: '2px 10px', borderRadius: 12,
+                        background: 'rgba(124,58,237,0.08)', color: '#7C3AED',
+                        fontSize: 11, fontWeight: 600,
+                      }}>
+                        Score: {item.similarity_score}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

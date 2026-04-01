@@ -80,7 +80,7 @@ const BOT_MD_COMPONENTS = {
     </blockquote>
   ),
   strong: ({ children }) => <strong style={{ fontWeight: 700, color: '#3B0764', background: 'linear-gradient(transparent 55%, #E8E0FF 55%)', padding: '0 2px', fontSize: '1.02em' }}>{children}</strong>,
-  hr: () => <hr style={{ margin: '18px 0', border: 'none', height: 2, background: 'linear-gradient(90deg, transparent, #B0D0E8, transparent)' }} />,
+  hr: () => <hr style={{ margin: '18px 0', border: 'none', height: 2, background: 'linear-gradient(90deg, transparent, #C4B5FD, transparent)' }} />,
   a: ({ href, children }) => (
     <a href={href} target="_blank" rel="noopener noreferrer"
       style={{ color: '#7C3AED', textDecoration: 'none', fontWeight: 500, borderBottom: '2px solid #C4B5FD', transition: 'all 0.2s' }}
@@ -104,16 +104,16 @@ const BOT_MD_COMPONENTS = {
     }
     return (
       <img src={src} alt={alt}
-        style={{ maxWidth: '100%', maxHeight: 320, borderRadius: 12, display: 'block', margin: '10px 0', boxShadow: '0 4px 16px rgba(59,130,196,0.15)', border: '2px solid #E0EFF8' }} />
+        style={{ maxWidth: '100%', maxHeight: 320, borderRadius: 12, display: 'block', margin: '10px 0', boxShadow: '0 4px 16px rgba(124,58,237,0.15)', border: '2px solid #E8E0FF' }} />
     );
   },
   table: ({ children }) => (
-    <div style={{ overflowX: 'auto', margin: '14px 0', borderRadius: 10, border: '1px solid #D0E4F0', boxShadow: '0 2px 8px rgba(59,130,196,0.08)' }}>
+    <div style={{ overflowX: 'auto', margin: '14px 0', borderRadius: 10, border: '1px solid #DDD6FE', boxShadow: '0 2px 8px rgba(124,58,237,0.08)' }}>
       <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: '0.95em' }}>{children}</table>
     </div>
   ),
   th: ({ children }) => <th style={{ border: '1px solid #C0D8E8', padding: '10px 14px', background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)', color: '#fff', fontWeight: 600, textAlign: 'left', fontSize: '0.9em', letterSpacing: '0.02em' }}>{children}</th>,
-  td: ({ children }) => <td style={{ border: '1px solid #DCF0FF', padding: '9px 14px', background: '#faf9ff' }}>{children}</td>,
+  td: ({ children }) => <td style={{ border: '1px solid #EDE9FE', padding: '9px 14px', background: '#faf9ff' }}>{children}</td>,
 };
 
 const BotMarkdown = memo(({ children }) => (
@@ -440,11 +440,11 @@ const ChatArea = ({
                         style={{
                           maxWidth: '80%',
                           borderRadius: '24px',
-                          background: 'linear-gradient(135deg, #3B82C4 0%, #60A5E0 100%)',
+                          background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)',
                           color: '#fff',
                           padding: '14px 20px',
                           fontSize: 15,
-                          boxShadow: '0 4px 18px rgba(59,130,196,0.28)',
+                          boxShadow: '0 4px 18px rgba(124,58,237,0.28)',
                           whiteSpace: 'normal',
                           lineHeight: 1.5,
                         }}
@@ -504,8 +504,8 @@ const ChatArea = ({
                             color: '#222',
                             padding: '20px 24px',
                             fontSize: 15,
-                            boxShadow: '0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(59,130,196,0.08)',
-                            border: '1.5px solid #C0DCF0',
+                            boxShadow: '0 4px 24px rgba(124,58,237,0.06), 0 1px 4px rgba(124,58,237,0.08)',
+                            border: '1.5px solid rgba(124,58,237,0.12)',
                             whiteSpace: 'normal',
                             lineHeight: 1.5,
                             width: '100%',
@@ -513,7 +513,7 @@ const ChatArea = ({
                         >
                         <BotMarkdown>{nextAssistantMsg.content}</BotMarkdown>
                         {/* Feedback buttons */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(59,130,196,0.08)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(124,58,237,0.08)' }}>
                           <span style={{ fontSize: 12, color: '#999' }}>Phản hồi hữu ích?</span>
                           <button
                             onClick={() => handleFeedback(nextAssistantMsg.id, 'up')}
@@ -571,8 +571,8 @@ const ChatArea = ({
                             color: '#222',
                             padding: '20px 24px',
                             fontSize: 15,
-                            boxShadow: '0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(59,130,196,0.08)',
-                            border: '1.5px solid #C0DCF0',
+                            boxShadow: '0 4px 24px rgba(124,58,237,0.06), 0 1px 4px rgba(124,58,237,0.08)',
+                            border: '1.5px solid rgba(124,58,237,0.12)',
                             whiteSpace: 'normal',
                             lineHeight: 1.5,
                             width: '100%',
@@ -589,11 +589,11 @@ const ChatArea = ({
                         style={{
                           flex: '0 0 auto',
                           marginTop: '16px',
-                          background: 'linear-gradient(135deg, #EDF5FC 0%, #E0EFF8 100%)',
+                          background: 'linear-gradient(135deg, #F0EBFF 0%, #E8E0FF 100%)',
                           borderRadius: 16,
                           padding: 16,
-                          boxShadow: '0 2px 8px rgba(59,130,196,0.08)',
-                          border: '1px solid rgba(59,130,196,0.1)',
+                          boxShadow: '0 2px 8px rgba(124,58,237,0.08)',
+                          border: '1px solid rgba(124,58,237,0.1)',
                           maxWidth: showThinking ? '100%' : 360,
                           transition: 'all 0.3s ease',
                         }}
@@ -607,7 +607,7 @@ const ChatArea = ({
                           }}
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ color: '#3B82C4', fontWeight: 600 }}>Thinking</span>
+                            <span style={{ color: '#7C3AED', fontWeight: 600 }}>Thinking</span>
                             <div className="thinking-dots">
                               <span className="dot" />
                               <span className="dot" />
@@ -619,7 +619,7 @@ const ChatArea = ({
                             style={{
                               background: 'transparent',
                               border: 'none',
-                              color: '#3B82C4',
+                              color: '#7C3AED',
                               cursor: 'pointer',
                               display: 'flex',
                               alignItems: 'center',
@@ -735,23 +735,23 @@ const ChatArea = ({
           {guestLimitReached ? (
             <div style={{
               width: '100%',
-              background: 'linear-gradient(135deg, #E5F0F8 0%, #ede8ff 100%)',
-              border: '1.5px solid #b9acf5',
+              background: 'linear-gradient(135deg, #F0EBFF 0%, #E8E0FF 100%)',
+              border: '1.5px solid #C4B5FD',
               borderRadius: 16,
               padding: '14px 20px',
               display: 'flex',
               alignItems: 'center',
               gap: 14,
-              boxShadow: '0 4px 20px rgba(59,130,196,0.13)',
+              boxShadow: '0 4px 20px rgba(124,58,237,0.13)',
             }}>
               <span style={{ fontSize: 22 }}>🔒</span>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, color: '#4c3dbf', fontSize: 14, marginBottom: 2 }}>Đã đến giới hạn lượt dùng thử</div>
-                <div style={{ color: '#6b5fc7', fontSize: 12 }}>Vui lòng đăng nhập để có trải nghiệm tốt hơn và không giới hạn.</div>
+                <div style={{ fontWeight: 700, color: '#4C1D95', fontSize: 14, marginBottom: 2 }}>Đã đến giới hạn lượt dùng thử</div>
+                <div style={{ color: '#7C3AED', fontSize: 12 }}>Vui lòng đăng nhập để có trải nghiệm tốt hơn và không giới hạn.</div>
               </div>
               <button
                 onClick={() => { sessionStorage.removeItem('guestMode'); window.location.href = '/login'; }}
-                style={{ padding: '7px 18px', borderRadius: 10, border: 'none', background: '#3B82C4', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}
+                style={{ padding: '7px 18px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg, #7C3AED, #9B59FF)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}
               >Đăng nhập</button>
             </div>
           ) : (
@@ -767,13 +767,13 @@ const ChatArea = ({
             />
             {/* Image preview strip */}
             {selectedImages.length > 0 && (
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', padding: '8px 12px', background: 'rgba(235,245,255,0.6)', borderRadius: 12 }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', padding: '8px 12px', background: 'rgba(240,235,255,0.6)', borderRadius: 12 }}>
                 {selectedImages.map((img, idx) => (
                   <div key={idx} style={{ position: 'relative' }}>
                     <img
                       src={img.preview}
                       alt={img.name}
-                      style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 10, display: 'block', border: '2px solid rgba(59,130,196,0.15)', transition: 'border-color 0.2s' }}
+                      style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 10, display: 'block', border: '2px solid rgba(124,58,237,0.15)', transition: 'border-color 0.2s' }}
                     />
                     <CloseCircleFilled
                       onClick={() => { setSelectedImages(prev => prev.filter((_, i) => i !== idx)); if (savingIdx === idx) setSavingIdx(null); }}
@@ -906,8 +906,8 @@ const ChatArea = ({
           transform: scale(0.95);
         }
         .img-btn:hover {
-          color: #3B82C4 !important;
-          background: rgba(59,130,196,0.08) !important;
+          color: #7C3AED !important;
+          background: rgba(124,58,237,0.08) !important;
         }
         .chat-mode-btn:hover {
           opacity: 0.85;
@@ -916,7 +916,7 @@ const ChatArea = ({
         .thinking-dots { display: flex; gap: 3px; }
         .thinking-dots .dot {
           width: 5px; height: 5px; border-radius: 50%;
-          background-color: #3B82C4;
+          background-color: #7C3AED;
           animation: thinkingPulse 1.4s infinite ease-in-out;
         }
         .thinking-dots .dot:nth-child(1) { animation-delay: -0.32s; }
@@ -928,7 +928,7 @@ const ChatArea = ({
         }
         .streaming-cursor {
           display: inline-block; width: 2px; height: 1em;
-          background: #3B82C4; margin-left: 2px;
+          background: #7C3AED; margin-left: 2px;
           animation: blink 1s step-start infinite; vertical-align: text-bottom;
         }
         @keyframes blink { 50% { opacity: 0; } }
