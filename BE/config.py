@@ -17,7 +17,7 @@ QDRANT_COLLECTION_NAME = os.getenv("QDRANT_COLLECTION_NAME", "tài liệu TFT")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY", None)
 
 # Backend Base URL (used for serving item images in chat responses)
-BACKEND_BASE_URL = os.getenv("BACKEND_BASE_URL", "http://localhost:8100")
+BACKEND_BASE_URL = os.getenv("BACKEND_BASE_URL", "http://localhost:8096")
 
 # Application Configuration
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "AITeamVN/Vietnamese_Embedding_v2")

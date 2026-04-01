@@ -15,6 +15,7 @@ class User(Base):
     email = Column(String(255), unique=True, index=True, nullable=True)
     password_hash = Column(Text, nullable=True)
     role = Column(Text, nullable=True)
+    status = Column(Text, nullable=False, default='active', server_default='active')
     ldap_dn = Column(Text, nullable=True)
     is_ldap_user = Column(Boolean, default=False)
     last_login = Column(DateTime(timezone=True), nullable=True)
