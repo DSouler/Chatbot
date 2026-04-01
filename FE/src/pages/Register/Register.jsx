@@ -50,7 +50,7 @@ const Register = () => {
         style={{
           flex: 1,
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #2D1B69 0%, #4C1D95 30%, #7C3AED 65%, #C4B5FD 100%)',
+          background: 'linear-gradient(135deg, #C8E8FF 0%, #E5D4F8 50%, #F5F0FF 100%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -59,20 +59,20 @@ const Register = () => {
           overflow: 'hidden',
         }}
       >
-        <div style={{ position: 'absolute', top: '15%', left: '10%', width: 180, height: 180, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,92,246,0.45) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,58,237,0.35) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', top: '40%', right: '25%', width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(196,181,253,0.3) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', top: '15%', left: '10%', width: 180, height: 180, borderRadius: '50%', background: 'radial-gradient(circle, rgba(147,197,253,0.5) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(196,181,253,0.45) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', top: '40%', right: '25%', width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(221,214,254,0.4) 0%, transparent 70%)' }} />
         <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '0 40px' }}>
           <div style={{ marginBottom: 24 }}>
             <img src={logoUrl} alt="TFT Logo" width={150} height={150} style={{ objectFit: 'contain', display: 'block', margin: '0 auto' }} />
           </div>
-          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.5)', marginBottom: 8 }}>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: '#4C1D95', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 1px 8px rgba(100,60,180,0.15)', marginBottom: 8 }}>
             TEAMFIGHT
           </div>
-          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.5)', marginBottom: 24 }}>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: '#4C1D95', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 1px 8px rgba(100,60,180,0.15)', marginBottom: 24 }}>
             TACTICS
           </div>
-          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15, letterSpacing: 1 }}>
+          <div style={{ color: 'rgba(100,60,180,0.75)', fontSize: 15, letterSpacing: 1 }}>
             Trợ lý AI chuyên biệt cho game TFT
           </div>
         </div>
@@ -87,7 +87,7 @@ const Register = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
+          background: 'linear-gradient(160deg, #EEF6FF 0%, #F3EEFF 100%)',
           padding: '40px',
           minHeight: '100vh',
         }}

@@ -20,6 +20,22 @@ dayjs.extend(isYesterday);
 const { Sider } = Layout;
 const { Text } = Typography;
 
+// Palette of vibrant colors for conversation ID badges
+const ID_BADGE_COLORS = [
+  { bg: 'rgba(239,68,68,0.15)',   color: '#DC2626'  }, // red
+  { bg: 'rgba(249,115,22,0.15)',  color: '#EA580C'  }, // orange
+  { bg: 'rgba(234,179,8,0.18)',   color: '#B45309'  }, // amber
+  { bg: 'rgba(34,197,94,0.15)',   color: '#16A34A'  }, // green
+  { bg: 'rgba(20,184,166,0.15)',  color: '#0F766E'  }, // teal
+  { bg: 'rgba(59,130,246,0.15)',  color: '#2563EB'  }, // blue
+  { bg: 'rgba(99,102,241,0.15)',  color: '#4338CA'  }, // indigo
+  { bg: 'rgba(168,85,247,0.15)',  color: '#7C3AED'  }, // purple
+  { bg: 'rgba(236,72,153,0.15)',  color: '#BE185D'  }, // pink
+  { bg: 'rgba(20,184,166,0.15)',  color: '#0D9488'  }, // cyan
+];
+
+const getBadgeColor = (seqId) => ID_BADGE_COLORS[(seqId - 1) % ID_BADGE_COLORS.length];
+
 const CustomSider = ({
   collapsed,
   onToggle,
@@ -257,17 +273,17 @@ const CustomSider = ({
       collapsible
       trigger={null}
       style={{
-        background: '#F0F2FF',
+        background: 'linear-gradient(160deg, #C8E8FF 0%, #E5D4F8 100%)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
-        borderRight: '1px solid rgba(56,189,248,0.18)',
+        borderRight: '1px solid rgba(140,100,220,0.22)',
         position: 'fixed',
         minHeight: '100vh',
         padding: 0,
         zIndex: 20,
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: '4px 0 24px rgba(56,189,248,0.10)',
+        boxShadow: '4px 0 24px rgba(160,120,240,0.12)',
       }}
     >
       {/* Collapsed view */}
@@ -504,8 +520,10 @@ const CustomSider = ({
                       <HistoryOutlined style={{ marginRight: 8, color: isSelected ? '#7C3AED' : '#9B8FCC', fontSize: 13, flexShrink: 0 }} />
                       <span style={{
                         flexShrink: 0, minWidth: 20, height: 18, borderRadius: 5,
-                        background: isSelected ? 'rgba(124,58,237,0.2)' : 'rgba(124,58,237,0.08)',
-                        color: isSelected ? '#7C3AED' : '#8B7FB8',
+                        background: isSelected
+                          ? getBadgeColor(convIdMap[item.id]).bg.replace('0.15)', '0.3)').replace('0.18)', '0.35)')
+                          : getBadgeColor(convIdMap[item.id]).bg,
+                        color: getBadgeColor(convIdMap[item.id]).color,
                         fontSize: 10, fontWeight: 700, display: 'inline-flex',
                         alignItems: 'center', justifyContent: 'center',
                         padding: '0 4px', marginRight: 6, letterSpacing: '0.02em',

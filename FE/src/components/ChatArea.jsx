@@ -188,7 +188,12 @@ const ChatArea = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messageIdsKey, userId]);
 
+  // Temp IDs are Date.now() values (~1.7e12), real DB IDs are small auto-increment numbers
+  const isTempId = (id) => typeof id === 'number' && id > 1e12;
+
   const handleFeedback = async (msgId, vote) => {
+    // Block feedback if the message ID hasn't been resolved to a real DB id yet
+    if (isTempId(msgId)) return;
     const current = feedbacks[msgId];
     const newVote = current === vote ? null : vote;
     // Optimistic UI update
@@ -331,43 +336,7 @@ const ChatArea = ({
     setShowThinking(!showThinking);
   };
 
-  // Drag-to-scroll on messages container
-  useEffect(() => {
-    const el = messagesContainerRef.current;
-    if (!el) return;
-    let isDragging = false;
-    let startY = 0;
-    let startScrollTop = 0;
-    const onMouseDown = (e) => {
-      if (e.button !== 0) return;
-      // If click target is the scroll container itself (not a child), it means
-      // the user clicked on the scrollbar track/thumb — let browser handle it
-      if (e.target === el) return;
-      const tag = e.target.tagName.toUpperCase();
-      if (['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SVG', 'PATH'].includes(tag)) return;
-      if (e.target.closest('button, a, input, textarea, svg')) return;
-      isDragging = true;
-      startY = e.clientY;
-      startScrollTop = el.scrollTop;
-    };
-    const onMouseMove = (e) => {
-      if (!isDragging) return;
-      e.preventDefault();
-      el.scrollTop = startScrollTop - (e.clientY - startY);
-    };
-    const onMouseUp = () => {
-      isDragging = false;
-    };
-    el.addEventListener('mousedown', onMouseDown);
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    return () => {
-      el.removeEventListener('mousedown', onMouseDown);
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
@@ -380,7 +349,6 @@ const ChatArea = ({
           minHeight: 0,
           width: '100%',
           overflowY: 'auto',
-          cursor: 'grab',
         }}
       >
         <div
@@ -440,11 +408,12 @@ const ChatArea = ({
                         style={{
                           maxWidth: '80%',
                           borderRadius: '24px',
-                          background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)',
-                          color: '#fff',
+                          background: '#fff',
+                          color: '#1a1a1a',
                           padding: '14px 20px',
                           fontSize: 15,
-                          boxShadow: '0 4px 18px rgba(124,58,237,0.28)',
+                          border: '2px solid #7C3AED',
+                          boxShadow: '0 4px 18px rgba(124,58,237,0.12)',
                           whiteSpace: 'normal',
                           lineHeight: 1.5,
                         }}
@@ -466,14 +435,14 @@ const ChatArea = ({
                           remarkPlugins={[remarkMath, remarkGfm]}
                           rehypePlugins={[rehypeKatex]}
                           components={{
-                            p: ({ children }) => <p style={{ margin: '4px 0', lineHeight: 1.6 }}>{children}</p>,
-                            ul: ({ children }) => <ul style={{ paddingLeft: 20, margin: '4px 0', listStyleType: 'disc' }}>{children}</ul>,
-                            ol: ({ children }) => <ol style={{ paddingLeft: 20, margin: '4px 0' }}>{children}</ol>,
-                            li: ({ children }) => <li style={{ lineHeight: 1.6, margin: '2px 0' }}>{children}</li>,
-                            hr: () => <hr style={{ margin: '12px 0', borderColor: 'rgba(255,255,255,0.4)' }} />,
+                            p: ({ children }) => <p style={{ margin: '4px 0', lineHeight: 1.6, color: '#1a1a1a' }}>{children}</p>,
+                            ul: ({ children }) => <ul style={{ paddingLeft: 20, margin: '4px 0', listStyleType: 'disc', color: '#1a1a1a' }}>{children}</ul>,
+                            ol: ({ children }) => <ol style={{ paddingLeft: 20, margin: '4px 0', color: '#1a1a1a' }}>{children}</ol>,
+                            li: ({ children }) => <li style={{ lineHeight: 1.6, margin: '2px 0', color: '#1a1a1a' }}>{children}</li>,
+                            hr: () => <hr style={{ margin: '12px 0', borderColor: 'rgba(124,58,237,0.3)' }} />,
                             a: ({ href, children }) => (
                               <a href={href} target="_blank" rel="noopener noreferrer"
-                                style={{ color: '#fff', textDecoration: 'underline', cursor: 'pointer' }}
+                                style={{ color: '#7C3AED', textDecoration: 'underline', cursor: 'pointer', fontWeight: 500 }}
                                 onClick={(e) => { e.preventDefault(); window.open(href, '_blank', 'noopener,noreferrer'); }}>
                                 {children}
                               </a>
@@ -513,41 +482,53 @@ const ChatArea = ({
                         >
                         <BotMarkdown>{nextAssistantMsg.content}</BotMarkdown>
                         {/* Feedback buttons */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(124,58,237,0.08)' }}>
-                          <span style={{ fontSize: 12, color: '#999' }}>Phản hồi hữu ích?</span>
-                          <button
-                            onClick={() => handleFeedback(nextAssistantMsg.id, 'up')}
-                            style={{
-                              display: 'flex', alignItems: 'center', gap: 4,
-                              padding: '3px 10px', borderRadius: 20, border: 'none', cursor: 'pointer',
-                              fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
-                              background: feedbacks[nextAssistantMsg.id] === 'up'
-                                ? 'linear-gradient(135deg, #7C3AED, #9B59FF)'
-                                : 'rgba(124,58,237,0.08)',
-                              color: feedbacks[nextAssistantMsg.id] === 'up' ? '#fff' : '#7C3AED',
-                              boxShadow: feedbacks[nextAssistantMsg.id] === 'up' ? '0 2px 8px rgba(124,58,237,0.35)' : 'none',
-                            }}
-                            title="Hữu ích"
-                          >
-                            👍 {feedbackCounts[nextAssistantMsg.id]?.up || 0}
-                          </button>
-                          <button
-                            onClick={() => handleFeedback(nextAssistantMsg.id, 'down')}
-                            style={{
-                              display: 'flex', alignItems: 'center', gap: 4,
-                              padding: '3px 10px', borderRadius: 20, border: 'none', cursor: 'pointer',
-                              fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
-                              background: feedbacks[nextAssistantMsg.id] === 'down'
-                                ? 'linear-gradient(135deg, #cf4f4f, #e07c7c)'
-                                : 'rgba(207,79,79,0.08)',
-                              color: feedbacks[nextAssistantMsg.id] === 'down' ? '#fff' : '#cf4f4f',
-                              boxShadow: feedbacks[nextAssistantMsg.id] === 'down' ? '0 2px 8px rgba(207,79,79,0.3)' : 'none',
-                            }}
-                            title="Không hữu ích"
-                          >
-                            👎 {feedbackCounts[nextAssistantMsg.id]?.down || 0}
-                          </button>
-                        </div>
+                        {(() => {
+                          const mid = nextAssistantMsg.id;
+                          const pending = isTempId(mid);
+                          return (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(124,58,237,0.08)' }}>
+                            <span style={{ fontSize: 12, color: '#999' }}>Phản hồi hữu ích?</span>
+                            <button
+                              onClick={() => handleFeedback(mid, 'up')}
+                              disabled={pending}
+                              style={{
+                                display: 'flex', alignItems: 'center', gap: 4,
+                                padding: '3px 10px', borderRadius: 20, border: 'none',
+                                cursor: pending ? 'not-allowed' : 'pointer',
+                                fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
+                                opacity: pending ? 0.45 : 1,
+                                background: feedbacks[mid] === 'up'
+                                  ? 'linear-gradient(135deg, #7C3AED, #9B59FF)'
+                                  : 'rgba(124,58,237,0.08)',
+                                color: feedbacks[mid] === 'up' ? '#fff' : '#7C3AED',
+                                boxShadow: feedbacks[mid] === 'up' ? '0 2px 8px rgba(124,58,237,0.35)' : 'none',
+                              }}
+                              title={pending ? 'Đang lưu tin nhắn...' : 'Hữu ích'}
+                            >
+                              👍 {feedbackCounts[mid]?.up || 0}
+                            </button>
+                            <button
+                              onClick={() => handleFeedback(mid, 'down')}
+                              disabled={pending}
+                              style={{
+                                display: 'flex', alignItems: 'center', gap: 4,
+                                padding: '3px 10px', borderRadius: 20, border: 'none',
+                                cursor: pending ? 'not-allowed' : 'pointer',
+                                fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
+                                opacity: pending ? 0.45 : 1,
+                                background: feedbacks[mid] === 'down'
+                                  ? 'linear-gradient(135deg, #cf4f4f, #e07c7c)'
+                                  : 'rgba(207,79,79,0.08)',
+                                color: feedbacks[mid] === 'down' ? '#fff' : '#cf4f4f',
+                                boxShadow: feedbacks[mid] === 'down' ? '0 2px 8px rgba(207,79,79,0.3)' : 'none',
+                              }}
+                              title={pending ? 'Đang lưu tin nhắn...' : 'Không hữu ích'}
+                            >
+                              👎 {feedbackCounts[mid]?.down || 0}
+                            </button>
+                          </div>
+                          );
+                        })()}
                         </div>
                       </div>
                     )}

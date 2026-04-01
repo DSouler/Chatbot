@@ -664,18 +664,7 @@ const Chat = () => {
   };
 
   return (
-    <Layout style={{ height: '100vh', background: '#F0F2FF', position: 'relative' }}>
-      {/* Cloud-like background blobs */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-        backgroundImage: `
-          radial-gradient(ellipse 75% 55% at 15% 22%, rgba(255,255,255,0.72) 0%, transparent 60%),
-          radial-gradient(ellipse 60% 45% at 82% 68%, rgba(186,230,255,0.55) 0%, transparent 58%),
-          radial-gradient(ellipse 50% 38% at 52% 8%,  rgba(255,255,255,0.80) 0%, transparent 52%),
-          radial-gradient(circle   at 38% 78%, rgba(186,230,255,0.38) 0%, transparent 42%),
-          radial-gradient(circle   at 68% 38%, rgba(224,242,254,0.45) 0%, transparent 36%)`,
-        backgroundSize: '100% 100%',
-      }} />
+    <Layout style={{ height: '100vh', background: 'linear-gradient(135deg, #C8E8FF 0%, #E5D4F8 50%, #F5F0FF 100%)', position: 'relative' }}>
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', opacity: 0.025 }}>
         <defs>
           <pattern id="geo-pattern" x="0" y="0" width="160" height="160" patternUnits="userSpaceOnUse">
@@ -711,16 +700,17 @@ const Chat = () => {
           marginTop: 12,
           marginRight: 12,
           marginBottom: 12,
-          background: 'rgba(240,250,255,0.88)',
-          overflow: 'hidden',
+          background: 'rgba(255,255,255,0.55)',
+          overflow: 'clip',
           zIndex: 1,
           borderRadius: 20,
-          boxShadow: '0 10px 40px rgba(56,189,248,0.10), 0 2px 10px rgba(0,0,0,0.04)',
-          border: '2px solid rgba(56,189,248,0.18)',
+          boxShadow: '0 10px 40px rgba(160,120,240,0.12), 0 2px 10px rgba(0,0,0,0.04)',
+          border: '2px solid rgba(140,100,220,0.22)',
+          backdropFilter: 'blur(12px)',
         }}>
         <Content
           className="relative"
-          style={{ height: '100%', background: 'transparent', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+          style={{ height: '100%', background: 'transparent', display: 'flex', flexDirection: 'column' }}
         >
           {isRestoringConversation ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
