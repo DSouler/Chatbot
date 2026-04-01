@@ -1,4 +1,4 @@
-{
+﻿{
   "season": 16,
   "source": "https://ggmeo.com/trang-bi-dtcl",
   "crawled_date": "2026-03-31",
@@ -11,14 +11,14 @@
       "stat": "Sức Mạnh Công Kích"
     },
     {
-      "name": "Cung Tái Tạo",
+      "name": "Cung Gỗ",
       "name_en": "Recurve Bow",
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_RecurveBow.png",
       "item_id": "TFT_Item_RecurveBow",
       "stat": "Tốc Độ Đánh"
     },
     {
-      "name": "Gậy Phép Lớn",
+      "name": "Gậy Quá Khổ",
       "name_en": "Needlessly Large Rod",
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_NeedlesslyLargeRod.png",
       "item_id": "TFT_Item_NeedlesslyLargeRod",
@@ -32,14 +32,14 @@
       "stat": "Năng Lượng"
     },
     {
-      "name": "Áo Giáp Xích",
+      "name": "Giáp Lưới",
       "name_en": "Chain Vest",
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_ChainVest.png",
       "item_id": "TFT_Item_ChainVest",
       "stat": "Giáp"
     },
     {
-      "name": "Áo Choàng Negatron",
+      "name": "Áo Choàng Bạc",
       "name_en": "Negatron Cloak",
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_NegatronCloak.png",
       "item_id": "TFT_Item_NegatronCloak",
@@ -53,7 +53,7 @@
       "stat": "Máu"
     },
     {
-      "name": "Găng Tay",
+      "name": "Găng Đấu Tập",
       "name_en": "Sparring Gloves",
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_SparringGloves.png",
       "item_id": "TFT_Item_SparringGloves",
@@ -68,7 +68,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_MadredsBloodrazor.png",
       "item_id": "TFT_Item_MadredsBloodrazor",
       "recipe": ["TFT_Item_BFSword", "TFT_Item_RecurveBow"],
-      "recipe_vn": ["Kiếm B.F.", "Cung Tái Tạo"],
+      "recipe_vn": ["Kiếm B.F.", "Cung Gỗ"],
       "description": "Nhận thêm 15% Khuếch Đại Sát Thương trước Tướng Đỡ Đòn."
     },
     {
@@ -78,7 +78,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_GuinsoosRageblade.png",
       "item_id": "TFT_Item_GuinsoosRageblade",
       "recipe": ["TFT_Item_RecurveBow", "TFT_Item_NeedlesslyLargeRod"],
-      "recipe_vn": ["Cung Tái Tạo", "Gậy Phép Lớn"],
+      "recipe_vn": ["Cung Gỗ", "Gậy Quá Khổ"],
       "description": "Nhận 7% Tốc Độ Đánh cộng dồn mỗi giây."
     },
     {
@@ -88,7 +88,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_Leviathan.png",
       "item_id": "TFT_Item_Leviathan",
       "recipe": ["TFT_Item_RecurveBow", "TFT_Item_GiantsBelt"],
-      "recipe_vn": ["Cung Tái Tạo", "Đai Khổng Lồ"],
+      "recipe_vn": ["Cung Gỗ", "Đai Khổng Lồ"],
       "description": "Các đòn đánh giúp hồi lại 2 Năng Lượng, tăng lên 4 nếu là đòn chí mạng."
     },
     {
@@ -98,7 +98,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_RapidFireCannon.png",
       "item_id": "TFT_Item_RapidFireCannon",
       "recipe": ["TFT_Item_RecurveBow", "TFT_Item_RecurveBow"],
-      "recipe_vn": ["Cung Tái Tạo", "Cung Tái Tạo"],
+      "recipe_vn": ["Cung Gỗ", "Cung Gỗ"],
       "description": "Đòn Đánh và Kỹ Năng gây 1% Thiêu Đốt và 33% Vết Thương Sâu lên kẻ địch trong 5 giây. Thiêu Đốt: Gây sát thương chuẩn mỗi giây theo Máu tối đa của mục tiêu. Vết Thương Sâu: Giảm hồi máu nhận được."
     },
     {
@@ -108,7 +108,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_LastWhisper.png",
       "item_id": "TFT_Item_LastWhisper",
       "recipe": ["TFT_Item_RecurveBow", "TFT_Item_SparringGloves"],
-      "recipe_vn": ["Cung Tái Tạo", "Găng Tay"],
+      "recipe_vn": ["Cung Gỗ", "Găng Đấu Tập"],
       "description": "Sát thương từ đòn đánh và Kỹ Năng sẽ khiến mục tiêu phải chịu 30% Phân Tách trong 3 giây. Hiệu ứng này không cộng dồn. Phân Tách: Giảm Giáp."
     },
     {
@@ -118,7 +118,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_ArchangelsStaff.png",
       "item_id": "TFT_Item_ArchangelsStaff",
       "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_TearOfTheGoddess"],
-      "recipe_vn": ["Gậy Phép Lớn", "Nước Mắt Nữ Thần"],
+      "recipe_vn": ["Gậy Quá Khổ", "Nước Mắt Nữ Thần"],
       "description": "Bắt đầu giao tranh: Nhận 20% Sức Mạnh Phép Thuật mỗi 5 giây trong giao tranh."
     },
     {
@@ -128,7 +128,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_JeweledGauntlet.png",
       "item_id": "TFT_Item_JeweledGauntlet",
       "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_SparringGloves"],
-      "recipe_vn": ["Gậy Phép Lớn", "Găng Tay"],
+      "recipe_vn": ["Gậy Quá Khổ", "Găng Đấu Tập"],
       "description": "Kỹ năng có thể gây chí mạng. Nếu kỹ năng của tướng sở hữu đã có thể chí mạng, nhận 10% Sát Thương Chí Mạng."
     },
     {
@@ -138,7 +138,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_IonicSpark.png",
       "item_id": "TFT_Item_IonicSpark",
       "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_NegatronCloak"],
-      "recipe_vn": ["Gậy Phép Lớn", "Áo Choàng Negatron"],
+      "recipe_vn": ["Gậy Quá Khổ", "Áo Choàng Bạc"],
       "description": "30% Cào Xé kẻ địch trong vòng 2 ô. Khi kẻ địch sử dụng Kỹ Năng, gây sát thương phép tương đương 150% Năng Lượng đã tiêu hao. Cào Xé: Giảm Kháng Phép."
     },
     {
@@ -148,7 +148,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_Morellonomicon.png",
       "item_id": "TFT_Item_Morellonomicon",
       "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_GiantsBelt"],
-      "recipe_vn": ["Gậy Phép Lớn", "Đai Khổng Lồ"],
+      "recipe_vn": ["Gậy Quá Khổ", "Đai Khổng Lồ"],
       "description": "Đòn Đánh và Kỹ Năng gây 1% Thiêu Đốt và 33% Vết Thương Sâu lên kẻ địch trong 10 giây. Thiêu Đốt: Gây sát thương chuẩn mỗi giây theo Máu tối đa mục tiêu. Vết Thương Sâu: Giảm hồi máu nhận được."
     },
     {
@@ -168,7 +168,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_UnstableConcoction.png",
       "item_id": "TFT_Item_UnstableConcoction",
       "recipe": ["TFT_Item_TearOfTheGoddess", "TFT_Item_SparringGloves"],
-      "recipe_vn": ["Nước Mắt Nữ Thần", "Găng Tay"],
+      "recipe_vn": ["Nước Mắt Nữ Thần", "Găng Đấu Tập"],
       "description": "Nhận 2 hiệu ứng: 15% Sức Mạnh Công Kích và 15% Sức Mạnh Phép Thuật; 12% Hút Máu Toàn Phần. Khi còn trên 50% Máu, tăng gấp đôi Sức Mạnh Công Kích và Sức Mạnh Phép Thuật. Khi còn dưới 50% Máu, nhận gấp đôi lượng Hút Máu Toàn Phần."
     },
     {
@@ -178,7 +178,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_PowerGauntlet.png",
       "item_id": "TFT_Item_PowerGauntlet",
       "recipe": ["TFT_Item_GiantsBelt", "TFT_Item_SparringGloves"],
-      "recipe_vn": ["Đai Khổng Lồ", "Găng Tay"],
+      "recipe_vn": ["Đai Khổng Lồ", "Găng Đấu Tập"],
       "description": "Đòn Chí Mạng sẽ cho 5% Khuếch Đại Sát Thương trong 5 giây, cộng dồn tối đa 4 lần."
     },
     {
@@ -188,7 +188,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_InfinityEdge.png",
       "item_id": "TFT_Item_InfinityEdge",
       "recipe": ["TFT_Item_BFSword", "TFT_Item_SparringGloves"],
-      "recipe_vn": ["Kiếm B.F.", "Găng Tay"],
+      "recipe_vn": ["Kiếm B.F.", "Găng Đấu Tập"],
       "description": "Nhận 35% Sát Thương Chí Mạng. Nếu tướng không có trang bị chí mạng khác, chí mạng gây thêm 10% sát thương."
     },
     {
@@ -198,7 +198,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_Bloodthirster.png",
       "item_id": "TFT_Item_Bloodthirster",
       "recipe": ["TFT_Item_BFSword", "TFT_Item_NegatronCloak"],
-      "recipe_vn": ["Kiếm B.F.", "Áo Choàng Negatron"],
+      "recipe_vn": ["Kiếm B.F.", "Áo Choàng Bạc"],
       "description": "Nhận Hút Máu Toàn Phần. Khi dưới 40% Máu, nhận Lá Chắn chống sát thương."
     },
     {
@@ -218,7 +218,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_HextechGunblade.png",
       "item_id": "TFT_Item_HextechGunblade",
       "recipe": ["TFT_Item_BFSword", "TFT_Item_NeedlesslyLargeRod"],
-      "recipe_vn": ["Kiếm B.F.", "Gậy Phép Lớn"],
+      "recipe_vn": ["Kiếm B.F.", "Gậy Quá Khổ"],
       "description": "Sát thương từ đòn đánh và kỹ năng hồi máu cho tướng. Lượng hồi dư thừa chuyển thành Lá Chắn."
     },
     {
@@ -238,7 +238,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_BrambleVest.png",
       "item_id": "TFT_Item_BrambleVest",
       "recipe": ["TFT_Item_ChainVest", "TFT_Item_ChainVest"],
-      "recipe_vn": ["Áo Giáp Xích", "Áo Giáp Xích"],
+      "recipe_vn": ["Giáp Lưới", "Giáp Lưới"],
       "description": "Nhận thêm Giáp. Khi bị đánh, phản sát thương phép lên kẻ tấn công."
     },
     {
@@ -248,7 +248,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_GuardianAngel.png",
       "item_id": "TFT_Item_GuardianAngel",
       "recipe": ["TFT_Item_BFSword", "TFT_Item_ChainVest"],
-      "recipe_vn": ["Kiếm B.F.", "Áo Giáp Xích"],
+      "recipe_vn": ["Kiếm B.F.", "Giáp Lưới"],
       "description": "Khi chết lần đầu, hồi sinh với một lượng Máu sau 2 giây bất tử."
     },
     {
@@ -268,7 +268,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_RabadonsDeathcap.png",
       "item_id": "TFT_Item_RabadonsDeathcap",
       "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_NeedlesslyLargeRod"],
-      "recipe_vn": ["Gậy Phép Lớn", "Gậy Phép Lớn"],
+      "recipe_vn": ["Gậy Quá Khổ", "Gậy Quá Khổ"],
       "description": "Nhận thêm Sức Mạnh Phép Thuật."
     },
     {
@@ -278,7 +278,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_StatikkShiv.png",
       "item_id": "TFT_Item_StatikkShiv",
       "recipe": ["TFT_Item_RecurveBow", "TFT_Item_TearOfTheGoddess"],
-      "recipe_vn": ["Cung Tái Tạo", "Nước Mắt Nữ Thần"],
+      "recipe_vn": ["Cung Gỗ", "Nước Mắt Nữ Thần"],
       "description": "Mỗi đòn đánh thứ 3, gây sát thương phép bổ sung lên nhiều kẻ địch."
     },
     {
@@ -288,7 +288,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_TitansResolve.png",
       "item_id": "TFT_Item_TitansResolve",
       "recipe": ["TFT_Item_RecurveBow", "TFT_Item_ChainVest"],
-      "recipe_vn": ["Cung Tái Tạo", "Áo Giáp Xích"],
+      "recipe_vn": ["Cung Gỗ", "Giáp Lưới"],
       "description": "Nhận Giáp và Kháng Phép cộng dồn mỗi khi đánh hoặc bị đánh. Cộng dồn tối đa 25 lần, nhận thêm Giáp và Kháng Phép khi đạt tối đa."
     },
     {
@@ -298,7 +298,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_RunaansHurricane.png",
       "item_id": "TFT_Item_RunaansHurricane",
       "recipe": ["TFT_Item_RecurveBow", "TFT_Item_NegatronCloak"],
-      "recipe_vn": ["Cung Tái Tạo", "Áo Choàng Negatron"],
+      "recipe_vn": ["Cung Gỗ", "Áo Choàng Bạc"],
       "description": "Đòn đánh bắn thêm 1 mũi tên phụ vào kẻ địch gần đó, gây sát thương vật lý."
     },
     {
@@ -308,7 +308,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_DragonsClaw.png",
       "item_id": "TFT_Item_DragonsClaw",
       "recipe": ["TFT_Item_NegatronCloak", "TFT_Item_NegatronCloak"],
-      "recipe_vn": ["Áo Choàng Negatron", "Áo Choàng Negatron"],
+      "recipe_vn": ["Áo Choàng Bạc", "Áo Choàng Bạc"],
       "description": "Nhận thêm Kháng Phép. Mỗi giây hồi lại một lượng Máu tối đa."
     },
     {
@@ -318,7 +318,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_Quicksilver.png",
       "item_id": "TFT_Item_Quicksilver",
       "recipe": ["TFT_Item_NegatronCloak", "TFT_Item_SparringGloves"],
-      "recipe_vn": ["Áo Choàng Negatron", "Găng Tay"],
+      "recipe_vn": ["Áo Choàng Bạc", "Găng Đấu Tập"],
       "description": "Miễn nhiễm khống chế trong vài giây đầu giao tranh."
     },
     {
@@ -338,7 +338,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_FrozenHeart.png",
       "item_id": "TFT_Item_FrozenHeart",
       "recipe": ["TFT_Item_TearOfTheGoddess", "TFT_Item_ChainVest"],
-      "recipe_vn": ["Nước Mắt Nữ Thần", "Áo Giáp Xích"],
+      "recipe_vn": ["Nước Mắt Nữ Thần", "Giáp Lưới"],
       "description": "Giảm Tốc Độ Đánh của kẻ địch trong phạm vi."
     },
     {
@@ -348,7 +348,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_ChaliceOfPower.png",
       "item_id": "TFT_Item_ChaliceOfPower",
       "recipe": ["TFT_Item_TearOfTheGoddess", "TFT_Item_NegatronCloak"],
-      "recipe_vn": ["Nước Mắt Nữ Thần", "Áo Choàng Negatron"],
+      "recipe_vn": ["Nước Mắt Nữ Thần", "Áo Choàng Bạc"],
       "description": "Bắt đầu giao tranh: Tăng Sức Mạnh Phép Thuật cho đồng minh liền kề cùng hàng."
     },
     {
@@ -358,7 +358,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_GargoyleStoneplate.png",
       "item_id": "TFT_Item_GargoyleStoneplate",
       "recipe": ["TFT_Item_ChainVest", "TFT_Item_NegatronCloak"],
-      "recipe_vn": ["Áo Giáp Xích", "Áo Choàng Negatron"],
+      "recipe_vn": ["Giáp Lưới", "Áo Choàng Bạc"],
       "description": "Nhận thêm Giáp và Kháng Phép cho mỗi kẻ địch đang nhắm vào tướng."
     },
     {
@@ -368,7 +368,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_SunfireCape.png",
       "item_id": "TFT_Item_SunfireCape",
       "recipe": ["TFT_Item_ChainVest", "TFT_Item_GiantsBelt"],
-      "recipe_vn": ["Áo Giáp Xích", "Đai Khổng Lồ"],
+      "recipe_vn": ["Giáp Lưới", "Đai Khổng Lồ"],
       "description": "Mỗi 2 giây, gây sát thương phép theo % Máu tối đa lên kẻ địch xung quanh, áp dụng Thiêu Đốt và Vết Thương Sâu."
     },
     {
@@ -378,7 +378,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_Crownguard.png",
       "item_id": "TFT_Item_Crownguard",
       "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_ChainVest"],
-      "recipe_vn": ["Gậy Phép Lớn", "Áo Giáp Xích"],
+      "recipe_vn": ["Gậy Quá Khổ", "Giáp Lưới"],
       "description": "Bắt đầu giao tranh: Nhận Lá Chắn. Khi Lá Chắn biến mất, nhận thêm Sức Mạnh Phép Thuật."
     },
     {
@@ -388,7 +388,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_AdaptiveHelm.png",
       "item_id": "TFT_Item_AdaptiveHelm",
       "recipe": ["TFT_Item_NegatronCloak", "TFT_Item_GiantsBelt"],
-      "recipe_vn": ["Áo Choàng Negatron", "Đai Khổng Lồ"],
+      "recipe_vn": ["Áo Choàng Bạc", "Đai Khổng Lồ"],
       "description": "Nhận thêm Kháng Phép. Giảm sát thương phép nhận vào từ mọi nguồn."
     },
     {
@@ -408,7 +408,7 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_ThiefsGloves.png",
       "item_id": "TFT_Item_ThiefsGloves",
       "recipe": ["TFT_Item_SparringGloves", "TFT_Item_SparringGloves"],
-      "recipe_vn": ["Găng Tay", "Găng Tay"],
+      "recipe_vn": ["Găng Đấu Tập", "Găng Đấu Tập"],
       "description": "Mỗi vòng: Mang 2 trang bị ngẫu nhiên. Tốn 3 ô trang bị."
     },
     {
@@ -418,13 +418,13 @@
       "image": "https://ggmeo.com/riot-images/TFTSet16/item/TFT_Item_SteadfastHeart.png",
       "item_id": "TFT_Item_SteadfastHeart",
       "recipe": ["TFT_Item_ChainVest", "TFT_Item_SparringGloves"],
-      "recipe_vn": ["Áo Giáp Xích", "Găng Tay"],
+      "recipe_vn": ["Giáp Lưới", "Găng Đấu Tập"],
       "description": "Nhận thêm Giáp và Kháng Phép. Tăng gấp đôi khi Máu trên 50%."
     }
   ],
   "combination_table": {
     "description": "Bảng ghép đồ DTCL mùa 16 - mỗi ô hiển thị trang bị kết hợp từ 2 nguyên liệu cơ bản",
-    "headers": ["Kiếm B.F.", "Cung Tái Tạo", "Gậy Phép Lớn", "Nước Mắt Nữ Thần", "Áo Giáp Xích", "Áo Choàng Negatron", "Đai Khổng Lồ", "Găng Tay"],
+    "headers": ["Kiếm B.F.", "Cung Gỗ", "Gậy Quá Khổ", "Nước Mắt Nữ Thần", "Giáp Lưới", "Áo Choàng Bạc", "Đai Khổng Lồ", "Găng Đấu Tập"],
     "grid": [
       ["Gươm Đao",        "Diệt Khổng Lồ",     "Kiếm Bão",              "Giáo Shojin",             "Giáp Thiên Thần",   "Kiếm Huyết",              "Rìu Bóng Đêm",          "Kiếm Vô Cực"],
       ["Diệt Khổng Lồ",   "Bùa Đỏ",             "Cuồng Đao Guinsoo",     "Kiếm Statikk",            "Hộ Pháp",           "Cung Phệ Hồn",            "Nanh Nashor",            "Cung Xanh"],

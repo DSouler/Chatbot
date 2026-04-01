@@ -57,7 +57,7 @@ const Login = () => {
       style={{
         minHeight: '100vh',
         width: '100%',
-        background: 'linear-gradient(135deg, #2D1B69 0%, #4C1D95 30%, #7C3AED 65%, #C4B5FD 100%)',
+        background: 'linear-gradient(135deg, #C8E8FF 0%, #E5D4F8 50%, #F5F0FF 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -68,20 +68,20 @@ const Login = () => {
       }}
     >
       {/* Decorative orbs */}
-      <div style={{ position: 'absolute', top: '8%', left: '5%', width: 260, height: 260, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,92,246,0.45) 0%, transparent 70%)' }} />
-      <div style={{ position: 'absolute', bottom: '10%', right: '6%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,58,237,0.35) 0%, transparent 70%)' }} />
-      <div style={{ position: 'absolute', top: '45%', right: '18%', width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(196,181,253,0.3) 0%, transparent 70%)' }} />
-      <div style={{ position: 'absolute', top: '20%', left: '30%', width: 130, height: 130, borderRadius: '50%', background: 'radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: '8%', left: '5%', width: 260, height: 260, borderRadius: '50%', background: 'radial-gradient(circle, rgba(147,197,253,0.5) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', bottom: '10%', right: '6%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(196,181,253,0.45) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: '45%', right: '18%', width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(221,214,254,0.4) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: '20%', left: '30%', width: 130, height: 130, borderRadius: '50%', background: 'radial-gradient(circle, rgba(186,230,253,0.35) 0%, transparent 70%)' }} />
 
       {/* TFT Branding */}
       <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginBottom: 32 }}>
         <div style={{ marginBottom: 16 }}>
           <img src={logoUrl} alt="TFT Logo" width={140} height={140} style={{ objectFit: 'contain', display: 'block', margin: '0 auto' }} />
         </div>
-        <div style={{ fontFamily: "'Georgia', serif", fontSize: 32, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.4)', marginBottom: 4 }}>
+        <div style={{ fontFamily: "'Georgia', serif", fontSize: 32, fontWeight: 900, color: '#4C1D95', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 1px 8px rgba(100,60,180,0.15)', marginBottom: 4 }}>
           TEAMFIGHT TACTICS
         </div>
-        <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, letterSpacing: 1 }}>
+        <div style={{ color: 'rgba(100,60,180,0.75)', fontSize: 14, letterSpacing: 1 }}>
           Trợ lý AI chuyên biệt cho game TFT
         </div>
       </div>
