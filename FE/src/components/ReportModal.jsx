@@ -16,9 +16,8 @@ const DEFAULT_USD_VND      = 25400;  // 1 USD = VND
 
 const cardStyle = {
   padding: '16px 20px',
-  background: '#fff',
-  borderRadius: 10,
-  border: '1px solid #e8e8e8',
+  borderRadius: 14,
+  border: 'none',
   height: '100%',
 };
 
@@ -227,48 +226,48 @@ const ReportModal = ({ open, onClose, userId }) => {
         {/* Summary cards */}
         <Row gutter={12} style={{ marginBottom: 20 }}>
           <Col span={6}>
-            <div style={cardStyle}>
+            <div style={{ ...cardStyle, background: 'linear-gradient(135deg, #9B59FF 0%, #6366F1 50%, #06B6D4 100%)' }}>
               <Statistic
-                title={<span style={{ fontSize: 12, color: '#888' }}>Tổng Tokens</span>}
+                title={<span style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)' }}>Tổng Tokens</span>}
                 value={summary.total_tokens || 0}
-                valueStyle={{ color: '#722ed1', fontSize: 22, fontWeight: 700 }}
+                valueStyle={{ color: '#fff', fontSize: 22, fontWeight: 700 }}
               />
-              <div style={{ fontSize: 11, color: '#bbb', marginTop: 2 }}>{days} ngày qua</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}>{days} ngày qua</div>
             </div>
           </Col>
           <Col span={6}>
-            <div style={cardStyle}>
-              <div style={{ fontSize: 12, color: '#888', marginBottom: 4 }}>Input / Output</div>
+            <div style={{ ...cardStyle, background: 'linear-gradient(135deg, #7C3AED 0%, #6366F1 50%, #0EA5E9 100%)' }}>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', marginBottom: 4 }}>Input / Output</div>
               <div style={{ display: 'flex', gap: 8, alignItems: 'baseline', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: '#1677ff' }}>
+                <span style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>
                   {(summary.prompt_tokens || 0).toLocaleString()}
                 </span>
-                <span style={{ color: '#ccc' }}>/</span>
-                <span style={{ fontSize: 18, fontWeight: 700, color: '#52c41a' }}>
+                <span style={{ color: 'rgba(255,255,255,0.5)' }}>/</span>
+                <span style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>
                   {(summary.completion_tokens || 0).toLocaleString()}
                 </span>
               </div>
-              <div style={{ fontSize: 11, color: '#bbb', marginTop: 2 }}>~{avgPerMsg.toLocaleString()} tokens/tin</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}>~{avgPerMsg.toLocaleString()} tokens/tin</div>
             </div>
           </Col>
           <Col span={6}>
-            <div style={cardStyle}>
-              <div style={{ fontSize: 12, color: '#888', marginBottom: 4 }}>Chi Phí (USD)</div>
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#fa8c16' }}>
+            <div style={{ ...cardStyle, background: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 50%, #14B8A6 100%)' }}>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', marginBottom: 4 }}>Chi Phí (USD)</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: '#fff' }}>
                 {fmtUSD(totalCostUSD)}
               </div>
-              <div style={{ fontSize: 11, color: '#bbb', marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}>
                 {fmtUSD(inputPrice)}/1M in · {fmtUSD(outputPrice)}/1M out
               </div>
             </div>
           </Col>
           <Col span={6}>
-            <div style={cardStyle}>
-              <div style={{ fontSize: 12, color: '#888', marginBottom: 4 }}>Chi Phí (VND)</div>
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#eb2f96' }}>
+            <div style={{ ...cardStyle, background: 'linear-gradient(135deg, #A855F7 0%, #7C3AED 50%, #0891B2 100%)' }}>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', marginBottom: 4 }}>Chi Phí (VND)</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: '#fff' }}>
                 {fmtVND(totalCostVND)}
               </div>
-              <div style={{ fontSize: 11, color: '#bbb', marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}>
                 1 USD = {usdVnd.toLocaleString()} ₫
               </div>
             </div>
@@ -297,8 +296,8 @@ const ReportModal = ({ open, onClose, userId }) => {
                 <Tooltip content={<CustomTooltip inputPrice={inputPrice} outputPrice={outputPrice} usdVnd={usdVnd} />}
                   cursor={{ fill: 'rgba(0,0,0,0.04)' }} />
                 <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
-                <Bar dataKey="prompt_tokens" name="Input" stackId="a" fill="#1677ff" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="completion_tokens" name="Output" stackId="a" fill="#52c41a" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="prompt_tokens" name="Input" stackId="a" fill="#7C3AED" radius={[0, 0, 0, 0]} />
+                <Bar dataKey="completion_tokens" name="Output" stackId="a" fill="#06B6D4" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}

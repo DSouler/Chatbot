@@ -52,6 +52,7 @@ class AdminUserResponse(BaseModel):
     position_id: Optional[int] = None
     position_name: Optional[str] = None
     role: Optional[str] = None
+    status: str = 'active'
     is_ldap_user: bool = False
     last_login: Optional[str] = None
     created_at: Optional[str] = None
@@ -75,3 +76,8 @@ class AdminUpdateUserRequest(BaseModel):
     last_name: Optional[str] = None
     role: Optional[str] = None
     password: Optional[str] = None
+    status: Optional[str] = None
+
+
+class AdminUpdateStatusRequest(BaseModel):
+    status: str  # 'active' | 'blocked'

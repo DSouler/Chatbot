@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from app.services.auth_service import AuthService
 from app.schemas.auth import (
     TokenData, AdminUserResponse, AdminCreateUserRequest,
-    AdminUpdateUserRequest,
+    AdminUpdateUserRequest, AdminUpdateStatusRequest,
 )
 from app.dependencies import require_admin, get_auth_service
 
@@ -21,6 +21,7 @@ def _user_to_response(user) -> dict:
         "position_id": user.position_id,
         "position_name": user.position.position_name if user.position else None,
         "role": user.role,
+        "status": user.status or "active",
         "is_ldap_user": user.is_ldap_user or False,
         "last_login": str(user.last_login) if user.last_login else None,
         "created_at": str(user.created_at) if user.created_at else None,
@@ -71,6 +72,21 @@ def update_user(
 ):
     """Update a user (admin only)"""
     user = auth_service.admin_update_user(user_id, req)
+    return _user_to_response(user)
+
+
+@router.patch("/users/{user_id}/status", response_model=AdminUserResponse)
+def update_user_status(
+    user_id: int,
+    req: AdminUpdateStatusRequest,
+    _admin: TokenData = Depends(require_admin),
+    auth_service: AuthService = Depends(get_auth_service),
+):
+    """Update user status: active or blocked (admin only)"""
+    from fastapi import HTTPException
+    if req.status not in ("active", "blocked"):
+        raise HTTPException(status_code=400, detail="status phải là 'active' hoặc 'blocked'")
+    user = auth_service.admin_update_user(user_id, AdminUpdateUserRequest(status=req.status))
     return _user_to_response(user)
 
 

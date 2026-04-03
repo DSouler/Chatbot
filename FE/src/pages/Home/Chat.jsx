@@ -18,21 +18,21 @@ const GuestLimitBanner = ({ navigate }) => (
   <div style={{
     width: '100%',
     maxWidth: 600,
-    background: 'linear-gradient(135deg, #E5F0F8 0%, #ede8ff 100%)',
-    border: '1.5px solid #b9acf5',
+    background: 'linear-gradient(135deg, #F0EBFF 0%, #E8E0FF 100%)',
+    border: '1.5px solid #C4B5FD',
     borderRadius: 16,
     padding: '18px 24px',
     display: 'flex',
     alignItems: 'center',
     gap: 16,
-    boxShadow: '0 4px 20px rgba(59,130,196,0.13)',
+    boxShadow: '0 4px 20px rgba(124,58,237,0.13)',
   }}>
     <span style={{ fontSize: 28 }}>🔒</span>
     <div style={{ flex: 1 }}>
-      <div style={{ fontWeight: 700, color: '#4c3dbf', fontSize: 15, marginBottom: 4 }}>
+      <div style={{ fontWeight: 700, color: '#4C1D95', fontSize: 15, marginBottom: 4 }}>
         Đã đến giới hạn lượt dùng thử
       </div>
-      <div style={{ color: '#6b5fc7', fontSize: 13 }}>
+      <div style={{ color: '#7C3AED', fontSize: 13 }}>
         Vui lòng đăng nhập để có trải nghiệm tốt hơn và không giới hạn.
       </div>
     </div>
@@ -42,7 +42,7 @@ const GuestLimitBanner = ({ navigate }) => (
         padding: '8px 20px',
         borderRadius: 10,
         border: 'none',
-        background: '#3B82C4',
+        background: 'linear-gradient(135deg, #7C3AED, #9B59FF)',
         color: '#fff',
         fontWeight: 700,
         fontSize: 13,
@@ -591,7 +591,21 @@ const Chat = () => {
           const convId = pendingUserMessage.conversationId;
           if (convId && !isGuest && !String(convId).startsWith('guest-')) {
             const sourcesToSave = streamSourcesRef.current.length > 0 ? streamSourcesRef.current : null;
-            updateLastBotMessage(convId, finalContent, sourcesToSave).catch(() => {});
+            const tempBotId = botMessage.id;
+            updateLastBotMessage(convId, finalContent, sourcesToSave)
+              .then(res => {
+                const realId = res?.data?.message_id;
+                if (realId) {
+                  setConversationMessages(prev => {
+                    const msgs = prev[convId] || [];
+                    return {
+                      ...prev,
+                      [convId]: msgs.map(m => m.id === tempBotId ? { ...m, id: realId } : m)
+                    };
+                  });
+                }
+              })
+              .catch(() => {});
           }
         }
 
@@ -650,16 +664,7 @@ const Chat = () => {
   };
 
   return (
-    <Layout style={{ height: '100vh', background: 'linear-gradient(160deg, #7EB3D4 0%, #96C6E2 30%, #A8D2EA 60%, #B4DAF0 100%)', position: 'relative' }}>
-      {/* Subtle geometric background pattern */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-        backgroundImage: `
-          radial-gradient(circle at 20% 30%, rgba(59,130,196,0.04) 0%, transparent 50%),
-          radial-gradient(circle at 80% 70%, rgba(96,165,224,0.04) 0%, transparent 50%),
-          radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 70%)`,
-        backgroundSize: '100% 100%',
-      }} />
+    <Layout style={{ height: '100vh', background: 'linear-gradient(135deg, #A8D4F5 0%, #EBF0FF 50%, #E5D4F8 80%, #F5F0FF 100%)', position: 'relative' }}>
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', opacity: 0.025 }}>
         <defs>
           <pattern id="geo-pattern" x="0" y="0" width="160" height="160" patternUnits="userSpaceOnUse">
@@ -676,7 +681,7 @@ const Chat = () => {
         .chat-input-wrapper textarea:focus { box-shadow: none !important; }
         .send-btn:hover:not(:disabled) { transform: scale(1.08); box-shadow: 0 4px 16px rgba(124,58,237,0.45) !important; }
         .send-btn:active:not(:disabled) { transform: scale(0.95); }
-        .img-btn:hover { color: #3B82C4 !important; background: rgba(59,130,196,0.08) !important; }
+        .img-btn:hover { color: #7C3AED !important; background: rgba(124,58,237,0.08) !important; }
         .chat-mode-btn:hover { opacity: 0.85; transform: translateY(-1px); }
       `}</style>
       <CustomSider 
@@ -695,16 +700,17 @@ const Chat = () => {
           marginTop: 12,
           marginRight: 12,
           marginBottom: 12,
-          background: '#EEF4FA',
-          overflow: 'hidden',
+          background: 'rgba(255,255,255,0.55)',
+          overflow: 'clip',
           zIndex: 1,
           borderRadius: 20,
-          boxShadow: '0 10px 40px rgba(0,0,0,0.12), 0 2px 10px rgba(0,0,0,0.06)',
-          border: '2px solid #A8CCE8',
+          boxShadow: '0 10px 40px rgba(160,120,240,0.12), 0 2px 10px rgba(0,0,0,0.04)',
+          border: '2px solid rgba(140,100,220,0.22)',
+          backdropFilter: 'blur(12px)',
         }}>
         <Content
           className="relative"
-          style={{ height: '100%', background: 'transparent', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+          style={{ height: '100%', background: 'transparent', display: 'flex', flexDirection: 'column' }}
         >
           {isRestoringConversation ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
@@ -717,7 +723,7 @@ const Chat = () => {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
               <div style={{ width: '100%', maxWidth: 420, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
                 <img src={logoUrl} alt="TFT Logo" width={120} height={120} style={{ objectFit: 'contain', display: 'block' }} />
-                <Title level={2} style={{ marginBottom: 0, color: '#3B82C4' }}>Welcome to TFTChat!</Title>
+                <Title level={2} style={{ marginBottom: 0, color: '#4C1D95' }}>Welcome to TFTChat!</Title>
                 <Text style={{ color: '#6b7280', marginBottom: 0 }}>
                 Chatbot hỗ trợ thông tin nội bộ – luôn sẵn sàng giải đáp thắc mắc của bạn!
                 </Text>
@@ -743,7 +749,7 @@ const Chat = () => {
                             boxShadow: chatMode === m.value
                               ? '0 2px 10px rgba(124,58,237,0.25)'
                               : '0 1px 4px rgba(0,0,0,0.08)',
-                            border: chatMode === m.value ? 'none' : '1px solid #D4E4F0',
+                            border: chatMode === m.value ? 'none' : '1px solid rgba(124,58,237,0.15)',
                             letterSpacing: 0.2,
                           }}
                         >{m.label}</button>
@@ -774,10 +780,10 @@ const Chat = () => {
                         }}
                       />
                       {welcomeImages.length > 0 && (
-                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', padding: '8px 12px', background: 'rgba(235,245,255,0.6)', borderRadius: 12 }}>
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', padding: '8px 12px', background: 'rgba(240,235,255,0.6)', borderRadius: 12 }}>
                           {welcomeImages.map((img, idx) => (
                             <div key={idx} style={{ position: 'relative' }}>
-                              <img src={img.preview} alt={img.name} style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 10, display: 'block', border: '2px solid rgba(59,130,196,0.15)' }} />
+                              <img src={img.preview} alt={img.name} style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 10, display: 'block', border: '2px solid rgba(124,58,237,0.15)' }} />
                               <CloseCircleFilled
                                 onClick={() => setWelcomeImages(prev => prev.filter((_, i) => i !== idx))}
                                 style={{ position: 'absolute', top: -6, right: -6, color: '#ff4d4f', cursor: 'pointer', fontSize: 16, background: '#fff', borderRadius: '50%' }}
@@ -796,7 +802,7 @@ const Chat = () => {
                           alignItems: 'center',
                           border: welcomeInputFocused
                             ? '1.5px solid #7C3AED'
-                            : '1.5px solid #C8DCF0',
+                            : '1.5px solid rgba(124,58,237,0.15)',
                           boxShadow: welcomeInputFocused
                             ? '0 8px 32px rgba(124,58,237,0.12), 0 0 0 3px rgba(124,58,237,0.06)'
                             : '0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04)',
@@ -811,7 +817,7 @@ const Chat = () => {
                           onClick={() => welcomeFileInputRef.current?.click()}
                           disabled={isLoading}
                           className="img-btn"
-                          style={{ marginRight: 6, color: '#7BAAC4', flexShrink: 0, fontSize: 18 }}
+                          style={{ marginRight: 6, color: '#9B8FCC', flexShrink: 0, fontSize: 18 }}
                           title="Đính kèm ảnh"
                         />
                       )}

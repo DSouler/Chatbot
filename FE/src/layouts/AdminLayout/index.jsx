@@ -6,6 +6,7 @@ import {
   DatabaseOutlined,
   SettingOutlined,
   BarChartOutlined,
+  MessageOutlined,
 } from '@ant-design/icons';
 import { useUser } from '../../hooks/useUser';
 import Footer from '../../components/Layouts/Footer';
@@ -107,6 +108,12 @@ const AdminLayout = ({ children }) => {
         {user && (
           <div className="flex items-center space-x-4">
             <span className="text-gray-700 font-medium">{user.email}</span>
+            <button
+              onClick={() => navigate('/home')}
+              className="flex items-center gap-1 text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border border-blue-200 bg-blue-50 hover:bg-blue-100 transition"
+            >
+              <MessageOutlined /> Vào Chat
+            </button>
             <button
               onClick={handleLogout}
               className="text-gray-600 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium border border-gray-200 bg-gray-100 hover:bg-red-50 transition"
