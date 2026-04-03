@@ -50,7 +50,7 @@ const Register = () => {
         style={{
           flex: 1,
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #0B2A4A 0%, #1B4B6E 30%, #5BA8D4 65%, #B8E0F5 100%)',
+          background: 'linear-gradient(135deg, #A8D4F5 0%, #EBF0FF 50%, #E5D4F8 80%, #F5F0FF 100%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -59,20 +59,20 @@ const Register = () => {
           overflow: 'hidden',
         }}
       >
-        <div style={{ position: 'absolute', top: '15%', left: '10%', width: 180, height: 180, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,180,230,0.45) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,160,255,0.35) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', top: '40%', right: '25%', width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(180,220,255,0.3) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', top: '15%', left: '10%', width: 180, height: 180, borderRadius: '50%', background: 'radial-gradient(circle, rgba(147,197,253,0.5) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(196,181,253,0.45) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', top: '40%', right: '25%', width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(221,214,254,0.4) 0%, transparent 70%)' }} />
         <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: '0 40px' }}>
           <div style={{ marginBottom: 24 }}>
             <img src={logoUrl} alt="TFT Logo" width={150} height={150} style={{ objectFit: 'contain', display: 'block', margin: '0 auto' }} />
           </div>
-          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.5)', marginBottom: 8 }}>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: '#4C1D95', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 1px 8px rgba(100,60,180,0.15)', marginBottom: 8 }}>
             TEAMFIGHT
           </div>
-          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.5)', marginBottom: 24 }}>
+          <div style={{ fontFamily: "'Georgia', serif", fontSize: 42, fontWeight: 900, color: '#4C1D95', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 1px 8px rgba(100,60,180,0.15)', marginBottom: 24 }}>
             TACTICS
           </div>
-          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15, letterSpacing: 1 }}>
+          <div style={{ color: 'rgba(100,60,180,0.75)', fontSize: 15, letterSpacing: 1 }}>
             Trợ lý AI chuyên biệt cho game TFT
           </div>
         </div>
@@ -87,7 +87,7 @@ const Register = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
+          background: 'linear-gradient(160deg, #EEF6FF 0%, #F3EEFF 100%)',
           padding: '40px',
           minHeight: '100vh',
         }}
@@ -104,7 +104,7 @@ const Register = () => {
         >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '28px' }}>
             <TFTLogo size={80} />
-            <Title level={4} style={{ marginTop: 12, marginBottom: 0, color: '#3B82C4' }}>Tạo tài khoản</Title>
+            <Title level={4} style={{ marginTop: 12, marginBottom: 0, color: '#7C3AED' }}>Tạo tài khoản</Title>
             <Text type="secondary" style={{ fontSize: 14, marginTop: 4 }}>
               Đăng ký để lưu lịch sử chat của bạn
             </Text>
@@ -199,8 +199,8 @@ const Register = () => {
                   borderRadius: 8,
                   fontSize: 16,
                   fontWeight: 600,
-                  background: '#3B82C4',
-                  borderColor: '#3B82C4',
+                  background: '#7C3AED',
+                  borderColor: '#7C3AED',
                 }}
               >
                 {loading ? 'Đang đăng ký...' : 'Đăng ký'}
@@ -211,7 +211,7 @@ const Register = () => {
           {/* Back to login */}
           <div style={{ marginTop: 24, textAlign: 'center', borderTop: '1px solid #f0f0f0', paddingTop: 20 }}>
             <Text type="secondary" style={{ fontSize: 14 }}>Đã có tài khoản? </Text>
-            <Link to="/login" style={{ fontSize: 14, color: '#3B82C4', fontWeight: 600 }}>
+            <Link to="/login" style={{ fontSize: 14, color: '#7C3AED', fontWeight: 600 }}>
               Đăng nhập
             </Link>
           </div>

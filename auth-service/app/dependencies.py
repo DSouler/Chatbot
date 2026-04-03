@@ -47,7 +47,15 @@ def get_current_user(
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
+    # Check if user is blocked — enforces even on existing sessions
+    user = auth_service.user_repository.get_user_by_id(token_data.user_id)
+    if user and (user.status or 'active') == 'blocked':
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Tài khoản của bạn đã bị khóa.",
+        )
+
     return token_data
 
 

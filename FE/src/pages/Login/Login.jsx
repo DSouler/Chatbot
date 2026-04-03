@@ -57,7 +57,7 @@ const Login = () => {
       style={{
         minHeight: '100vh',
         width: '100%',
-        background: 'linear-gradient(135deg, #0B2A4A 0%, #1B4B6E 30%, #5BA8D4 65%, #B8E0F5 100%)',
+        background: 'linear-gradient(135deg, #A8D4F5 0%, #EBF0FF 50%, #E5D4F8 80%, #F5F0FF 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -68,20 +68,20 @@ const Login = () => {
       }}
     >
       {/* Decorative orbs */}
-      <div style={{ position: 'absolute', top: '8%', left: '5%', width: 260, height: 260, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,180,230,0.45) 0%, transparent 70%)' }} />
-      <div style={{ position: 'absolute', bottom: '10%', right: '6%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(100,160,255,0.35) 0%, transparent 70%)' }} />
-      <div style={{ position: 'absolute', top: '45%', right: '18%', width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(180,220,255,0.3) 0%, transparent 70%)' }} />
-      <div style={{ position: 'absolute', top: '20%', left: '30%', width: 130, height: 130, borderRadius: '50%', background: 'radial-gradient(circle, rgba(120,200,240,0.2) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: '8%', left: '5%', width: 260, height: 260, borderRadius: '50%', background: 'radial-gradient(circle, rgba(147,197,253,0.5) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', bottom: '10%', right: '6%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(196,181,253,0.45) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: '45%', right: '18%', width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(221,214,254,0.4) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', top: '20%', left: '30%', width: 130, height: 130, borderRadius: '50%', background: 'radial-gradient(circle, rgba(186,230,253,0.35) 0%, transparent 70%)' }} />
 
       {/* TFT Branding */}
       <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginBottom: 32 }}>
         <div style={{ marginBottom: 16 }}>
           <img src={logoUrl} alt="TFT Logo" width={140} height={140} style={{ objectFit: 'contain', display: 'block', margin: '0 auto' }} />
         </div>
-        <div style={{ fontFamily: "'Georgia', serif", fontSize: 32, fontWeight: 900, color: 'white', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 2px 20px rgba(0,0,0,0.4)', marginBottom: 4 }}>
+        <div style={{ fontFamily: "'Georgia', serif", fontSize: 32, fontWeight: 900, color: '#4C1D95', letterSpacing: 4, lineHeight: 1.1, textShadow: '0 1px 8px rgba(100,60,180,0.15)', marginBottom: 4 }}>
           TEAMFIGHT TACTICS
         </div>
-        <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, letterSpacing: 1 }}>
+        <div style={{ color: 'rgba(100,60,180,0.75)', fontSize: 14, letterSpacing: 1 }}>
           Trợ lý AI chuyên biệt cho game TFT
         </div>
       </div>
@@ -226,7 +226,7 @@ const Login = () => {
           {/* Register link */}
           <div style={{ marginTop: 24, textAlign: 'center', borderTop: '1px solid #f0f0f0', paddingTop: 20 }}>
             <Text type="secondary" style={{ fontSize: 14 }}>Chưa có tài khoản? </Text>
-            <Link to="/register" style={{ fontSize: 14, color: '#3B82C4', fontWeight: 600 }}>
+            <Link to="/register" style={{ fontSize: 14, color: '#7C3AED', fontWeight: 600 }}>
               Đăng ký ngay
             </Link>
           </div>

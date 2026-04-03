@@ -4,6 +4,8 @@ import asyncio
 import asyncio
 import logging
 import json
+import os
+from collections import Counter
 from typing import List, Dict, Any, Optional, AsyncGenerator, Callable
 
 from llms.engine import get_client
@@ -22,6 +24,104 @@ from hyde.engine import HyDEEngine
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Crafting Calculator — tính toán deterministic, không phụ thuộc LLM
+# ─────────────────────────────────────────────────────────────────────────────
+
+_ITEMS_DATA = None  # lazy-loaded once
+
+def _load_items_data() -> dict:
+    global _ITEMS_DATA
+    if _ITEMS_DATA is None:
+        data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tft_items_dtcl_s16.json')
+        with open(data_path, encoding='utf-8') as f:
+            _ITEMS_DATA = json.load(f)
+    return _ITEMS_DATA
+
+# Tên chuẩn → các alias người dùng hay gõ (lowercase)
+_COMPONENT_ALIASES = {
+    "Kiếm B.F.":        ["kiếm b.f.", "kiếm bf", "kiem bf", "kiem b.f.", "b.f.", "bf"],
+    "Cung Gỗ":          ["cung gỗ", "cung go", "cung dài", "cung dai"],
+    "Gậy Quá Khổ":      ["gậy quá khổ", "gay qua kho", "gậy lớn", "gay lon", "gậy phep", "gay phep"],
+    "Nước Mắt Nữ Thần": ["nước mắt nữ thần", "nuoc mat nu than", "nước mắt", "nuoc mat"],
+    "Giáp Lưới":        ["giáp lưới", "giap luoi", "giáp lưới"],
+    "Áo Choàng Bạc":    ["áo choàng bạc", "ao choang bac", "negatron", "áo choàng bac"],
+    "Đai Khổng Lồ":     ["đai khổng lồ", "dai khong lo", "đai khổng", "dai khong"],
+    "Găng Đấu Tập":     ["găng đấu tập", "gang dau tap", "găng tay", "gang tay"],
+    "Thìa Vàng":        ["thìa vàng", "thia vang", "spatula"],
+}
+
+_CRAFTING_TRIGGER_KW = ["tôi có", "toi co", "mình có", "minh co", "tôi đang có", "đang có", "dang co"]
+_CRAFTING_INTENT_KW  = ["ghép được", "ghep duoc", "có thể ghép", "co the ghep",
+                        "tạo được", "tao duoc", "làm được", "lam duoc",
+                        "ghép trang bị", "ghep trang bi", "lắp được"]
+
+
+def _detect_crafting_query(question: str) -> bool:
+    """Trả True nếu user hỏi 'tôi có X, Y, Z ghép được trang bị nào'."""
+    q = question.lower()
+    has_trigger    = any(k in q for k in _CRAFTING_TRIGGER_KW)
+    has_intent     = any(k in q for k in _CRAFTING_INTENT_KW)
+    comp_count     = sum(1 for aliases in _COMPONENT_ALIASES.values()
+                        if any(a in q for a in aliases))
+    return has_trigger and (has_intent or comp_count >= 2)
+
+
+def _extract_components_from_query(question: str) -> list:
+    """Trích xuất danh sách tên thành phần từ câu hỏi, tính số lượng."""
+    q = question.lower()
+    result = []
+    for canonical, aliases in _COMPONENT_ALIASES.items():
+        # Tìm alias khớp đầu tiên và đếm số lần xuất hiện
+        for alias in sorted(aliases, key=len, reverse=True):  # dài trước để ưu tiên match dài
+            count = q.count(alias)
+            if count > 0:
+                result.extend([canonical] * count)
+                break  # tránh double-count với alias ngắn hơn
+    return result
+
+
+def _compute_craftable(components: list) -> list:
+    """Trả về danh sách chính xác các trang bị ghép được từ bộ thành phần."""
+    data = _load_items_data()
+    available = Counter(components)
+    craftable = []
+    for item in data["combined_items"]:
+        recipe  = item["recipe_vn"]           # [comp1, comp2]
+        needed  = Counter(recipe)
+        if all(available[c] >= needed[c] for c in needed):
+            craftable.append(item)
+    return craftable
+
+
+def _build_crafting_prompt(question: str, components: list, craftable: list, lang: str) -> str:
+    comp_str = ", ".join(components)
+    if craftable:
+        lines = [
+            f"DỮLIỆU TÍNH TOÁN CHÍNH XÁC (đã xác minh bởi hệ thống):",
+            f"Người dùng có: {comp_str}",
+            f"Tổng cộng {len(craftable)} trang bị ghép được:",
+        ]
+        for item in craftable:
+            lines.append(f"  • {item['name']} = {item['recipe_vn'][0]} + {item['recipe_vn'][1]} — {item['description']}")
+    else:
+        lines = [
+            f"DỮLIỆU TÍNH TOÁN CHÍNH XÁC:",
+            f"Người dùng có: {comp_str}",
+            f"Không có trang bị nào ghép được từ các thành phần này.",
+        ]
+    lines += [
+        "",
+        "QUY TẮC BẮT BUỘC KHI TRẢ LỜI:",
+        "1. CHỈ liệt kê ĐÚNG các trang bị trong danh sách trên — KHÔNG thêm bất kỳ trang bị nào khác",
+        "2. KHÔNG đề cập trang bị cần thêm nguyên liệu mà người dùng không có",
+        "3. KHÔNG đề xuất 'nếu có thêm X thì ghép được Y' trừ khi user hỏi",
+        f"4. Trả lời bằng {lang}, format đẹp, dùng tên trang bị tiếng Việt",
+        "",
+        f"Câu hỏi của người dùng: {question}",
+    ]
+    return "\n".join(lines)
 
 class SimplePipeline(BasePipeline):
     """
@@ -188,6 +288,20 @@ class SimplePipeline(BasePipeline):
         hyDE_document_text = hyDE_document.get("hyDE_documents", enhanced_query_text)
 
         messages.append({"role": "user", "content": user_content if user_content is not None else original_question})
+
+        # ── Crafting Calculator: xử lý riêng câu hỏi "tôi có X, Y, Z ghép được gì" ──
+        if _detect_crafting_query(original_question):
+            components = _extract_components_from_query(original_question)
+            if len(components) >= 2:
+                craftable = _compute_craftable(components)
+                logger.info(f"[CraftingCalc] components={components}, craftable={[i['name'] for i in craftable]}")
+                yield "data: " + json.dumps({"type": "info", "message": f"Crafting calculator: {len(components)} thành phần, {len(craftable)} trang bị ghép được"}) + "\n\n"
+                crafting_prompt = _build_crafting_prompt(original_question, components, craftable, lang)
+                messages[-1]["content"] = self._build_content_with_images(crafting_prompt, user_content)
+                async for chunk in self.stream_completion(model_name, llm_client, messages):
+                    yield "data: " + json.dumps(chunk) + "\n\n"
+                yield "data: " + json.dumps({"type": "done"}) + "\n\n"
+                return
 
         # Get relevant documents pipeline
         try:

@@ -20,6 +20,22 @@ dayjs.extend(isYesterday);
 const { Sider } = Layout;
 const { Text } = Typography;
 
+// Palette of vibrant colors for conversation ID badges
+const ID_BADGE_COLORS = [
+  { bg: 'rgba(239,68,68,0.15)',   color: '#DC2626'  }, // red
+  { bg: 'rgba(249,115,22,0.15)',  color: '#EA580C'  }, // orange
+  { bg: 'rgba(234,179,8,0.18)',   color: '#B45309'  }, // amber
+  { bg: 'rgba(34,197,94,0.15)',   color: '#16A34A'  }, // green
+  { bg: 'rgba(20,184,166,0.15)',  color: '#0F766E'  }, // teal
+  { bg: 'rgba(59,130,246,0.15)',  color: '#2563EB'  }, // blue
+  { bg: 'rgba(99,102,241,0.15)',  color: '#4338CA'  }, // indigo
+  { bg: 'rgba(168,85,247,0.15)',  color: '#7C3AED'  }, // purple
+  { bg: 'rgba(236,72,153,0.15)',  color: '#BE185D'  }, // pink
+  { bg: 'rgba(20,184,166,0.15)',  color: '#0D9488'  }, // cyan
+];
+
+const getBadgeColor = (seqId) => ID_BADGE_COLORS[(seqId - 1) % ID_BADGE_COLORS.length];
+
 const CustomSider = ({
   collapsed,
   onToggle,
@@ -257,17 +273,17 @@ const CustomSider = ({
       collapsible
       trigger={null}
       style={{
-        background: 'linear-gradient(180deg, rgba(27,58,92,0.92) 0%, rgba(38,74,110,0.88) 50%, rgba(27,58,92,0.92) 100%)',
+        background: 'linear-gradient(160deg, #A8D4F5 0%, #EBF0FF 50%, #E5D4F8 100%)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
-        borderRight: '1px solid rgba(255,255,255,0.08)',
+        borderRight: '1px solid rgba(140,100,220,0.22)',
         position: 'fixed',
         minHeight: '100vh',
         padding: 0,
         zIndex: 20,
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: '4px 0 32px rgba(16,36,64,0.35), inset -1px 0 0 rgba(255,255,255,0.05)',
+        boxShadow: '4px 0 24px rgba(160,120,240,0.12)',
       }}
     >
       {/* Collapsed view */}
@@ -279,7 +295,7 @@ const CustomSider = ({
             icon={<MenuUnfoldOutlined />}
             size="large"
             onClick={onToggle}
-            style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#B0D0E8' }}
+            style={{ background: 'rgba(124,58,237,0.08)', border: 'none', color: '#7C3AED' }}
             title="Open sidebar"
           />
           <Button
@@ -288,7 +304,7 @@ const CustomSider = ({
             icon={<EditOutlined />}
             size="large"
             onClick={onResetChat}
-            style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#B0D0E8' }}
+            style={{ background: 'rgba(124,58,237,0.08)', border: 'none', color: '#7C3AED' }}
             title="New Chat"
           />
           <Button
@@ -297,7 +313,7 @@ const CustomSider = ({
             icon={<UploadOutlined />}
             size="large"
             onClick={openUploadModal}
-            style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#B0D0E8' }}
+            style={{ background: 'rgba(124,58,237,0.08)', border: 'none', color: '#7C3AED' }}
             title="Upload Document"
           />
           <Button
@@ -306,7 +322,7 @@ const CustomSider = ({
             icon={<BarChartOutlined />}
             size="large"
             onClick={() => setReportModalOpen(true)}
-            style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#B0D0E8' }}
+            style={{ background: 'rgba(124,58,237,0.08)', border: 'none', color: '#7C3AED' }}
             title="Report"
           />
         </div>
@@ -318,7 +334,7 @@ const CustomSider = ({
           <div style={{ padding: '20px 16px 12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <TFTLogo size={44} onClick={onResetChat} />
-              <span style={{ fontSize: 18, fontWeight: 800, color: '#fff', letterSpacing: 0.5 }}>TFTChat</span>
+              <span style={{ fontSize: 18, fontWeight: 800, background: 'linear-gradient(135deg, #7C3AED, #6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: 0.5 }}>TFTChat</span>
             </div>
             <Button
               className="sider-icon-btn"
@@ -326,7 +342,7 @@ const CustomSider = ({
               icon={<MenuFoldOutlined />}
               size="small"
               onClick={onToggle}
-              style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#8BB8D8' }}
+              style={{ background: 'rgba(124,58,237,0.08)', border: 'none', color: '#7C3AED' }}
               title="Close sidebar"
             />
           </div>
@@ -348,8 +364,8 @@ const CustomSider = ({
             <button
               onClick={openUploadModal}
               style={{
-                padding: '9px 12px', borderRadius: 10, border: '1px solid rgba(155,89,255,0.3)',
-                background: 'rgba(124,58,237,0.12)', color: '#C4B5FD', cursor: 'pointer',
+                padding: '9px 12px', borderRadius: 10, border: '1px solid rgba(124,58,237,0.15)',
+                background: 'rgba(124,58,237,0.06)', color: '#7C3AED', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15,
                 transition: 'all 0.2s',
               }}
@@ -360,8 +376,8 @@ const CustomSider = ({
             <button
               onClick={() => setReportModalOpen(true)}
               style={{
-                padding: '9px 12px', borderRadius: 10, border: '1px solid rgba(155,89,255,0.3)',
-                background: 'rgba(124,58,237,0.12)', color: '#C4B5FD', cursor: 'pointer',
+                padding: '9px 12px', borderRadius: 10, border: '1px solid rgba(124,58,237,0.15)',
+                background: 'rgba(124,58,237,0.06)', color: '#7C3AED', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15,
                 transition: 'all 0.2s',
               }}
@@ -393,10 +409,10 @@ const CustomSider = ({
               <div
                 style={{ border: '2px dashed #d9d9d9', borderRadius: 8, padding: '32px 16px', cursor: uploading ? 'not-allowed' : 'pointer', background: uploading ? '#fafafa' : '#fff', transition: 'border-color 0.2s' }}
                 onClick={() => !uploading && fileInputRef.current?.click()}
-                onMouseEnter={e => { if (!uploading) e.currentTarget.style.borderColor = '#3B82C4'; }}
+                onMouseEnter={e => { if (!uploading) e.currentTarget.style.borderColor = '#7C3AED'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = '#d9d9d9'; }}
               >
-                <InboxOutlined style={{ fontSize: 40, color: uploading ? '#bbb' : '#3B82C4', marginBottom: 8 }} />
+                <InboxOutlined style={{ fontSize: 40, color: uploading ? '#bbb' : '#7C3AED', marginBottom: 8 }} />
                 <div style={{ fontWeight: 600, fontSize: 15 }}>{uploading ? 'Uploading…' : 'Click to select a file'}</div>
                 <div style={{ color: '#888', fontSize: 13, marginTop: 4 }}>Supported: PDF, TXT, DOCX</div>
               </div>
@@ -420,7 +436,7 @@ const CustomSider = ({
               <div style={{ display: 'flex', gap: 6 }}>
                 <Input
                   placeholder="Tìm kiếm đoạn chat..."
-                  prefix={<SearchOutlined style={{ color: '#6C9FC0' }} />}
+                  prefix={<SearchOutlined style={{ color: '#9B8FCC' }} />}
                   allowClear
                   value={searchQuery}
                   onChange={e => { setSearchQuery(e.target.value); setSearchError(''); }}
@@ -429,9 +445,9 @@ const CustomSider = ({
                   style={{
                     flex: 1,
                     borderRadius: 10,
-                    background: 'rgba(255,255,255,0.08)',
-                    border: searchError ? '1px solid #ff4d4f' : '1px solid rgba(130,180,210,0.2)',
-                    color: '#ddd',
+                    background: '#fff',
+                    border: searchError ? '1px solid #ff4d4f' : '1px solid rgba(124,58,237,0.15)',
+                    color: '#333',
                   }}
                   className="sider-search"
                 />
@@ -442,7 +458,7 @@ const CustomSider = ({
                   onClick={handleSearch}
                   style={{
                     borderRadius: 10,
-                    background: 'linear-gradient(135deg, #3B82C4 0%, #6C9FC0 100%)',
+                    background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)',
                     border: 'none',
                     minWidth: 32,
                     flexShrink: 0,
@@ -464,14 +480,14 @@ const CustomSider = ({
             style={{ flex: 1, overflowY: 'auto', padding: '0 8px', minHeight: 0, cursor: 'grab' }}
           >
             {!isGuest && Object.keys(groupedConversations).length === 0 && searchQuery.trim() && (
-              <div style={{ textAlign: 'center', color: '#6C9FC0', padding: '24px 0', fontSize: 13 }}>
+              <div style={{ textAlign: 'center', color: '#9B8FCC', padding: '24px 0', fontSize: 13 }}>
                 Không tìm thấy đoạn chat
               </div>
             )}
             {!isGuest && Object.keys(groupedConversations).map((dateLabel) => (
               <div key={dateLabel}>
                 <div style={{ padding: '4px 8px 2px 8px', marginTop: 8 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#6C9FC0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#8B7FB8', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     {dateLabel}
                   </span>
                 </div>
@@ -489,23 +505,25 @@ const CustomSider = ({
                         borderRadius: 10,
                         cursor: 'pointer',
                         background: isSelected
-                          ? 'linear-gradient(135deg, rgba(59,130,196,0.35) 0%, rgba(124,111,224,0.25) 100%)'
+                          ? 'linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(139,92,246,0.08) 100%)'
                           : 'transparent',
-                        border: isSelected ? '1px solid rgba(130,180,210,0.3)' : '1px solid transparent',
+                        border: isSelected ? '1px solid rgba(124,58,237,0.2)' : '1px solid transparent',
                         transition: 'all 0.15s ease',
                       }}
                       onMouseEnter={e => {
-                        if (!isSelected) e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                        if (!isSelected) e.currentTarget.style.background = 'rgba(124,58,237,0.04)';
                       }}
                       onMouseLeave={e => {
                         if (!isSelected) e.currentTarget.style.background = 'transparent';
                       }}
                     >
-                      <HistoryOutlined style={{ marginRight: 8, color: isSelected ? '#B0D0E8' : '#4A7FA0', fontSize: 13, flexShrink: 0 }} />
+                      <HistoryOutlined style={{ marginRight: 8, color: isSelected ? '#7C3AED' : '#9B8FCC', fontSize: 13, flexShrink: 0 }} />
                       <span style={{
                         flexShrink: 0, minWidth: 20, height: 18, borderRadius: 5,
-                        background: isSelected ? 'rgba(124,58,237,0.4)' : 'rgba(124,58,237,0.18)',
-                        color: isSelected ? '#E0D0FF' : '#9B8FCC',
+                        background: isSelected
+                          ? getBadgeColor(convIdMap[item.id]).bg.replace('0.15)', '0.3)').replace('0.18)', '0.35)')
+                          : getBadgeColor(convIdMap[item.id]).bg,
+                        color: getBadgeColor(convIdMap[item.id]).color,
                         fontSize: 10, fontWeight: 700, display: 'inline-flex',
                         alignItems: 'center', justifyContent: 'center',
                         padding: '0 4px', marginRight: 6, letterSpacing: '0.02em',
@@ -520,14 +538,14 @@ const CustomSider = ({
                           onPressEnter={() => handleRenameSubmit(item.id)}
                           onBlur={() => handleRenameSubmit(item.id)}
                           autoFocus
-                          style={{ flex: 1, background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', borderRadius: 6 }}
+                          style={{ flex: 1, background: '#fff', border: '1px solid rgba(124,58,237,0.15)', color: '#333', borderRadius: 6 }}
                           onClick={e => e.stopPropagation()}
                         />
                       ) : (
                         <span style={{
                           flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                           fontWeight: isSelected ? 600 : 400, fontSize: 13,
-                          color: isSelected ? '#fff' : '#B0D0E8',
+                          color: isSelected ? '#4C1D95' : '#444',
                         }}>
                           {renames[item.id] || item.name}
                         </span>
@@ -548,7 +566,7 @@ const CustomSider = ({
                       >
                         <button
                           style={{
-                            background: 'none', border: 'none', color: '#6C9FC0', cursor: 'pointer',
+                            background: 'none', border: 'none', color: '#9B8FCC', cursor: 'pointer',
                             padding: '2px 4px', borderRadius: 4, marginLeft: 4, flexShrink: 0,
                             display: 'flex', alignItems: 'center', fontSize: 14,
                             opacity: 0.6, transition: 'opacity 0.2s',
@@ -570,16 +588,16 @@ const CustomSider = ({
           {/* User section */}
           {isGuest ? (
             <div style={{
-              padding: '14px 14px', borderTop: '1px solid rgba(130,180,210,0.15)',
+              padding: '14px 14px', borderTop: '1px solid rgba(124,58,237,0.1)',
               display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0,
             }}>
-              <span style={{ color: '#6C9FC0', fontSize: 13 }}>Đang dùng thử</span>
+              <span style={{ color: '#8B7FB8', fontSize: 13 }}>Đang dùng thử</span>
               <button
                 onClick={() => { sessionStorage.removeItem('guestMode'); navigate('/login'); }}
                 style={{
                   fontSize: 12, color: '#fff', padding: '9px 12px', borderRadius: 10, border: 'none',
-                  background: 'linear-gradient(135deg, #3B82C4 0%, #60A5E0 100%)',
-                  cursor: 'pointer', fontWeight: 600, boxShadow: '0 2px 8px rgba(59,130,196,0.3)',
+                  background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)',
+                  cursor: 'pointer', fontWeight: 600, boxShadow: '0 2px 8px rgba(124,58,237,0.25)',
                 }}
               >
                 Đăng nhập / Tạo tài khoản
@@ -587,8 +605,8 @@ const CustomSider = ({
               <button
                 onClick={handleGuestExit}
                 style={{
-                  fontSize: 12, color: '#B0D0E8', padding: '7px 12px', borderRadius: 10,
-                  border: '1px solid rgba(130,180,210,0.2)', background: 'transparent', cursor: 'pointer',
+                  fontSize: 12, color: '#7C3AED', padding: '7px 12px', borderRadius: 10,
+                  border: '1px solid rgba(124,58,237,0.2)', background: 'transparent', cursor: 'pointer',
                 }}
               >
                 Trang chủ
@@ -596,17 +614,17 @@ const CustomSider = ({
             </div>
           ) : user && (
             <div style={{
-              padding: '14px 14px', borderTop: '1px solid rgba(130,180,210,0.15)',
+              padding: '14px 14px', borderTop: '1px solid rgba(124,58,237,0.1)',
               display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
                 <div style={{
                   width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: 'linear-gradient(135deg, #3B82C4, #60A5E0)', color: '#fff', fontWeight: 700, fontSize: 14, flexShrink: 0,
+                  background: 'linear-gradient(135deg, #7C3AED, #9B59FF)', color: '#fff', fontWeight: 700, fontSize: 14, flexShrink: 0,
                 }}>
                   {(displayName || '?')[0].toUpperCase()}
                 </div>
-                <span style={{ color: '#D0E4F0', fontWeight: 600, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span style={{ color: '#333', fontWeight: 600, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {displayName}
                 </span>
               </div>
@@ -618,12 +636,12 @@ const CustomSider = ({
                   }}
                   title="Cài đặt tài khoản"
                   style={{
-                    fontSize: 13, color: '#6C9FC0', padding: '5px 8px', borderRadius: 8,
-                    border: '1px solid rgba(130,180,210,0.2)', background: 'transparent',
+                    fontSize: 13, color: '#8B7FB8', padding: '5px 8px', borderRadius: 8,
+                    border: '1px solid rgba(124,58,237,0.15)', background: 'transparent',
                     cursor: 'pointer', display: 'flex', alignItems: 'center', transition: 'all 0.2s',
                   }}
-                  onMouseOver={e => { e.currentTarget.style.color = '#C4B5FD'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.4)'; }}
-                  onMouseOut={e => { e.currentTarget.style.color = '#6C9FC0'; e.currentTarget.style.borderColor = 'rgba(130,180,210,0.2)'; }}
+                  onMouseOver={e => { e.currentTarget.style.color = '#7C3AED'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.3)'; }}
+                  onMouseOut={e => { e.currentTarget.style.color = '#8B7FB8'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.15)'; }}
                 >
                   <SettingOutlined />
                 </button>
@@ -634,12 +652,12 @@ const CustomSider = ({
                     navigate('/home');
                   }}
                   style={{
-                    fontSize: 11, color: '#6C9FC0', padding: '6px 12px', borderRadius: 8,
-                    border: '1px solid rgba(130,180,210,0.2)', background: 'transparent',
+                    fontSize: 11, color: '#8B7FB8', padding: '6px 12px', borderRadius: 8,
+                    border: '1px solid rgba(124,58,237,0.15)', background: 'transparent',
                     cursor: 'pointer', fontWeight: 500, transition: 'all 0.2s',
                   }}
                   onMouseOver={e => { e.currentTarget.style.color = '#ff6b6b'; e.currentTarget.style.borderColor = 'rgba(255,107,107,0.3)'; }}
-                  onMouseOut={e => { e.currentTarget.style.color = '#6C9FC0'; e.currentTarget.style.borderColor = 'rgba(130,180,210,0.2)'; }}
+                  onMouseOut={e => { e.currentTarget.style.color = '#8B7FB8'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.15)'; }}
                 >
                   Sign Out
                 </button>
@@ -728,13 +746,13 @@ const CustomSider = ({
       <style>{`
         .sider-scrollbar::-webkit-scrollbar { width: 4px; }
         .sider-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .sider-scrollbar::-webkit-scrollbar-thumb { background: rgba(130,180,210,0.3); border-radius: 4px; }
-        .sider-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(130,180,210,0.5); }
-        .sider-search .ant-input { background: transparent !important; color: #ddd !important; }
-        .sider-search .ant-input::placeholder { color: #6C9FC0 !important; }
-        .sider-search .ant-input-clear-icon { color: #6C9FC0 !important; }
+        .sider-scrollbar::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.15); border-radius: 4px; }
+        .sider-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(124,58,237,0.3); }
+        .sider-search .ant-input { background: transparent !important; color: #333 !important; }
+        .sider-search .ant-input::placeholder { color: #9B8FCC !important; }
+        .sider-search .ant-input-clear-icon { color: #9B8FCC !important; }
         .sider-icon-btn { transition: all 0.25s ease !important; }
-        .sider-icon-btn:hover { background: rgba(124,58,237,0.2) !important; color: #C4B5FD !important; transform: scale(1.1); box-shadow: 0 0 12px rgba(124,58,237,0.3) !important; }
+        .sider-icon-btn:hover { background: rgba(124,58,237,0.1) !important; color: #7C3AED !important; transform: scale(1.1); box-shadow: 0 0 12px rgba(124,58,237,0.15) !important; }
       `}</style>
     </Sider>
   );

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   Table, Button, Modal, Form, Input, message,
-  Card, Select, Space, Tag, Popconfirm, Spin
+  Card, Select, Space, Tag, Popconfirm, Spin, Switch
 } from 'antd';
 import {
   PlusOutlined, EditOutlined, DeleteOutlined, ReloadOutlined
 } from '@ant-design/icons';
-import { adminGetUsers, adminCreateUser, adminUpdateUser, adminDeleteUser } from '../../../../services/auth';
+import { adminGetUsers, adminCreateUser, adminUpdateUser, adminDeleteUser, adminUpdateUserStatus } from '../../../../services/auth';
 
 const { Option } = Select;
 
@@ -115,6 +115,18 @@ const User = () => {
     }
   };
 
+  // ── Toggle Status ──
+  const handleStatusToggle = async (userId, currentStatus) => {
+    const newStatus = currentStatus === 'active' ? 'blocked' : 'active';
+    try {
+      await adminUpdateUserStatus(userId, newStatus);
+      message.success(newStatus === 'blocked' ? 'Đã khóa tài khoản' : 'Đã mở khóa tài khoản');
+      setData(prev => prev.map(u => u.id === userId ? { ...u, status: newStatus } : u));
+    } catch (err) {
+      message.error('Không thể thay đổi trạng thái');
+    }
+  };
+
   // ── Filtering ──
   const filteredData = data.filter(item => {
     const q = search.toLowerCase();
@@ -148,6 +160,22 @@ const User = () => {
       dataIndex: 'is_ldap_user',
       render: (v) => (v ? <Tag color="green">LDAP</Tag> : <Tag>Local</Tag>),
       width: 80,
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      width: 120,
+      render: (status, record) => (
+        <Space>
+          <Switch
+            checked={status !== 'blocked'}
+            onChange={() => handleStatusToggle(record.id, status || 'active')}
+            checkedChildren="Active"
+            unCheckedChildren="Blocked"
+            style={{ backgroundColor: status === 'blocked' ? '#ff4d4f' : '#52c41a' }}
+          />
+        </Space>
+      ),
     },
     {
       title: 'Đăng nhập cuối',
