@@ -94,31 +94,43 @@ const TokenTab = ({ days }) => {
     <Spin spinning={loading}>
       {/* Summary cards */}
       <Row gutter={[16, 16]} style={{ marginBottom: 20 }}>
-        <Col xs={24} sm={12} lg={6}>
-          <Card style={cardStyle}>
-            <Statistic title="Tổng tokens" value={summary.total_tokens || 0}
-              formatter={v => v.toLocaleString()} valueStyle={{ color: '#1677ff' }} />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card style={cardStyle}>
-            <Statistic title="Input tokens" value={summary.prompt_tokens || 0}
-              formatter={v => v.toLocaleString()} valueStyle={{ color: '#1677ff' }} />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card style={cardStyle}>
-            <Statistic title="Output tokens" value={summary.completion_tokens || 0}
-              formatter={v => v.toLocaleString()} valueStyle={{ color: '#52c41a' }} />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card style={cardStyle}>
-            <Statistic title="Ước tính chi phí" value={fmtUSD(totalCostUSD)}
-              suffix={<span style={{ fontSize: 12, color: '#999' }}>≈ {fmtVND(totalCostUSD * usdVnd)}</span>}
-              valueStyle={{ color: '#fa8c16', fontSize: 18 }} />
-          </Card>
-        </Col>
+        {[
+          {
+            title: 'Tổng Tokens',
+            value: (summary.total_tokens || 0).toLocaleString(),
+            sub: `${days} ngày qua`,
+          },
+          {
+            title: 'Input / Output',
+            value: `${(summary.prompt_tokens || 0).toLocaleString()} / ${(summary.completion_tokens || 0).toLocaleString()}`,
+            sub: summary.total_messages ? `~${Math.round((summary.total_tokens || 0) / summary.total_messages).toLocaleString()} tokens/tin` : '—',
+          },
+          {
+            title: 'Chi Phí (USD)',
+            value: fmtUSD(totalCostUSD),
+            sub: `$${inputPrice.toFixed(4)}/1M in · $${outputPrice.toFixed(4)}/1M out`,
+          },
+          {
+            title: 'Chi Phí (VND)',
+            value: fmtVND(totalCostUSD * usdVnd),
+            sub: `1 USD = ${usdVnd.toLocaleString('vi-VN')} ₫`,
+          },
+        ].map(card => (
+          <Col key={card.title} xs={24} sm={12} lg={6}>
+            <div style={{
+              borderRadius: 14,
+              padding: '20px 22px',
+              background: 'linear-gradient(135deg, #40E0F0 0%, #7BC8F0 50%, #B8A0F8 100%)',
+              color: '#fff',
+              height: '100%',
+              boxShadow: '0 4px 16px rgba(64,224,240,0.25)',
+            }}>
+              <div style={{ fontSize: 13, fontWeight: 500, opacity: 0.85, marginBottom: 8 }}>{card.title}</div>
+              <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6 }}>{card.value}</div>
+              <div style={{ fontSize: 12, opacity: 0.75 }}>{card.sub}</div>
+            </div>
+          </Col>
+        ))}
       </Row>
 
       {/* Chart */}
@@ -303,7 +315,7 @@ const Report = () => {
   ];
 
   return (
-    <div style={{ padding: '24px', background: '#f5f6fa', minHeight: '100vh' }}>
+    <div style={{ padding: '24px', background: 'linear-gradient(135deg, #40E0F0 0%, #B8F4F8 35%, #F0FFFF 65%, #F8F4FF 100%)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20,
