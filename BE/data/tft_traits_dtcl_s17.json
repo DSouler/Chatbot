@@ -1,0 +1,339 @@
+{
+  "season": 17,
+  "season_name": "Thần Không Gian",
+  "source": "https://cellphones.com.vn/sforum/toc-he-dau-truong-chan-ly-mua-17",
+  "crawled_date": "2026-04-03",
+  "traits": [
+    {
+      "name": "Đấu Sĩ",
+      "name_en": "Brawler",
+      "type": "Hệ",
+      "description": "Đội hình tập trung toàn các vị tướng tuyến trước trâu bò nhất, nhằm tạo ra một đội ngũ sở hữu khả năng chống chịu lâu dài và tạo áp lực ổn định trong giao tranh.",
+      "champions": [
+        { "name": "Cho'Gath", "cost": 1 },
+        { "name": "Rek'Sai", "cost": 1 },
+        { "name": "Gragas", "cost": 2 },
+        { "name": "Pantheon", "cost": 2 },
+        { "name": "Maokai", "cost": 3 },
+        { "name": "Tahm Kench", "cost": 4 }
+      ],
+      "bonus": {
+        "team_passive": "Toàn đội nhận thêm 7% Máu",
+        "tiers": [
+          { "count": 2, "effect": "+25% Máu tối đa" },
+          { "count": 4, "effect": "+45% Máu tối đa" },
+          { "count": 6, "effect": "+65% Máu tối đa" }
+        ]
+      }
+    },
+    {
+      "name": "Thách Đấu",
+      "name_en": "Challenger",
+      "type": "Hệ",
+      "description": "Các carry có thể snowball cực nhanh, farm kill dễ dàng. Lướt tới mục tiêu mới mỗi khi hạ gục kẻ địch.",
+      "champions": [
+        { "name": "Jinx", "cost": 2 },
+        { "name": "Bel'Veth", "cost": 2 },
+        { "name": "Diana", "cost": 3 },
+        { "name": "Miss Fortune", "cost": 3 },
+        { "name": "Kindred", "cost": 4 }
+      ],
+      "bonus": {
+        "team_passive": "Toàn đội nhận 10% Tốc Độ Đánh",
+        "on_kill": "Lướt tới mục tiêu mới và nhận thêm 50% Tốc Độ Đánh trong 2.5 giây",
+        "tiers": [
+          { "count": 2, "effect": "+15% Tốc Độ Đánh" },
+          { "count": 3, "effect": "+22% Tốc Độ Đánh" },
+          { "count": 4, "effect": "+30% Tốc Độ Đánh" },
+          { "count": 5, "effect": "+40% Tốc Độ Đánh" }
+        ]
+      }
+    },
+    {
+      "name": "Can Trường",
+      "name_en": "Bastion",
+      "type": "Hệ",
+      "description": "Khả năng chống chịu mạnh ở giai đoạn đầu trận, phù hợp cho việc xây dựng tuyến trước vững chắc. Hiệu ứng được tăng gấp đôi trong 10 giây đầu giao tranh.",
+      "champions": [
+        { "name": "Aatrox", "cost": 1 },
+        { "name": "Poppy", "cost": 1 },
+        { "name": "Jax", "cost": 2 },
+        { "name": "Ornn", "cost": 3 },
+        { "name": "Rammus", "cost": 4 },
+        { "name": "Shen", "cost": 5 }
+      ],
+      "bonus": {
+        "team_passive": "Toàn đội nhận 12 Giáp và Kháng Phép",
+        "special": "Hiệu ứng tăng gấp đôi trong 10 giây đầu giao tranh",
+        "tiers": [
+          { "count": 2, "effect": "16 Giáp/Kháng Phép" },
+          { "count": 4, "effect": "35 Giáp/Kháng Phép" },
+          { "count": 6, "effect": "55 Giáp/Kháng Phép, toàn đội nhận thêm 20 Giáp/Kháng Phép" }
+        ]
+      }
+    },
+    {
+      "name": "Thuật Sư",
+      "name_en": "Channeler",
+      "type": "Hệ",
+      "description": "Spam skill liên tục và gây sát thương phép cực mạnh. Nhận thêm 20% năng lượng từ mọi nguồn và hồi năng lượng theo thời gian.",
+      "champions": [
+        { "name": "Mordekaiser", "cost": 2 },
+        { "name": "Zoe", "cost": 2 },
+        { "name": "Miss Fortune", "cost": 3 },
+        { "name": "Viktor", "cost": 3 },
+        { "name": "Aurelion Sol", "cost": 4 },
+        { "name": "Bard", "cost": 5 }
+      ],
+      "bonus": {
+        "trait_passive": "Nhận thêm 20% năng lượng từ mọi nguồn",
+        "tiers": [
+          { "count": 2, "effect": "Hồi 1% năng lượng/giây | +3% mỗi Thuật Sư" },
+          { "count": 3, "effect": "Hồi 1% năng lượng/giây | +4% mỗi Thuật Sư" },
+          { "count": 4, "effect": "Hồi 2% năng lượng/giây | +6% mỗi Thuật Sư" },
+          { "count": 5, "effect": "Hồi 2% năng lượng/giây | +7% mỗi Thuật Sư" }
+        ]
+      }
+    },
+    {
+      "name": "Đao Phủ",
+      "name_en": "Marauder",
+      "type": "Hệ",
+      "description": "Khả năng hồi phục mạnh mẽ kết hợp tạo Lá Chắn. Lượng hồi phục vượt mức được chuyển hóa thành Lá Chắn (tối đa 25% Máu).",
+      "champions": [
+        { "name": "Akali", "cost": 2 },
+        { "name": "Bel'Veth", "cost": 2 },
+        { "name": "Urgot", "cost": 3 },
+        { "name": "Master Yi", "cost": 4 },
+        { "name": "Fiora", "cost": 5 }
+      ],
+      "bonus": {
+        "team_passive": "Toàn đội nhận 5% Hút Máu",
+        "special": "Lượng hồi phục vượt mức chuyển thành Lá Chắn (tối đa 25% Máu)",
+        "tiers": [
+          { "count": 2, "effect": "+5% Hút Máu, +20% Sức Mạnh Công Kích" },
+          { "count": 4, "effect": "+7% Hút Máu, +30% Sức Mạnh Công Kích" },
+          { "count": 6, "effect": "+10% Hút Máu, +40% Sức Mạnh Công Kích" }
+        ]
+      }
+    },
+    {
+      "name": "Nhân Bản",
+      "name_en": "Replicator",
+      "type": "Hệ",
+      "description": "Nhân bản kỹ năng của tướng thêm một lần với hiệu lực giảm, gia tăng sát thương đáng kể.",
+      "champions": [
+        { "name": "Veigar", "cost": 1 },
+        { "name": "Lissandra", "cost": 1 },
+        { "name": "Pantheon", "cost": 2 },
+        { "name": "Lulu", "cost": 3 },
+        { "name": "Miss Fortune", "cost": 3 },
+        { "name": "Nami", "cost": 4 }
+      ],
+      "bonus": {
+        "tiers": [
+          { "count": 2, "effect": "Kỹ năng được kích hoạt thêm lần nữa với 25% hiệu lực" },
+          { "count": 4, "effect": "Kỹ năng được kích hoạt thêm lần nữa với 50% hiệu lực" }
+        ]
+      }
+    },
+    {
+      "name": "Định Mệnh",
+      "name_en": "Fateweaver",
+      "type": "Hệ",
+      "description": "Cơ chế ngẫu nhiên đặc trưng, tạo sát thương đột biến. Kỹ năng có thể chí mạng và hiệu ứng May Mắn giúp tung xúc xắc hai lần.",
+      "champions": [
+        { "name": "Twisted Fate", "cost": 1 },
+        { "name": "Caitlyn", "cost": 1 },
+        { "name": "Milio", "cost": 2 },
+        { "name": "Corki", "cost": 4 }
+      ],
+      "bonus": {
+        "trait_passive": "Nhận thêm chỉ số Chính Xác, kỹ năng có thể chí mạng",
+        "tiers": [
+          { "count": 2, "effect": "Kỹ năng có thể kích hoạt hiệu ứng May Mắn (tung xúc xắc 2 lần, lấy kết quả cao hơn)" },
+          { "count": 4, "effect": "+20% Tỉ lệ Chí Mạng, +10% Sát Thương Chí Mạng, hiệu ứng chí mạng áp dụng May Mắn" }
+        ]
+      }
+    },
+    {
+      "name": "Đạo Tặc",
+      "name_en": "Rogue",
+      "type": "Hệ",
+      "description": "Lối chơi linh hoạt với khả năng né giao tranh khi nguy hiểm. Khi dưới 50% Máu sẽ tạm thời biến mất khỏi giao tranh.",
+      "champions": [
+        { "name": "Talon", "cost": 1 },
+        { "name": "Briar", "cost": 1 },
+        { "name": "Gwen", "cost": 2 },
+        { "name": "Kai'Sa", "cost": 3 },
+        { "name": "Fizz", "cost": 3 },
+        { "name": "Riven", "cost": 4 }
+      ],
+      "bonus": {
+        "special": "Khi dưới 50% Máu, tạm thời biến mất khỏi giao tranh, địch chuyển sang tuyến trước",
+        "tiers": [
+          { "count": 2, "effect": "+15% Sức Mạnh Công/Phép" },
+          { "count": 3, "effect": "+30% Sức Mạnh Công/Phép" },
+          { "count": 4, "effect": "+45% Sức Mạnh Công/Phép" },
+          { "count": 5, "effect": "+60% Sức Mạnh Công/Phép" }
+        ]
+      }
+    },
+    {
+      "name": "Xạ Thủ",
+      "name_en": "Sniper",
+      "type": "Hệ",
+      "description": "Carry gây sát thương vật lý từ tuyến sau, sát thương khuếch đại theo khoảng cách với mục tiêu.",
+      "champions": [
+        { "name": "Ezreal", "cost": 1 },
+        { "name": "Gnar", "cost": 2 },
+        { "name": "Samira", "cost": 3 },
+        { "name": "Xayah", "cost": 4 },
+        { "name": "Jhin", "cost": 5 }
+      ],
+      "bonus": {
+        "tiers": [
+          { "count": 2, "effect": "+18% sát thương, tăng thêm 2% mỗi ô khoảng cách" },
+          { "count": 3, "effect": "+24% sát thương, tăng thêm 3% mỗi ô khoảng cách" },
+          { "count": 4, "effect": "+28% sát thương, tăng thêm 4% mỗi ô khoảng cách" },
+          { "count": 5, "effect": "+32% sát thương, tăng thêm 5% mỗi ô khoảng cách" }
+        ]
+      }
+    },
+    {
+      "name": "Tiên Phong",
+      "name_en": "Vanguard",
+      "type": "Hệ",
+      "description": "Đứng vững ở tuyến trước nhờ tạo Lá Chắn liên tục. Nhận Lá Chắn khi bắt đầu giao tranh và khi đạt 50% Máu.",
+      "champions": [
+        { "name": "Nasus", "cost": 1 },
+        { "name": "Leona", "cost": 1 },
+        { "name": "Mordekaiser", "cost": 2 },
+        { "name": "Illaoi", "cost": 3 },
+        { "name": "Nunu", "cost": 4 },
+        { "name": "Blitzcrank", "cost": 5 }
+      ],
+      "bonus": {
+        "special": "Nhận Lá Chắn khi bắt đầu giao tranh và đạt 50% Máu, kéo dài 10 giây",
+        "tiers": [
+          { "count": 2, "effect": "Lá Chắn = 16% Máu tối đa" },
+          { "count": 4, "effect": "Lá Chắn = 28% Máu tối đa" },
+          { "count": 6, "effect": "Lá Chắn = 40% Máu tối đa, +10% Chống Chịu" }
+        ]
+      }
+    },
+    {
+      "name": "Du Mục",
+      "name_en": "Shepherd",
+      "type": "Tộc",
+      "description": "Triệu hồi sinh vật hỗ trợ trong giao tranh, hiệu quả rõ rệt ở giai đoạn cuối trận.",
+      "champions": [
+        { "name": "Teemo", "cost": 1 },
+        { "name": "Lissandra", "cost": 1 },
+        { "name": "Meepsie", "cost": 2 },
+        { "name": "Illaoi", "cost": 3 },
+        { "name": "LeBlanc", "cost": 4 },
+        { "name": "Sona", "cost": 5 }
+      ],
+      "bonus": {
+        "tiers": [
+          { "count": 3, "effect": "Triệu hồi Bia" },
+          { "count": 5, "effect": "Triệu hồi Bayin" },
+          { "count": 7, "effect": "Sinh vật triệu hồi được cường hóa mạnh mẽ" }
+        ]
+      }
+    },
+    {
+      "name": "Lữ Hành",
+      "name_en": "Voyager",
+      "type": "Tộc",
+      "description": "Chiến sĩ kết hợp chống chịu và sát thương. Khi bắt đầu giao tranh: Tank nhận Lá Chắn 15 giây, đồng minh còn lại được gia tăng sát thương. Hiệu ứng nhân đôi với tướng Lữ Hành.",
+      "champions": [
+        { "name": "Meepsie", "cost": 2 },
+        { "name": "Pyke", "cost": 2 },
+        { "name": "Aurora", "cost": 3 },
+        { "name": "Siêu Chiến Giáp Garen", "cost": 4 },
+        { "name": "Karma", "cost": 4 }
+      ],
+      "bonus": {
+        "tiers": [
+          { "count": 2, "effect": "175 Lá Chắn; +9% sát thương" },
+          { "count": 3, "effect": "250 Lá Chắn; +15% sát thương" },
+          { "count": 4, "effect": "350 Lá Chắn; +18% sát thương" },
+          { "count": 5, "effect": "500 Lá Chắn; +22% sát thương" },
+          { "count": 6, "effect": "700 Lá Chắn; +27% sát thương" }
+        ]
+      }
+    },
+    {
+      "name": "Thời Không",
+      "name_en": "Timebreaker",
+      "type": "Hệ",
+      "description": "Lật kèo tốt, tích lũy sức mạnh theo thời gian. Phù hợp cùng các carry AD.",
+      "champions": [
+        { "name": "Ezreal", "cost": 1 },
+        { "name": "Milio", "cost": 2 },
+        { "name": "Pantheon", "cost": 2 },
+        { "name": "Riven", "cost": 4 }
+      ],
+      "bonus": {
+        "tiers": [
+          { "count": 2, "effect": "Khi thua: nhận thêm lượt làm mới cửa hàng; khi thắng: tích trữ thêm EXP" },
+          { "count": 3, "effect": "Đồng minh nhận +15% Tốc Độ Đánh" },
+          { "count": 4, "effect": "Tướng Thời Không nhận thêm 50% Tốc Độ Đánh" }
+        ]
+      }
+    }
+  ],
+  "special_5cost_traits": [
+    {
+      "name": "U Sầu",
+      "name_en": "Doomer",
+      "champion": "Vex",
+      "cost": 5,
+      "effect": "Đánh dấu kẻ địch, cướp 8% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật giúp Vex mạnh nhất đội hình"
+    },
+    {
+      "name": "Tử Thần Không Gian",
+      "name_en": "Space Reaper",
+      "champion": "Zed",
+      "cost": 5,
+      "effect": "Kích hoạt từ Lõi Anh Hùng; Zed nhận thêm 40% Sức Mạnh Công Kích nếu bản sao vẫn tồn tại"
+    },
+    {
+      "name": "Nữ Thần Không Gian",
+      "name_en": "Space Goddess",
+      "champion": "Miss Fortune",
+      "cost": 5,
+      "effect": "Cho phép lựa chọn giữa các hệ Thách Đấu/Thuật Sư/Nhân Bản, sở hữu bộ kỹ năng riêng biệt"
+    },
+    {
+      "name": "Tiệc Tùng",
+      "name_en": "Party Time",
+      "champion": "Blitzcrank",
+      "cost": 5,
+      "effect": "Khi dưới 45% Máu: trở nên vô hình, hồi 15% Máu/giây; sau đó lao vào giao tranh với tốc độ cao và kỹ năng cường hóa"
+    },
+    {
+      "name": "Song Đấu Thần Thánh",
+      "name_en": "Divine Duel",
+      "champion": "Fiora",
+      "cost": 5,
+      "effect": "Hồi lại 15% lượng sát thương gây ra trên Linh Thú, chiếm ưu thế trong các tình huống 1v1"
+    },
+    {
+      "name": "Chỉ Huy",
+      "name_en": "Commander",
+      "champion": "Sona",
+      "cost": 5,
+      "effect": "Thay đổi chế độ Chỉ Huy sau mỗi 2 giao tranh, điều chỉnh lối chơi linh hoạt"
+    },
+    {
+      "name": "Quý Cô Bóng Tối",
+      "name_en": "Dark Lady",
+      "champion": "Morgana",
+      "cost": 5,
+      "effect": "Đồng minh gây ít hơn 5% sát thương từ kỹ năng; tăng lên 10% khi Morgana ở trạng thái Bóng Tối"
+    }
+  ]
+}

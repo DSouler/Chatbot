@@ -664,7 +664,7 @@ const Chat = () => {
   };
 
   return (
-    <Layout style={{ height: '100vh', background: 'linear-gradient(135deg, #C8E8FF 0%, #E5D4F8 50%, #F5F0FF 100%)', position: 'relative' }}>
+    <Layout style={{ height: '100vh', background: 'linear-gradient(135deg, #A8D4F5 0%, #EBF0FF 50%, #E5D4F8 80%, #F5F0FF 100%)', position: 'relative' }}>
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', opacity: 0.025 }}>
         <defs>
           <pattern id="geo-pattern" x="0" y="0" width="160" height="160" patternUnits="userSpaceOnUse">
