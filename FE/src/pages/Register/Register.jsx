@@ -50,7 +50,7 @@ const Register = () => {
         style={{
           flex: 1,
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #C8E8FF 0%, #E5D4F8 50%, #F5F0FF 100%)',
+          background: 'linear-gradient(135deg, #A8D4F5 0%, #EBF0FF 50%, #E5D4F8 80%, #F5F0FF 100%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

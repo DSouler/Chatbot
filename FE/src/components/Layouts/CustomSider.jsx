@@ -273,7 +273,7 @@ const CustomSider = ({
       collapsible
       trigger={null}
       style={{
-        background: 'linear-gradient(160deg, #C8E8FF 0%, #E5D4F8 100%)',
+        background: 'linear-gradient(160deg, #A8D4F5 0%, #EBF0FF 50%, #E5D4F8 100%)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
         borderRight: '1px solid rgba(140,100,220,0.22)',
