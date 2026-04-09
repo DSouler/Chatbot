@@ -481,3 +481,7 @@ class SimplePipeline(BasePipeline):
         except Exception as e:
             logger.error(f"Error in stream_completion: {str(e)}")
             raise StreamGenerationError(str(e))
+
+
+# simple_pipeline_instance = None 
+# sdwadadwwd
