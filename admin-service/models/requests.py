@@ -1,8 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict, Literal, Optional, Any
-from fastapi import UploadFile
-
-import config
+from typing import List, Dict, Optional, Any
 
 class Message(BaseModel):
     role: str
@@ -58,19 +55,6 @@ class QuestionRequest(BaseModel):
     retrieval_settings: Optional[RetrievalSettings] = None
     reasoning_settings: Optional[ReasoningSettings] = None
     mode: Optional[str] = "RAG"
-
-class IngestRequest(BaseModel):
-    object_keys: List[str]
-    bucket_name: str
-    # collection_id: str
-    tenant_id: str
-    # user_group_id: str
-    file_loader: Optional[Literal["PyPDFLoader", "DoclingLoader"]] = Field(default="PyPDFLoader")
-
-class S3UploadRequest(BaseModel):
-    files: List[UploadFile]
-    bucket_name: str
-    prefix: str
 
 class DeleteRequest(BaseModel):
     object_keys: List[str] = Field(..., min_length=1, description="A list of exact S3 object keys (e.g., 'prefix/file.pdf') whose corresponding vectors should be deleted.")

@@ -37,7 +37,7 @@ const GuestLimitBanner = ({ navigate }) => (
       </div>
     </div>
     <button
-      onClick={() => { sessionStorage.removeItem('guestMode'); navigate('/login'); }}
+      onClick={() => { navigate('/login'); }}
       style={{
         padding: '8px 20px',
         borderRadius: 10,
@@ -89,7 +89,7 @@ const Chat = () => {
 
   const { user } = useUser();
   const skipAuth = import.meta.env.VITE_APP_SKIP_AUTH === 'true';
-  const isGuest = !user && !skipAuth && sessionStorage.getItem('guestMode') === 'true';
+  const isGuest = !user && sessionStorage.getItem('guestMode') === 'true';
   const userId = user?.user_id ?? (skipAuth ? 1 : undefined);
 
   const GUEST_MSG_LIMIT = 2;
@@ -105,6 +105,7 @@ const Chat = () => {
   const currentStreamRef = useRef(null);
   const pendingAbilityImageRef = useRef(null); // URL ảnh kỹ năng cần inject vào response
   const streamSourcesRef = useRef([]); // sources from current stream for DB persistence
+  const savedMessageIdRef = useRef(null); // real DB message_id received from backend 'saved' event
 
   // Throttled streaming updates — batch token renders at ~30ms intervals
   const streamingRafRef = useRef(null);
@@ -472,8 +473,8 @@ const Chat = () => {
 
     const requestData = createRequestData(
       pendingUserMessage.content,
-      pendingUserMessage.conversationId,
-      userId,
+      isGuest ? null : pendingUserMessage.conversationId,
+      isGuest ? null : userId,
       chatHistory,
       getCurrentChatConfig(),
       chatMode,
@@ -483,6 +484,7 @@ const Chat = () => {
     botMessageRef.current = '';
     thinkingRef.current = '';
     streamSourcesRef.current = [];
+    savedMessageIdRef.current = null;
 
     // Auto-prepend champion portrait + chuẩn bị inject ảnh kỹ năng vào response
     const localChampions = JSON.parse(localStorage.getItem('savedChampions') || '[]').map(c => c.name);
@@ -545,6 +547,8 @@ const Chat = () => {
           }));
           setInfoSources(mapped);
           streamSourcesRef.current = mapped;
+        } else if (data.type === 'saved') {
+          savedMessageIdRef.current = data.message_id;
         }
       },
       () => {
@@ -592,20 +596,30 @@ const Chat = () => {
           if (convId && !isGuest && !String(convId).startsWith('guest-')) {
             const sourcesToSave = streamSourcesRef.current.length > 0 ? streamSourcesRef.current : null;
             const tempBotId = botMessage.id;
-            updateLastBotMessage(convId, finalContent, sourcesToSave)
-              .then(res => {
-                const realId = res?.data?.message_id;
-                if (realId) {
-                  setConversationMessages(prev => {
-                    const msgs = prev[convId] || [];
-                    return {
-                      ...prev,
-                      [convId]: msgs.map(m => m.id === tempBotId ? { ...m, id: realId } : m)
-                    };
-                  });
-                }
-              })
-              .catch(() => {});
+            const knownRealId = savedMessageIdRef.current;
+
+            const applyRealId = (realId) => {
+              if (!realId) return;
+              setConversationMessages(prev => {
+                const msgs = prev[convId] || [];
+                return {
+                  ...prev,
+                  [convId]: msgs.map(m => m.id === tempBotId ? { ...m, id: realId } : m)
+                };
+              });
+            };
+
+            if (knownRealId) {
+              // Backend already saved the message and sent us the ID via SSE
+              applyRealId(knownRealId);
+              // Still call updateLastBotMessage to save final content with injected images + sources
+              updateLastBotMessage(convId, finalContent, sourcesToSave).catch(() => {});
+            } else {
+              // Fallback: backend saved without sending saved event
+              updateLastBotMessage(convId, finalContent, sourcesToSave)
+                .then(res => { applyRealId(res?.data?.message_id); })
+                .catch(() => {});
+            }
           }
         }
 
@@ -919,11 +933,7 @@ const Chat = () => {
                 isGuest={isGuest}
                 userId={userId}
               />
-              {guestLimitReached && (
-                <div style={{ position: 'absolute', bottom: 80, left: collapsedSider ? '79px' : '259px', right: 0, display: 'flex', justifyContent: 'center', zIndex: 10, padding: '0 24px' }}>
-                  <GuestLimitBanner navigate={navigate} />
-                </div>
-              )}
+
             </div>
           )}
         </Content>

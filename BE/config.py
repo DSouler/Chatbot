@@ -33,12 +33,18 @@ def _load_prompt(filename: str) -> str:
         return prompt_file.read().strip()
 
 
-SYS_PROMPT = _load_prompt("sys_prompt.txt")
-WEB_SEARCH_SYS_PROMPT = _load_prompt("web_search_sys_prompt.txt")
+def compose_system_prompt(parent_prompt: str, branch_prompt: str = "") -> str:
+    """Always put full parent system prompt first, then branch-specific rules."""
+    if not branch_prompt:
+        return parent_prompt.strip()
+    return f"{parent_prompt.strip()}\n\n[RẼ NHÁNH]\n{branch_prompt.strip()}"
+
+
+SYS_PROMPT = _load_prompt("artifact")
+WEB_SEARCH_SYS_PROMPT_BRANCH = _load_prompt("web_search_sys_prompt.txt")
 WEB_SEARCH_QA_PROMPT = _load_prompt("web_search_qa_prompt.txt")
 QA_PROMPT = _load_prompt("qa_prompt.txt")
 HYDE_PROMPT = _load_prompt("hyde_prompt.txt")
-TFT_SET16_SKILLS = _load_prompt("tft_set16_skills_vntft.txt")
 
 LLM_API_KEY = os.getenv("LLM_API_KEY", "EMPTY")
 DEFAULT_MODEL_NAME = os.getenv("DEFAULT_MODEL_NAME", "Qwen/Qwen3-14B-AWQ")
@@ -47,7 +53,10 @@ DEFAULT_MODEL_NAME = os.getenv("DEFAULT_MODEL_NAME", "Qwen/Qwen3-14B-AWQ")
 WEB_SEARCH_MAX_RESULTS = int(os.getenv("WEB_SEARCH_MAX_RESULTS", "3"))
 WEB_READER_MAX_LENGTH = int(os.getenv("WEB_READER_MAX_LENGTH", "20000"))
 DEFAULT_SYSTEM_PROMPT = os.getenv("DEFAULT_SYSTEM_PROMPT", SYS_PROMPT)
-DEFAULT_WEB_SEARCH_SYSTEM_PROMPT = os.getenv("DEFAULT_WEB_SEARCH_SYSTEM_PROMPT", WEB_SEARCH_SYS_PROMPT)
+DEFAULT_WEB_SEARCH_SYSTEM_PROMPT = compose_system_prompt(
+    DEFAULT_SYSTEM_PROMPT,
+    os.getenv("DEFAULT_WEB_SEARCH_SYSTEM_PROMPT", WEB_SEARCH_SYS_PROMPT_BRANCH)
+)
 DEFAULT_WEB_SEARCH_QA_PROMPT = os.getenv("DEFAULT_WEB_SEARCH_QA_PROMPT", WEB_SEARCH_QA_PROMPT)
 DEFAULT_QA_PROMPT = os.getenv("DEFAULT_QA_PROMPT", QA_PROMPT)
 DEFAULT_TEMPERATURE = float(os.getenv("DEFAULT_TEMPERATURE", "0.2"))
@@ -58,12 +67,17 @@ DEFAULT_MAX_CONTENT_REWRITE_LENGTH = int(os.getenv("DEFAULT_MAX_CONTENT_REWRITE_
 DEFAULT_LANGUAGE = os.getenv("DEFAULT_LANGUAGE", "Vietnamese")
 DEFAULT_HYDE_PROMPT = os.getenv("DEFAULT_HYDE_PROMPT", HYDE_PROMPT)
 
-COMP_EVAL_PROMPT = _load_prompt("comp_eval_prompt.txt")
-COMP_EVAL_WITH_IMAGE_PROMPT = _load_prompt("comp_eval_with_image_prompt.txt")
-COMP_EVAL_IMAGE_ONLY_PROMPT = _load_prompt("comp_eval_image_only_prompt.txt")
+COMP_EVAL_PROMPT_BRANCH = _load_prompt("comp_eval_prompt.txt")
+COMP_EVAL_WITH_IMAGE_PROMPT_BRANCH = _load_prompt("comp_eval_with_image_prompt.txt")
+COMP_EVAL_IMAGE_ONLY_PROMPT_BRANCH = _load_prompt("comp_eval_image_only_prompt.txt")
+
+COMP_EVAL_PROMPT = compose_system_prompt(DEFAULT_SYSTEM_PROMPT, COMP_EVAL_PROMPT_BRANCH)
+COMP_EVAL_WITH_IMAGE_PROMPT = compose_system_prompt(DEFAULT_SYSTEM_PROMPT, COMP_EVAL_WITH_IMAGE_PROMPT_BRANCH)
+COMP_EVAL_IMAGE_ONLY_PROMPT = compose_system_prompt(DEFAULT_SYSTEM_PROMPT, COMP_EVAL_IMAGE_ONLY_PROMPT_BRANCH)
 
 # ====== TFT Meta Crawl Config ======
 TFT_META_CACHE_TTL = int(os.getenv("TFT_META_CACHE_TTL", "1800"))  # 30 minutes
 
-TFT_META_SYS_PROMPT = _load_prompt("tft_meta_sys_prompt.txt")
+TFT_META_SYS_PROMPT_BRANCH = _load_prompt("tft_meta_sys_prompt.txt")
 TFT_META_QA_PROMPT = _load_prompt("tft_meta_qa_prompt.txt")
+TFT_META_SYS_PROMPT = compose_system_prompt(DEFAULT_SYSTEM_PROMPT, TFT_META_SYS_PROMPT_BRANCH)

@@ -4,7 +4,7 @@ import { FileOutlined, MoreOutlined, HistoryOutlined, MenuFoldOutlined, MenuUnfo
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isYesterday from 'dayjs/plugin/isYesterday';
-import { getConversations, deleteConversation, uploadDocument, getUploadStats, renameConversation } from '../../services/chat';
+import { deleteConversation, uploadDocument, getUploadStats, renameConversation } from '../../services/chat';
 import { useUser } from '../../hooks/useUser';
 import ReportModal from '../ReportModal';
 import { useNavigate } from 'react-router-dom';
@@ -45,11 +45,10 @@ const CustomSider = ({
   conversationList = [],
   onDeleteConversation,
 }) => {
-  const [chatHistory, setChatHistory] = useState([]);
   const { user, logout, fetchCurrentUser } = useUser();
   const userId = user?.user_id;
   const navigate = useNavigate();
-  const isGuest = sessionStorage.getItem('guestMode') === 'true';
+  const isGuest = !user && sessionStorage.getItem('guestMode') === 'true';
 
   const handleGuestExit = () => {
     sessionStorage.removeItem('guestMode');
@@ -145,13 +144,6 @@ const CustomSider = ({
       setUploading(false);
     }
   };
-
-  useEffect(() => {
-    if (!userId || isGuest) return;
-    getConversations(userId).then((res) => {
-      setChatHistory(res.conversations || []);
-    });
-  }, [userId]);
 
   // Drag-to-scroll on sidebar chat list
   useEffect(() => {
@@ -593,7 +585,7 @@ const CustomSider = ({
             }}>
               <span style={{ color: '#8B7FB8', fontSize: 13 }}>Đang dùng thử</span>
               <button
-                onClick={() => { sessionStorage.removeItem('guestMode'); navigate('/login'); }}
+                onClick={() => { navigate('/login'); }}
                 style={{
                   fontSize: 12, color: '#fff', padding: '9px 12px', borderRadius: 10, border: 'none',
                   background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)',

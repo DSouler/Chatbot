@@ -1,5 +1,6 @@
 import os
 import json
+import hashlib
 import psycopg2
 from psycopg2.extras import RealDictCursor, Json
 from dotenv import load_dotenv
@@ -139,7 +140,7 @@ def update_last_bot_message(conversation_id, content, sources=None):
             (content, conversation_id)
         )
     row = cur.fetchone()
-    message_id = row[0] if row else None
+    message_id = row['id'] if row else None
     conn.commit()
     cur.close()
     conn.close()
@@ -392,6 +393,57 @@ def init_message_feedback_table():
     conn.commit(); cur.close(); conn.close()
 
 
+def compute_question_hash(text: str) -> str:
+    """Compute a stable MD5 hash for a question text (for cumulative feedback tracking)."""
+    normalized = text.strip().lower()
+    return hashlib.md5(normalized.encode('utf-8')).hexdigest()
+
+
+def init_question_feedback_table():
+    """Create question_feedback table for cumulative feedback across messages."""
+    conn = get_connection(); cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS question_feedback (
+            id SERIAL PRIMARY KEY,
+            question_hash VARCHAR(32) NOT NULL UNIQUE,
+            question_text TEXT,
+            up_count INTEGER DEFAULT 0,
+            down_count INTEGER DEFAULT 0,
+            updated_at TIMESTAMP DEFAULT NOW()
+        )
+    """)
+    conn.commit(); cur.close(); conn.close()
+
+
+def update_question_feedback(question_text: str, delta_up: int, delta_down: int):
+    """Atomically increment/decrement cumulative feedback for a question."""
+    q_hash = compute_question_hash(question_text)
+    conn = get_connection(); cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO question_feedback (question_hash, question_text, up_count, down_count, updated_at)
+        VALUES (%s, %s, GREATEST(0, %s::int), GREATEST(0, %s::int), NOW())
+        ON CONFLICT (question_hash) DO UPDATE SET
+            up_count = GREATEST(0, question_feedback.up_count + %s),
+            down_count = GREATEST(0, question_feedback.down_count + %s),
+            updated_at = NOW()
+    """, (q_hash, question_text, delta_up, delta_down, delta_up, delta_down))
+    conn.commit(); cur.close(); conn.close()
+
+
+def get_question_feedback(question_hash: str):
+    """Get cumulative feedback for a question hash."""
+    conn = get_connection(); cur = conn.cursor()
+    cur.execute(
+        "SELECT up_count, down_count FROM question_feedback WHERE question_hash = %s",
+        (question_hash,)
+    )
+    row = cur.fetchone()
+    cur.close(); conn.close()
+    if row:
+        return {'up': int(row['up_count']), 'down': int(row['down_count'])}
+    return {'up': 0, 'down': 0}
+
+
 def upsert_message_feedback(message_id: int, user_id, feedback: str):
     """Insert or update a user's feedback on a message."""
     conn = get_connection(); cur = conn.cursor()
@@ -403,18 +455,57 @@ def upsert_message_feedback(message_id: int, user_id, feedback: str):
     conn.commit(); cur.close(); conn.close()
 
 
-def get_feedback_stats(message_id: int, user_id=None):
-    """Get up/down counts and optional user vote for a single message."""
+def delete_message_feedback(message_id: int, user_id) -> str | None:
+    """Delete a user's feedback on a message. Returns the old feedback value or None."""
     conn = get_connection(); cur = conn.cursor()
     cur.execute("""
-        SELECT
-            COUNT(*) FILTER (WHERE feedback = 'up')   AS up_count,
-            COUNT(*) FILTER (WHERE feedback = 'down') AS down_count
-        FROM message_feedback WHERE message_id = %s
-    """, (message_id,))
+        DELETE FROM message_feedback WHERE message_id = %s AND user_id = %s
+        RETURNING feedback
+    """, (message_id, user_id))
     row = cur.fetchone()
-    up = int(row['up_count']) if row else 0
-    down = int(row['down_count']) if row else 0
+    conn.commit(); cur.close(); conn.close()
+    return row['feedback'] if row else None
+
+
+def get_feedback_stats(message_id: int, user_id=None):
+    """Get cumulative question-level feedback counts + per-message user_vote."""
+    conn = get_connection(); cur = conn.cursor()
+
+    up, down = 0, 0
+
+    # Find the user question preceding this assistant message
+    cur.execute("""
+        SELECT content FROM messages
+        WHERE conversation_id = (SELECT conversation_id FROM messages WHERE id = %s)
+          AND role = 'user'
+          AND created_at < (SELECT created_at FROM messages WHERE id = %s)
+        ORDER BY created_at DESC LIMIT 1
+    """, (message_id, message_id))
+    q_row = cur.fetchone()
+
+    if q_row and q_row.get('content'):
+        q_hash = compute_question_hash(q_row['content'])
+        cur.execute(
+            "SELECT up_count, down_count FROM question_feedback WHERE question_hash = %s",
+            (q_hash,)
+        )
+        qf_row = cur.fetchone()
+        if qf_row:
+            up = int(qf_row['up_count'])
+            down = int(qf_row['down_count'])
+
+    # Fallback to per-message feedback if no question-level data yet
+    if up == 0 and down == 0:
+        cur.execute("""
+            SELECT
+                COUNT(*) FILTER (WHERE feedback = 'up')   AS up_count,
+                COUNT(*) FILTER (WHERE feedback = 'down') AS down_count
+            FROM message_feedback WHERE message_id = %s
+        """, (message_id,))
+        row = cur.fetchone()
+        up = int(row['up_count']) if row else 0
+        down = int(row['down_count']) if row else 0
+
     user_vote = None
     if user_id is not None:
         cur.execute(
@@ -429,22 +520,63 @@ def get_feedback_stats(message_id: int, user_id=None):
 
 
 def get_batch_feedback_stats(message_ids: list, user_id=None):
-    """Get feedback stats for multiple messages in one query."""
+    """Get cumulative question-level feedback for multiple messages."""
     if not message_ids:
         return {}
     conn = get_connection(); cur = conn.cursor()
-    cur.execute("""
-        SELECT message_id,
-               COUNT(*) FILTER (WHERE feedback = 'up')   AS up_count,
-               COUNT(*) FILTER (WHERE feedback = 'down') AS down_count
-        FROM message_feedback
-        WHERE message_id = ANY(%s)
-        GROUP BY message_id
-    """, (message_ids,))
+
     result = {mid: {'up': 0, 'down': 0, 'user_vote': None} for mid in message_ids}
+
+    # Step 1: For each assistant message, find its preceding user question
+    cur.execute("""
+        SELECT m1.id AS message_id,
+               (SELECT m2.content FROM messages m2
+                WHERE m2.conversation_id = m1.conversation_id
+                  AND m2.role = 'user'
+                  AND m2.created_at < m1.created_at
+                ORDER BY m2.created_at DESC LIMIT 1
+               ) AS question_text
+        FROM messages m1
+        WHERE m1.id = ANY(%s) AND m1.role = 'assistant'
+    """, (message_ids,))
+
+    hash_to_mids = {}
     for row in cur.fetchall():
-        result[row['message_id']]['up'] = int(row['up_count'])
-        result[row['message_id']]['down'] = int(row['down_count'])
+        if row.get('question_text'):
+            q_hash = compute_question_hash(row['question_text'])
+            if q_hash not in hash_to_mids:
+                hash_to_mids[q_hash] = []
+            hash_to_mids[q_hash].append(row['message_id'])
+
+    # Step 2: Batch lookup question_feedback for all hashes
+    if hash_to_mids:
+        hashes = list(hash_to_mids.keys())
+        cur.execute("""
+            SELECT question_hash, up_count, down_count
+            FROM question_feedback
+            WHERE question_hash = ANY(%s)
+        """, (hashes,))
+        for row in cur.fetchall():
+            for mid in hash_to_mids.get(row['question_hash'], []):
+                result[mid]['up'] = int(row['up_count'])
+                result[mid]['down'] = int(row['down_count'])
+
+    # Step 3: Fallback to per-message counts for messages without question_feedback
+    missing = [mid for mid in message_ids if result[mid]['up'] == 0 and result[mid]['down'] == 0]
+    if missing:
+        cur.execute("""
+            SELECT message_id,
+                   COUNT(*) FILTER (WHERE feedback = 'up')   AS up_count,
+                   COUNT(*) FILTER (WHERE feedback = 'down') AS down_count
+            FROM message_feedback
+            WHERE message_id = ANY(%s)
+            GROUP BY message_id
+        """, (missing,))
+        for row in cur.fetchall():
+            result[row['message_id']]['up'] = int(row['up_count'])
+            result[row['message_id']]['down'] = int(row['down_count'])
+
+    # Step 4: User votes (per-message)
     if user_id is not None:
         cur.execute("""
             SELECT message_id, feedback FROM message_feedback
@@ -452,6 +584,7 @@ def get_batch_feedback_stats(message_ids: list, user_id=None):
         """, (message_ids, user_id))
         for vrow in cur.fetchall():
             result[vrow['message_id']]['user_vote'] = vrow['feedback']
+
     cur.close(); conn.close()
     return result
 
@@ -500,38 +633,64 @@ def get_admin_feedback_report(days=30):
     """ % days_int)
     daily = [dict(row) for row in cur.fetchall()]
 
-    # Top 10 liked messages
+    # Top 10 liked questions (cumulative across conversations)
     cur.execute("""
         SELECT
-            mf.message_id,
-            COALESCE(COUNT(*) FILTER (WHERE mf.feedback = 'up'),   0) AS up_count,
-            COALESCE(COUNT(*) FILTER (WHERE mf.feedback = 'down'), 0) AS down_count,
-            m.content,
-            m.conversation_id,
-            m.created_at AS message_created_at
-        FROM message_feedback mf
-        LEFT JOIN messages m ON m.id = mf.message_id
-        GROUP BY mf.message_id, m.content, m.conversation_id, m.created_at
-        HAVING COUNT(*) FILTER (WHERE mf.feedback = 'up') > 0
-        ORDER BY up_count DESC, down_count ASC
+            qf.question_hash,
+            qf.question_text,
+            qf.up_count,
+            qf.down_count,
+            qf.updated_at,
+            (SELECT m2.content FROM messages m2
+             WHERE m2.role = 'assistant'
+               AND m2.conversation_id = (
+                   SELECT m3.conversation_id FROM messages m3
+                   WHERE m3.role = 'user'
+                     AND md5(lower(trim(m3.content))) = qf.question_hash
+                   ORDER BY m3.created_at DESC LIMIT 1
+               )
+               AND m2.created_at > (
+                   SELECT m3.created_at FROM messages m3
+                   WHERE m3.role = 'user'
+                     AND md5(lower(trim(m3.content))) = qf.question_hash
+                   ORDER BY m3.created_at DESC LIMIT 1
+               )
+             ORDER BY m2.created_at ASC LIMIT 1
+            ) AS content
+        FROM question_feedback qf
+        WHERE qf.up_count > 0
+        ORDER BY qf.up_count DESC, qf.down_count ASC
         LIMIT 10
     """)
     top_liked = [dict(row) for row in cur.fetchall()]
 
-    # Top 10 disliked messages
+    # Top 10 disliked questions (cumulative across conversations)
     cur.execute("""
         SELECT
-            mf.message_id,
-            COALESCE(COUNT(*) FILTER (WHERE mf.feedback = 'up'),   0) AS up_count,
-            COALESCE(COUNT(*) FILTER (WHERE mf.feedback = 'down'), 0) AS down_count,
-            m.content,
-            m.conversation_id,
-            m.created_at AS message_created_at
-        FROM message_feedback mf
-        LEFT JOIN messages m ON m.id = mf.message_id
-        GROUP BY mf.message_id, m.content, m.conversation_id, m.created_at
-        HAVING COUNT(*) FILTER (WHERE mf.feedback = 'down') > 0
-        ORDER BY down_count DESC, up_count ASC
+            qf.question_hash,
+            qf.question_text,
+            qf.up_count,
+            qf.down_count,
+            qf.updated_at,
+            (SELECT m2.content FROM messages m2
+             WHERE m2.role = 'assistant'
+               AND m2.conversation_id = (
+                   SELECT m3.conversation_id FROM messages m3
+                   WHERE m3.role = 'user'
+                     AND md5(lower(trim(m3.content))) = qf.question_hash
+                   ORDER BY m3.created_at DESC LIMIT 1
+               )
+               AND m2.created_at > (
+                   SELECT m3.created_at FROM messages m3
+                   WHERE m3.role = 'user'
+                     AND md5(lower(trim(m3.content))) = qf.question_hash
+                   ORDER BY m3.created_at DESC LIMIT 1
+               )
+             ORDER BY m2.created_at ASC LIMIT 1
+            ) AS content
+        FROM question_feedback qf
+        WHERE qf.down_count > 0
+        ORDER BY qf.down_count DESC, qf.up_count ASC
         LIMIT 10
     """)
     top_disliked = [dict(row) for row in cur.fetchall()]

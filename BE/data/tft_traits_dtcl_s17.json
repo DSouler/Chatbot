@@ -1,51 +1,73 @@
 {
   "season": 17,
   "season_name": "Thần Không Gian",
-  "source": "https://cellphones.com.vn/sforum/toc-he-dau-truong-chan-ly-mua-17",
-  "crawled_date": "2026-04-03",
+  "source": "https://blitz.gg/vi/tft/set17/traits",
+  "crawled_date": "2026-04-09",
   "traits": [
     {
-      "name": "Đấu Sĩ",
-      "name_en": "Brawler",
+      "name": "Bắn Tỉa",
+      "name_en": "Sniper",
       "type": "Hệ",
-      "description": "Đội hình tập trung toàn các vị tướng tuyến trước trâu bò nhất, nhằm tạo ra một đội ngũ sở hữu khả năng chống chịu lâu dài và tạo áp lực ổn định trong giao tranh.",
+      "description": "Tướng Bắn Tỉa nhận Khuếch Đại Sát Thương, tăng lên với những mục tiêu ở xa.",
       "champions": [
-        { "name": "Cho'Gath", "cost": 1 },
-        { "name": "Rek'Sai", "cost": 1 },
-        { "name": "Gragas", "cost": 2 },
-        { "name": "Pantheon", "cost": 2 },
-        { "name": "Maokai", "cost": 3 },
-        { "name": "Tahm Kench", "cost": 4 }
+        {
+          "name": "Ezreal",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Phát Bắn Thời Gian",
+            "kich_hoat": "Bắn ra một phát đạn về phía mục tiêu hiện tại gây sát thương vật lý (tỉ lệ theo AD + AP). Cứ mỗi 8 hạ gục, nhận một drone gây sát thương vật lý lên mục tiêu hiện tại khi kích hoạt."
+          }
+        },
+        {
+          "name": "Gnar",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Ná Đàn Hồi",
+            "noi_tai": "Mỗi đòn đánh thứ 5, phóng một chiếc boomerang vào mục tiêu, bay thêm 2 ô sau kẻ địch đầu tiên trúng phải rồi quay trở lại, gây sát thương vật lý (tỉ lệ theo AD + AP), giảm đi 75% với mỗi lần trúng. Thưởng Meep: Meep tấn công cùng Gnar, gây sát thương vật lý mỗi giây."
+          }
+        },
+        {
+          "name": "Samira",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Nhảy Múa",
+            "noi_tai": "Bất cứ khi nào một kẻ địch bị hất tung, bắn chúng, gây sát thương vật lý (tỉ lệ theo AD + AP) và vào trạng thái Vùng Phiêu trong 3 giây.",
+            "kich_hoat": "Phóng một loạt đạn vào mục tiêu, gây 360/540/860 (tỉ lệ theo AD) sát thương vật lý và hất tung trong 1.25 giây."
+          }
+        },
+        {
+          "name": "Xayah",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Tinh Tú Nảy Bật",
+            "noi_tai": "Các đòn đánh nảy bật để tấn công 3/3/5 lần, giảm 60/60/30% sát thương gây ra sau mỗi mục tiêu trúng đòn và để lại một Lông Vũ phía sau mục tiêu cuối cùng.",
+            "kich_hoat": "Tăng 75% Tốc Độ Đánh trong 4 giây. Khi kết thúc, thu hồi tất cả Lông Vũ chia đều lên 3 kẻ địch gần nhất, mỗi lông vũ gây sát thương vật lý (tỉ lệ theo AD)."
+          }
+        },
+        {
+          "name": "Jhin",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Sử Thi Vũ Trụ",
+            "noi_tai": "Jhin có tốc độ đánh cố định là 0.9/0.9/1.4 và chuyển đổi mỗi 1% tốc độ đánh cộng thêm thành 0.75 Sức Mạnh Công Kích cộng thêm.",
+            "kich_hoat": "Triệu hồi 4 bàn tay ma quái bắn cùng Jhin trong 4 đòn đánh tiếp theo. Mỗi bàn tay gây sát thương vật lý (tỉ lệ theo AD) mỗi phát bắn. Phát bắn cuối cùng gây thêm 244% sát thương và đâm xuyên qua nhiều kẻ địch nhất theo một đường thẳng, gây 44% sát thương giảm dần cho mỗi mục tiêu trúng phải."
+          }
+        }
       ],
       "bonus": {
-        "team_passive": "Toàn đội nhận thêm 7% Máu",
         "tiers": [
-          { "count": 2, "effect": "+25% Máu tối đa" },
-          { "count": 4, "effect": "+45% Máu tối đa" },
-          { "count": 6, "effect": "+65% Máu tối đa" }
-        ]
-      }
-    },
-    {
-      "name": "Thách Đấu",
-      "name_en": "Challenger",
-      "type": "Hệ",
-      "description": "Các carry có thể snowball cực nhanh, farm kill dễ dàng. Lướt tới mục tiêu mới mỗi khi hạ gục kẻ địch.",
-      "champions": [
-        { "name": "Jinx", "cost": 2 },
-        { "name": "Bel'Veth", "cost": 2 },
-        { "name": "Diana", "cost": 3 },
-        { "name": "Miss Fortune", "cost": 3 },
-        { "name": "Kindred", "cost": 4 }
-      ],
-      "bonus": {
-        "team_passive": "Toàn đội nhận 10% Tốc Độ Đánh",
-        "on_kill": "Lướt tới mục tiêu mới và nhận thêm 50% Tốc Độ Đánh trong 2.5 giây",
-        "tiers": [
-          { "count": 2, "effect": "+15% Tốc Độ Đánh" },
-          { "count": 3, "effect": "+22% Tốc Độ Đánh" },
-          { "count": 4, "effect": "+30% Tốc Độ Đánh" },
-          { "count": 5, "effect": "+40% Tốc Độ Đánh" }
+          {
+            "count": 2,
+            "effect": "18% Khuếch Đại Sát Thương; +2% mỗi ô khoảng cách"
+          },
+          {
+            "count": 3,
+            "effect": "24% Khuếch Đại Sát Thương; +3% mỗi ô khoảng cách"
+          },
+          {
+            "count": 4,
+            "effect": "28% Khuếch Đại Sát Thương; +4% mỗi ô khoảng cách"
+          }
         ]
       }
     },
@@ -53,87 +75,232 @@
       "name": "Can Trường",
       "name_en": "Bastion",
       "type": "Hệ",
-      "description": "Khả năng chống chịu mạnh ở giai đoạn đầu trận, phù hợp cho việc xây dựng tuyến trước vững chắc. Hiệu ứng được tăng gấp đôi trong 10 giây đầu giao tranh.",
+      "description": "Đội của bạn nhận 15 Giáp và Kháng Phép. Tướng Can Trường nhận được nhiều hơn, và giá trị tăng gấp đôi trong 10 giây đầu của giao tranh.",
       "champions": [
-        { "name": "Aatrox", "cost": 1 },
-        { "name": "Poppy", "cost": 1 },
-        { "name": "Jax", "cost": 2 },
-        { "name": "Ornn", "cost": 3 },
-        { "name": "Rammus", "cost": 4 },
-        { "name": "Shen", "cost": 5 }
+        {
+          "name": "Aatrox",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Nhát Chém Tinh Tú",
+            "kich_hoat": "Hồi lại (tỉ lệ theo AP), sau đó gây sát thương vật lý (tỉ lệ theo AD + Giáp) lên mục tiêu hiện tại. Chiêu Thức N.O.V.A.: Chém xuyên chiến trường, hất tung tất cả kẻ địch trong thoáng chốc và gây sát thương vật lý (tỉ lệ theo AD + Giáp)."
+          }
+        },
+        {
+          "name": "Poppy",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Tập Hợp Lại!",
+            "kich_hoat": "Nhận 400/475/575 (tỉ lệ theo AP) Lá Chắn trong 4 giây. Trong thời gian tác dụng, đồng minh trong phạm vi 2 ô nhận được Giáp và Kháng Phép (tỉ lệ theo AP). Thưởng Meep: Meep trao Lá Chắn (tỉ lệ theo AP) cho đồng minh gần nhất trong 4 giây."
+          }
+        },
+        {
+          "name": "Jax",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Tinh Tú Phản Kích",
+            "kich_hoat": "Vào thế phòng thủ trong 3 giây, giảm sát thương nhận vào (tỉ lệ theo AP) và nhận Lá Chắn (tỉ lệ theo AP). Khi xuống thế, tấn công tất cả những kẻ địch ở gần, gây sát thương phép (tỉ lệ theo Giáp + Kháng Phép) và Làm Choáng chúng trong 1/1.25/1.5 giây."
+          }
+        },
+        {
+          "name": "Ornn",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Địa Ngục Disco",
+            "noi_tai": "Khi bắt đầu giao tranh, rèn một trang bị hoàn chỉnh tạm thời. Nếu đã mang 3 trang bị, thay vào đó, 1 trang bị hoàn chỉnh ngẫu nhiên sẽ trở thành dạng Ánh Sáng trong giao tranh này.",
+            "kich_hoat": "Nhận 100/150/500 (tỉ lệ theo AP) Lá Chắn trong 3 giây, sau đó khạc lửa theo hình nón gây 180/270/430 (tỉ lệ theo AP) sát thương phép. Sau khi Lá Chắn bất kỳ trên Ornn hết hiệu lực, Ornn vào trạng thái Vùng Phiêu trong 3 giây."
+          }
+        },
+        {
+          "name": "Rammus",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Vòng Xoáy Trọng Lực",
+            "kich_hoat": "Nhận lá chắn (tỉ lệ theo AP) trong 4 giây. Sau đó, tấn công kẻ địch trên một đường thẳng dài 3 ô, gây sát thương phép (tỉ lệ theo AP + Giáp). Thưởng Meep: Giảm sát thương từ đòn tấn công nhận vào. Sau khi bị tấn công 20 lần, gây sát thương phép (tỉ lệ theo Giáp) trong bán kính 2 ô."
+          }
+        },
+        {
+          "name": "Shen",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Xé Rách Thực Tại",
+            "noi_tai": "Khi tung chiêu, đòn đánh nhận thêm sát thương phép (tỉ lệ theo AP) cộng dồn. Bắt đầu từ lần tung chiêu thứ ba, thay vào đó nhận sát thương chuẩn.",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo Máu + AP) trong 3 giây, sau đó xé mở một khe nứt tại nơi nhiều tướng nhất, gây sát thương cộng thêm của Nội Tại lên tất cả kẻ địch bên trong. Kẻ địch bị giảm 50/50/999% Tốc Độ Đánh trong khi đồng minh bên trong nhận thêm 80/80/999% Tốc Độ Đánh, cả hai hiệu ứng đều giảm dần nhanh chóng trong 3 giây."
+          }
+        }
       ],
       "bonus": {
-        "team_passive": "Toàn đội nhận 12 Giáp và Kháng Phép",
-        "special": "Hiệu ứng tăng gấp đôi trong 10 giây đầu giao tranh",
+        "team_passive": "Toàn đội nhận 15 Giáp và Kháng Phép",
         "tiers": [
-          { "count": 2, "effect": "16 Giáp/Kháng Phép" },
-          { "count": 4, "effect": "35 Giáp/Kháng Phép" },
-          { "count": 6, "effect": "55 Giáp/Kháng Phép, toàn đội nhận thêm 20 Giáp/Kháng Phép" }
+          {
+            "count": 2,
+            "effect": "+16 Giáp và Kháng Phép"
+          },
+          {
+            "count": 4,
+            "effect": "+40 Giáp và Kháng Phép"
+          },
+          {
+            "count": 6,
+            "effect": "+60 Giáp và Kháng Phép; Tướng không phải Can Trường nhận thêm 20 Giáp và Kháng Phép"
+          }
         ]
       }
     },
     {
-      "name": "Thuật Sư",
-      "name_en": "Channeler",
-      "type": "Hệ",
-      "description": "Spam skill liên tục và gây sát thương phép cực mạnh. Nhận thêm 20% năng lượng từ mọi nguồn và hồi năng lượng theo thời gian.",
+      "name": "Chiêm Tinh",
+      "name_en": "Stargazer",
+      "type": "Tộc",
+      "description": "Tướng Chiêm Tinh dệt nên chòm sao khác nhau trong mỗi trận đấu. Tướng Chiêm Tinh đứng trên ô cường hóa nhận nhiều chỉ số thưởng. Mỗi cấp người chơi sẽ mở thêm ô. Các chòm sao gồm: Bệ Đá Cổ (hồi năng lượng + hồi máu), Cự Xà (chống chịu + sát thương độc), Đền Thờ (hiến tế nhận Máu + Tốc Độ Đánh), Heo Rừng (vàng + chỉ số tổng hợp), Huy Chương (Khuếch Đại Sát Thương), Ngọn Núi (chỉ số cộng dồn mỗi cấp), Nữ Thợ Săn (Tốc Độ Đánh + đánh dấu kẻ địch).",
       "champions": [
-        { "name": "Mordekaiser", "cost": 2 },
-        { "name": "Zoe", "cost": 2 },
-        { "name": "Miss Fortune", "cost": 3 },
-        { "name": "Viktor", "cost": 3 },
-        { "name": "Aurelion Sol", "cost": 4 },
-        { "name": "Bard", "cost": 5 }
+        {
+          "name": "Talon",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Thần Linh Định Đoạt",
+            "kich_hoat": "Đâm mục tiêu, khiến chúng bị chảy máu gây sát thương vật lý (tỉ lệ theo AD + AP) trong 18 giây. Sau đòn tấn công, nhảy tới kẻ địch có phần trăm Máu cao nhất trong vòng 3 ô."
+          }
+        },
+        {
+          "name": "Twisted Fate",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Canh Bạc Số Phận",
+            "kich_hoat": "Rút một lá bài có giá trị từ 1 đến 9 bằng cơ hội May Mắn, sau đó ném nó vào mục tiêu. Dựa trên lá bài rút được, gây sát thương phép (tỉ lệ theo AP). Sát thương kết liễu vượt trội sẽ được chuyển sang kẻ địch gần nhất. Thưởng 3 Sao: Nếu ném ra số 9, tạo ra 1 vàng. May mắn: Tung hai lần, lấy kết quả tốt hơn."
+          }
+        },
+        {
+          "name": "Jax",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Tinh Tú Phản Kích",
+            "kich_hoat": "Vào thế phòng thủ trong 3 giây, giảm sát thương nhận vào (tỉ lệ theo AP) và nhận Lá Chắn (tỉ lệ theo AP). Khi xuống thế, tấn công tất cả những kẻ địch ở gần, gây sát thương phép (tỉ lệ theo Giáp + Kháng Phép) và Làm Choáng chúng trong 1/1.25/1.5 giây."
+          }
+        },
+        {
+          "name": "Lulu",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Mưa Sao Rơi",
+            "noi_tai": "Nhận một hiệu ứng phụ khác nhau mỗi trận dựa trên chòm sao Chiêm Tinh.",
+            "kich_hoat": "Triệu hồi một thứ gì đó từ trên trời rơi xuống, gây 150/225/360 (tỉ lệ theo AP) sát thương phép lên 3 kẻ địch xung quanh và tạo hiệu ứng đặc biệt dựa trên Chòm Sao Chiêm Tinh của trận này."
+          }
+        },
+        {
+          "name": "Nunu & Willump",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Thảm Họa",
+            "kich_hoat": "Nhận 475/575/2000 (tỉ lệ theo AP) Lá Chắn trong 4 giây. Triệu hồi một kính thiên văn rơi xuống một ô ở gần, gây sát thương phép (tỉ lệ theo AP) lên kẻ địch trong phạm vi 2 ô. Sau đó, đẩy kính thiên văn về phía cuối sân đấu, gây sát thương phép (tỉ lệ theo AP). Tất cả kẻ địch trúng phải kính thiên văn sẽ bị hất tung trong 1.75/2/8 giây."
+          }
+        },
+        {
+          "name": "Xayah",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Tinh Tú Nảy Bật",
+            "noi_tai": "Các đòn đánh nảy bật để tấn công 3/3/5 lần, giảm 60/60/30% sát thương gây ra sau mỗi mục tiêu trúng đòn và để lại một Lông Vũ phía sau mục tiêu cuối cùng.",
+            "kich_hoat": "Tăng 75% Tốc Độ Đánh trong 4 giây. Khi kết thúc, thu hồi tất cả Lông Vũ chia đều lên 3 kẻ địch gần nhất, mỗi lông vũ gây sát thương vật lý (tỉ lệ theo AD)."
+          }
+        }
       ],
       "bonus": {
-        "trait_passive": "Nhận thêm 20% năng lượng từ mọi nguồn",
         "tiers": [
-          { "count": 2, "effect": "Hồi 1% năng lượng/giây | +3% mỗi Thuật Sư" },
-          { "count": 3, "effect": "Hồi 1% năng lượng/giây | +4% mỗi Thuật Sư" },
-          { "count": 4, "effect": "Hồi 2% năng lượng/giây | +6% mỗi Thuật Sư" },
-          { "count": 5, "effect": "Hồi 2% năng lượng/giây | +7% mỗi Thuật Sư" }
+          {
+            "count": 3,
+            "effect": "Kích hoạt chòm sao cấp 1"
+          },
+          {
+            "count": 5,
+            "effect": "Kích hoạt chòm sao cấp 2 (mạnh hơn)"
+          },
+          {
+            "count": 7,
+            "effect": "Kích hoạt chòm sao cấp 3 (mạnh nhất)"
+          }
         ]
       }
     },
     {
-      "name": "Đao Phủ",
-      "name_en": "Marauder",
+      "name": "Đấu Sĩ",
+      "name_en": "Brawler",
       "type": "Hệ",
-      "description": "Khả năng hồi phục mạnh mẽ kết hợp tạo Lá Chắn. Lượng hồi phục vượt mức được chuyển hóa thành Lá Chắn (tối đa 25% Máu).",
+      "description": "Đội của bạn nhận 5% Máu. Tướng Đấu Sĩ nhận được nhiều hơn.",
       "champions": [
-        { "name": "Akali", "cost": 2 },
-        { "name": "Bel'Veth", "cost": 2 },
-        { "name": "Urgot", "cost": 3 },
-        { "name": "Master Yi", "cost": 4 },
-        { "name": "Fiora", "cost": 5 }
+        {
+          "name": "Cho'Gath",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Tăng Trưởng",
+            "kich_hoat": "Gây sát thương phép (tỉ lệ theo Máu + AP) lên kẻ địch thấp Máu nhất trong tầm và vĩnh viễn nhận 12/18/33 Máu tối đa. Nếu kẻ địch này bị hạ gục, tăng vĩnh viễn 25/35/65 Máu tối đa."
+          }
+        },
+        {
+          "name": "Rek'Sai",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Chấn Động",
+            "kich_hoat": "Hồi máu (tỉ lệ theo Máu + AP), sau đó hất tung kẻ địch liền kề trong thoáng chốc và gây 80/120/180 (tỉ lệ theo AP) sát thương phép."
+          }
+        },
+        {
+          "name": "Gragas",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Nộ Hóa Chất",
+            "kich_hoat": "Hồi lại máu (tỉ lệ theo Máu + AP) trong vòng 2 giây. Sau đó, gây sát thương phép (tỉ lệ theo AP) lên mục tiêu và kẻ địch liền kề, đồng thời áp dụng Tê Tái 30% lên chúng trong 2 giây."
+          }
+        },
+        {
+          "name": "Pantheon",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Phòng Thủ Nâng Cao",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo Máu + AP) và 15% Chống Chịu trong 4 giây. Trong thời gian tác dụng, gây sát thương vật lý (tỉ lệ theo AD) mỗi giây lên kẻ địch theo hình nón."
+          }
+        },
+        {
+          "name": "Maokai",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Bàn Tay Hội Tụ",
+            "noi_tai": "Nhận thêm 45% Máu tối đa từ mọi nguồn.",
+            "kich_hoat": "Triệu hồi những dây leo tạo thành hình chữ X hội tụ vào mục tiêu, gây sát thương phép (tỉ lệ theo AP) lên mỗi kẻ địch trúng phải và Làm Choáng chúng trong 1.5/1.5/1.75 giây. N.O.V.A. Tấn Công: Phóng ra một làn sóng rồng làm choáng tất cả kẻ địch trong 1.5/1.5/1.75 giây. Trong phần còn lại của giao tranh, các đòn đánh của Maokai gây thêm sát thương vật lý (tỉ lệ theo Máu)."
+          }
+        },
+        {
+          "name": "Urgot",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Thiết Hạm Vô Song",
+            "noi_tai": "Súng Cảm Biến: Bất cứ khi nào một kẻ địch tiến vào bán kính ô, bắn một luồng đạn hình nón về phía ô liền kề gần nhất gây sát thương vật lý (tỉ lệ theo AD), giảm 30% sát thương theo mỗi ô khoảng cách. Mỗi ô liền kề có 5 giây thời gian hồi chiêu.",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo AP) trong 3 giây và di chuyển tối đa 1 ô để tối đa hóa số mục tiêu trong bán kính của Súng Cảm Biến. Làm mới hồi chiêu của Súng Cảm Biến."
+          }
+        },
+        {
+          "name": "Tahm Kench",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Roi Lưỡi",
+            "noi_tai": "Một lần mỗi giao tranh khi xuống dưới 35% Máu, nhận Lá Chắn trong 4 giây bằng 40% lượng hồi máu đã nhận trong giao tranh này.",
+            "kich_hoat": "Hồi máu (tỉ lệ theo Máu + AP), sau đó quật roi lưỡi vào tất cả kẻ địch trong vòng 2 ô, gây sát thương phép (tỉ lệ theo AP + Máu)."
+          }
+        }
       ],
       "bonus": {
-        "team_passive": "Toàn đội nhận 5% Hút Máu",
-        "special": "Lượng hồi phục vượt mức chuyển thành Lá Chắn (tối đa 25% Máu)",
+        "team_passive": "Toàn đội nhận 5% Máu",
         "tiers": [
-          { "count": 2, "effect": "+5% Hút Máu, +20% Sức Mạnh Công Kích" },
-          { "count": 4, "effect": "+7% Hút Máu, +30% Sức Mạnh Công Kích" },
-          { "count": 6, "effect": "+10% Hút Máu, +40% Sức Mạnh Công Kích" }
-        ]
-      }
-    },
-    {
-      "name": "Nhân Bản",
-      "name_en": "Replicator",
-      "type": "Hệ",
-      "description": "Nhân bản kỹ năng của tướng thêm một lần với hiệu lực giảm, gia tăng sát thương đáng kể.",
-      "champions": [
-        { "name": "Veigar", "cost": 1 },
-        { "name": "Lissandra", "cost": 1 },
-        { "name": "Pantheon", "cost": 2 },
-        { "name": "Lulu", "cost": 3 },
-        { "name": "Miss Fortune", "cost": 3 },
-        { "name": "Nami", "cost": 4 }
-      ],
-      "bonus": {
-        "tiers": [
-          { "count": 2, "effect": "Kỹ năng được kích hoạt thêm lần nữa với 25% hiệu lực" },
-          { "count": 4, "effect": "Kỹ năng được kích hoạt thêm lần nữa với 50% hiệu lực" }
+          {
+            "count": 2,
+            "effect": "+20% Máu tối đa"
+          },
+          {
+            "count": 4,
+            "effect": "+40% Máu tối đa"
+          },
+          {
+            "count": 6,
+            "effect": "+60% Máu tối đa"
+          }
         ]
       }
     },
@@ -141,84 +308,53 @@
       "name": "Định Mệnh",
       "name_en": "Fateweaver",
       "type": "Hệ",
-      "description": "Cơ chế ngẫu nhiên đặc trưng, tạo sát thương đột biến. Kỹ năng có thể chí mạng và hiệu ứng May Mắn giúp tung xúc xắc hai lần.",
+      "description": "Thiên Phú: Tướng Định Mệnh sở hữu Chuẩn Xác. Chuẩn Xác: Sát thương kỹ năng có thể chí mạng. Chỉ số Chuẩn Xác cộng thêm tăng 10% Sát Thương Chí Mạng. May Mắn: Tính toán hai lần, lấy kết quả tốt hơn.",
       "champions": [
-        { "name": "Twisted Fate", "cost": 1 },
-        { "name": "Caitlyn", "cost": 1 },
-        { "name": "Milio", "cost": 2 },
-        { "name": "Corki", "cost": 4 }
+        {
+          "name": "Caitlyn",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Nhắm Thẳng Đầu",
+            "noi_tai": "Đòn đánh có 15% tỉ lệ May Mắn bắn ra một cú Thiện Xạ cường hóa, gây sát thương vật lý (tỉ lệ theo AD + AP). May Mắn: Tính toán hai lần, lấy kết quả tốt hơn.",
+            "kich_hoat": "Chiêu Thức N.O.V.A.: Đánh dấu tất cả kẻ địch, tăng sát thương chúng nhận vào thêm 10%. Lần đầu tiên mục tiêu bị đánh dấu còn ít hơn 50% Máu, Thiện Xạ chúng để gây sát thương vật lý (tỉ lệ theo AD + AP)."
+          }
+        },
+        {
+          "name": "Twisted Fate",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Canh Bạc Số Phận",
+            "kich_hoat": "Rút một lá bài có giá trị từ 1 đến 9 bằng cơ hội May Mắn, sau đó ném nó vào mục tiêu. Dựa trên lá bài rút được, gây sát thương phép (tỉ lệ theo AP). Sát thương kết liễu vượt trội sẽ được chuyển sang kẻ địch gần nhất. Thưởng 3 Sao: Nếu ném ra số 9, tạo ra 1 vàng. May mắn: Tung hai lần, lấy kết quả tốt hơn."
+          }
+        },
+        {
+          "name": "Milio",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Siêu Cước Thời Không",
+            "kich_hoat": "Sút một quả cầu về phía mục tiêu hiện tại, gây 230/345/520 (tỉ lệ theo AP) sát thương phép. Khi va chạm, quả cầu có 100% cơ hội May Mắn nảy sang mục tiêu mới, gây sát thương phép (tỉ lệ theo AP). Những lần nảy này có thể kích hoạt thêm các lần nảy khác, nhưng xác suất sẽ giảm một nửa sau mỗi lần nảy. May Mắn: Tính toán hai lần, lấy kết quả tốt hơn."
+          }
+        },
+        {
+          "name": "Corki",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Súng Phá Thiên Thạch",
+            "kich_hoat": "Lượn đến một vị trí gần bên, bắn ra 21 tên lửa chia đều lên mục tiêu và tất cả kẻ địch trong phạm vi 2 ô. Tên lửa gây sát thương vật lý (tỉ lệ theo AD) với 20% tỉ lệ May Mắn bắn ra một siêu tên lửa gây sát thương lớn hơn. Thưởng Meep: Mỗi vài giây, phóng một Meep Nổ vào mục tiêu, gây sát thương vật lý (tỉ lệ theo AD) trong bán kính 1 ô. May Mắn: Tính toán hai lần, lấy kết quả tốt hơn."
+          }
+        }
       ],
       "bonus": {
-        "trait_passive": "Nhận thêm chỉ số Chính Xác, kỹ năng có thể chí mạng",
+        "trait_passive": "Tướng Định Mệnh sở hữu Chuẩn Xác",
         "tiers": [
-          { "count": 2, "effect": "Kỹ năng có thể kích hoạt hiệu ứng May Mắn (tung xúc xắc 2 lần, lấy kết quả cao hơn)" },
-          { "count": 4, "effect": "+20% Tỉ lệ Chí Mạng, +10% Sát Thương Chí Mạng, hiệu ứng chí mạng áp dụng May Mắn" }
-        ]
-      }
-    },
-    {
-      "name": "Đạo Tặc",
-      "name_en": "Rogue",
-      "type": "Hệ",
-      "description": "Lối chơi linh hoạt với khả năng né giao tranh khi nguy hiểm. Khi dưới 50% Máu sẽ tạm thời biến mất khỏi giao tranh.",
-      "champions": [
-        { "name": "Talon", "cost": 1 },
-        { "name": "Briar", "cost": 1 },
-        { "name": "Gwen", "cost": 2 },
-        { "name": "Kai'Sa", "cost": 3 },
-        { "name": "Fizz", "cost": 3 },
-        { "name": "Riven", "cost": 4 }
-      ],
-      "bonus": {
-        "special": "Khi dưới 50% Máu, tạm thời biến mất khỏi giao tranh, địch chuyển sang tuyến trước",
-        "tiers": [
-          { "count": 2, "effect": "+15% Sức Mạnh Công/Phép" },
-          { "count": 3, "effect": "+30% Sức Mạnh Công/Phép" },
-          { "count": 4, "effect": "+45% Sức Mạnh Công/Phép" },
-          { "count": 5, "effect": "+60% Sức Mạnh Công/Phép" }
-        ]
-      }
-    },
-    {
-      "name": "Xạ Thủ",
-      "name_en": "Sniper",
-      "type": "Hệ",
-      "description": "Carry gây sát thương vật lý từ tuyến sau, sát thương khuếch đại theo khoảng cách với mục tiêu.",
-      "champions": [
-        { "name": "Ezreal", "cost": 1 },
-        { "name": "Gnar", "cost": 2 },
-        { "name": "Samira", "cost": 3 },
-        { "name": "Xayah", "cost": 4 },
-        { "name": "Jhin", "cost": 5 }
-      ],
-      "bonus": {
-        "tiers": [
-          { "count": 2, "effect": "+18% sát thương, tăng thêm 2% mỗi ô khoảng cách" },
-          { "count": 3, "effect": "+24% sát thương, tăng thêm 3% mỗi ô khoảng cách" },
-          { "count": 4, "effect": "+28% sát thương, tăng thêm 4% mỗi ô khoảng cách" },
-          { "count": 5, "effect": "+32% sát thương, tăng thêm 5% mỗi ô khoảng cách" }
-        ]
-      }
-    },
-    {
-      "name": "Tiên Phong",
-      "name_en": "Vanguard",
-      "type": "Hệ",
-      "description": "Đứng vững ở tuyến trước nhờ tạo Lá Chắn liên tục. Nhận Lá Chắn khi bắt đầu giao tranh và khi đạt 50% Máu.",
-      "champions": [
-        { "name": "Nasus", "cost": 1 },
-        { "name": "Leona", "cost": 1 },
-        { "name": "Mordekaiser", "cost": 2 },
-        { "name": "Illaoi", "cost": 3 },
-        { "name": "Nunu", "cost": 4 },
-        { "name": "Blitzcrank", "cost": 5 }
-      ],
-      "bonus": {
-        "special": "Nhận Lá Chắn khi bắt đầu giao tranh và đạt 50% Máu, kéo dài 10 giây",
-        "tiers": [
-          { "count": 2, "effect": "Lá Chắn = 16% Máu tối đa" },
-          { "count": 4, "effect": "Lá Chắn = 28% Máu tối đa" },
-          { "count": 6, "effect": "Lá Chắn = 40% Máu tối đa, +10% Chống Chịu" }
+          {
+            "count": 2,
+            "effect": "Các hiệu ứng theo xác suất trên kỹ năng sẽ được hưởng May Mắn"
+          },
+          {
+            "count": 4,
+            "effect": "Nhận 20% Tỉ Lệ Chí Mạng và 20% Sát Thương Chí Mạng. Đòn chí mạng cũng trở nên May Mắn"
+          }
         ]
       }
     },
@@ -226,42 +362,623 @@
       "name": "Du Mục",
       "name_en": "Shepherd",
       "type": "Tộc",
-      "description": "Triệu hồi sinh vật hỗ trợ trong giao tranh, hiệu quả rõ rệt ở giai đoạn cuối trận.",
+      "description": "Tướng Du Mục triệu hồi Liên Kết Tinh Tú để hỗ trợ họ trong giao tranh. Sức mạnh của Bia và Bayin sẽ tăng theo tổng cấp sao của tất cả tướng Du Mục.",
       "champions": [
-        { "name": "Teemo", "cost": 1 },
-        { "name": "Lissandra", "cost": 1 },
-        { "name": "Meepsie", "cost": 2 },
-        { "name": "Illaoi", "cost": 3 },
-        { "name": "LeBlanc", "cost": 4 },
-        { "name": "Sona", "cost": 5 }
+        {
+          "name": "Lissandra",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Thiên Thạch Đen",
+            "kich_hoat": "Ném một mảnh băng về phía mục tiêu hiện tại, gây 250/375/600 (tỉ lệ theo AP) sát thương phép lên mục tiêu đầu tiên trúng phải. Sau khi trúng mục tiêu đầu tiên hoặc khi bay hết tầm, mảnh băng sẽ phát nổ, gây sát thương phép (tỉ lệ theo AP) lên những mục tiêu ở gần."
+          }
+        },
+        {
+          "name": "Teemo",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Gấp Đôi Sát Thương",
+            "noi_tai": "Các đòn đánh gây thêm sát thương phép (tỉ lệ theo AP) và thêm 70/105/180 (tỉ lệ theo AP) sát thương phép cộng dồn trong 6 giây. Khi một kẻ địch có từ 5 cộng dồn trở lên, Teemo vào trạng thái Vùng Phiêu.",
+            "kich_hoat": "Tăng 150% Tốc Độ Đánh trong 3 đòn đánh."
+          }
+        },
+        {
+          "name": "Meepsie",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Tác Động Meep",
+            "kich_hoat": "Hồi lại Máu (tỉ lệ theo Máu + AP) trong 3 giây. Đập mạnh vào mục tiêu, gây 160/240/360 (tỉ lệ theo AP) sát thương phép và hất tung trong 1.5/1.75/2 giây. Tác động tạo ra sóng meep gây 50% hiệu ứng này lên hàng của mục tiêu. Thưởng Meep: Các Meep tưới nước cho hoa của Meepsie, tăng tất cả Hồi Máu và Lá Chắn nhận vào."
+          }
+        },
+        {
+          "name": "Illaoi",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Thử Thách Linh Hồn",
+            "kich_hoat": "Nhận 425/475/625 (tỉ lệ theo AP) Lá Chắn trong 3 giây. Trong thời gian này, hút Máu (tỉ lệ theo AP) từ 3 kẻ địch gần nhất. Sau đó dậm xuống mặt đất, gây 80/120/180 (tỉ lệ theo AP) sát thương phép lên tất kẻ địch trong phạm vi 2 ô."
+          }
+        },
+        {
+          "name": "LeBlanc",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Phá Vỡ Thực Tại",
+            "noi_tai": "Thay vào đó, đòn đánh gây sát thương phép (tỉ lệ theo AP).",
+            "kich_hoat": "Triệu hồi 5 phân thân cùng tấn công trong 5 đòn đánh, gây 25/25/150% sát thương. Trong đòn tấn công cuối cùng, các phân thân bắn ra một tia gây sát thương phép (tỉ lệ theo AP)."
+          }
+        },
+        {
+          "name": "Sona",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Sức Mạnh Tâm Linh",
+            "kich_hoat": "Ném một khối mảnh vỡ từ tính vào mục tiêu gần nhất chưa bị gắn mảnh vỡ, gây sát thương phép (tỉ lệ theo AP) và gắn nó vào chúng. Nếu một kẻ địch mang mảnh vỡ bị hạ gục, nó sẽ truyền sang kẻ địch gần nhất chưa có mảnh vỡ. Mỗi 5 lần tung chiêu, thay vào đó xé toạc tất cả mảnh vỡ gây sát thương phép (tỉ lệ theo AP), sau đó đè tất cả mảnh vỡ lên mục tiêu, gây sát thương phép (tỉ lệ theo AP) và làm choáng chúng trong thoáng chốc."
+          }
+        }
       ],
       "bonus": {
         "tiers": [
-          { "count": 3, "effect": "Triệu hồi Bia" },
-          { "count": 5, "effect": "Triệu hồi Bayin" },
-          { "count": 7, "effect": "Sinh vật triệu hồi được cường hóa mạnh mẽ" }
+          {
+            "count": 3,
+            "effect": "Triệu hồi Bia"
+          },
+          {
+            "count": 5,
+            "effect": "Triệu hồi Bayin"
+          },
+          {
+            "count": 7,
+            "effect": "Liên kết giữa Bia và Bayin trở nên sâu sắc hơn"
+          }
         ]
       }
     },
     {
-      "name": "Lữ Hành",
-      "name_en": "Voyager",
+      "name": "Hắc Tinh",
+      "name_en": "Dark Star",
       "type": "Tộc",
-      "description": "Chiến sĩ kết hợp chống chịu và sát thương. Khi bắt đầu giao tranh: Tank nhận Lá Chắn 15 giây, đồng minh còn lại được gia tăng sát thương. Hiệu ứng nhân đôi với tướng Lữ Hành.",
+      "description": "Tướng Hắc Tinh triệu hồi một hố đen nuốt chửng kẻ địch khi chúng còn dưới ngưỡng máu tối đa.",
       "champions": [
-        { "name": "Meepsie", "cost": 2 },
-        { "name": "Pyke", "cost": 2 },
-        { "name": "Aurora", "cost": 3 },
-        { "name": "Siêu Chiến Giáp Garen", "cost": 4 },
-        { "name": "Karma", "cost": 4 }
+        {
+          "name": "Cho'Gath",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Tăng Trưởng",
+            "kich_hoat": "Gây sát thương phép (tỉ lệ theo Máu + AP) lên kẻ địch thấp Máu nhất trong tầm và vĩnh viễn nhận 12/18/33 Máu tối đa. Nếu kẻ địch này bị hạ gục, tăng vĩnh viễn 25/35/65 Máu tối đa."
+          }
+        },
+        {
+          "name": "Lissandra",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Thiên Thạch Đen",
+            "kich_hoat": "Ném một mảnh băng về phía mục tiêu hiện tại, gây 250/375/600 (tỉ lệ theo AP) sát thương phép lên mục tiêu đầu tiên trúng phải. Sau khi trúng mục tiêu đầu tiên hoặc khi bay hết tầm, mảnh băng sẽ phát nổ, gây sát thương phép (tỉ lệ theo AP) lên những mục tiêu ở gần."
+          }
+        },
+        {
+          "name": "Mordekaiser",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Giáp Bất Diệt",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo AP). Mỗi giây trong 4 giây tiếp theo, nhận thêm Lá Chắn (tỉ lệ theo AP) và gây sát thương phép (tỉ lệ theo AP) lên kẻ địch liền kề. Khi kỹ năng này kết thúc, tiêu hao lượng Lá Chắn còn lại và hồi máu bằng 40% giá trị đó."
+          }
+        },
+        {
+          "name": "Kai'Sa",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Chùm Đạn",
+            "noi_tai": "Khi tham gia hạ gục, nhận 10 năng lượng.",
+            "kich_hoat": "Bắn 16 tên lửa trong bán kính 2 ô quanh mục tiêu hiện tại, gây sát thương vật lý (tỉ lệ theo AD) với mỗi tên lửa."
+          }
+        },
+        {
+          "name": "Karma",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Hố Đen Kỳ Bí",
+            "kich_hoat": "Tập hợp sức mạnh của một hố đen, gây 570/855/5000 (tỉ lệ theo AP) sát thương phép, chia đều cho mục tiêu và 2/2/4 kẻ địch gần nhất. Mục tiêu chịu thêm sát thương phép (tỉ lệ theo AP)."
+          }
+        },
+        {
+          "name": "Jhin",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Sử Thi Vũ Trụ",
+            "noi_tai": "Jhin có tốc độ đánh cố định là 0.9/0.9/1.4 và chuyển đổi mỗi 1% tốc độ đánh cộng thêm thành 0.75 Sức Mạnh Công Kích cộng thêm.",
+            "kich_hoat": "Triệu hồi 4 bàn tay ma quái bắn cùng Jhin trong 4 đòn đánh tiếp theo. Mỗi bàn tay gây sát thương vật lý (tỉ lệ theo AD) mỗi phát bắn. Phát bắn cuối cùng gây thêm 244% sát thương và đâm xuyên qua nhiều kẻ địch nhất theo một đường thẳng, gây 44% sát thương giảm dần cho mỗi mục tiêu trúng phải."
+          }
+        }
       ],
       "bonus": {
         "tiers": [
-          { "count": 2, "effect": "175 Lá Chắn; +9% sát thương" },
-          { "count": 3, "effect": "250 Lá Chắn; +15% sát thương" },
-          { "count": 4, "effect": "350 Lá Chắn; +18% sát thương" },
-          { "count": 5, "effect": "500 Lá Chắn; +22% sát thương" },
-          { "count": 6, "effect": "700 Lá Chắn; +27% sát thương" }
+          {
+            "count": 2,
+            "effect": "Triệu hồi hố đen nuốt chửng kẻ địch khi chúng còn dưới 8% máu tối đa"
+          },
+          {
+            "count": 4,
+            "effect": "VÀ họ nhận được 40% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật"
+          },
+          {
+            "count": 6,
+            "effect": "VÀ tướng Hắc Tinh mạnh nhất hóa siêu khổng lồ, nhận thêm 85% hiệu ứng từ Hắc Tinh, đồng thời tạo ra 2 Hố Đen Vũ Trụ nhỏ"
+          },
+          {
+            "count": 9,
+            "effect": "Tất cả tướng Hắc Tinh sẽ hóa siêu khổng lồ. Ở cấp 10, NUỐT CHỬNG TẤT CẢ"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Hành Tinh",
+      "name_en": "Space Groove",
+      "type": "Tộc",
+      "description": "Khi các tướng Hành Tinh tiến vào trạng thái Vùng Phiêu, họ nhận Tốc Độ Đánh và hồi Máu tối đa, tăng theo mỗi tướng Hành Tinh trong đội.",
+      "champions": [
+        {
+          "name": "Nasus",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Susan Phiêu Nhạc",
+            "kich_hoat": "Biến hình trong 6 giây, tạm thời nhận thêm 250/350/500 Máu tối đa, tiến vào trạng thái Vùng Phiêu và gây sát thương phép (tỉ lệ theo Máu + AP) mỗi giây lên những kẻ địch liền kề."
+          }
+        },
+        {
+          "name": "Teemo",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Gấp Đôi Sát Thương",
+            "noi_tai": "Các đòn đánh gây thêm sát thương phép (tỉ lệ theo AP) và thêm 70/105/180 (tỉ lệ theo AP) sát thương phép cộng dồn trong 6 giây. Khi một kẻ địch có từ 5 cộng dồn trở lên, Teemo vào trạng thái Vùng Phiêu.",
+            "kich_hoat": "Tăng 150% Tốc Độ Đánh trong 3 đòn đánh."
+          }
+        },
+        {
+          "name": "Gwen",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Vũ Điệu Xúc Xắc",
+            "noi_tai": "Đòn đánh gây sát thương phép. Gwen vào trạng thái Vùng Phiêu khi nhắm mục tiêu vào kẻ địch dưới 40% Máu.",
+            "kich_hoat": "Lướt đến một ô lân cận để cắt kẻ địch có phần trăm Máu thấp nhất, gây 145/220/380 (tỉ lệ theo AP) sát thương phép lên mục tiêu và sát thương phép (tỉ lệ theo AP) lên mọi kẻ địch trong hình nón. Nếu chiêu này hạ gục, lướt và cắt thêm lần nữa với 65% sát thương!"
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 1,
+            "effect": "Khi tiến vào Vùng Phiêu, nhận Tốc Độ Đánh và hồi Máu tối đa"
+          },
+          {
+            "count": 3,
+            "effect": "Tất cả tướng Hành Tinh bắt đầu giao tranh ở trạng thái Vùng Phiêu trong 3 giây"
+          },
+          {
+            "count": 5,
+            "effect": "Mỗi giây trong trạng thái Vùng Phiêu trao 5% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật cộng dồn"
+          },
+          {
+            "count": 7,
+            "effect": "Tăng hiệu ứng thêm 10%!"
+          },
+          {
+            "count": 10,
+            "effect": "Vùng Phiêu vĩnh cửu"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Máy Móc",
+      "name_en": "Mecha",
+      "type": "Tộc",
+      "description": "Thiên Phú: Các tướng Máy Móc có thể biến đổi thành dạng Tối Thượng, nâng cấp kỹ năng và nhận thêm 50% Máu. Tướng Máy Móc sau khi biến đổi sẽ chiếm 2 vị trí trong đội hình và được tính gấp đôi cho tộc/hệ Máy Móc. Sử dụng trang bị Máy Biến Hình để chuyển đổi dạng.",
+      "champions": [
+        {
+          "name": "Urgot",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Thiết Hạm Vô Song",
+            "noi_tai": "Súng Cảm Biến: Bất cứ khi nào một kẻ địch tiến vào bán kính ô, bắn một luồng đạn hình nón về phía ô liền kề gần nhất gây sát thương vật lý (tỉ lệ theo AD), giảm 30% sát thương theo mỗi ô khoảng cách. Mỗi ô liền kề có 5 giây thời gian hồi chiêu.",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo AP) trong 3 giây và di chuyển tối đa 1 ô để tối đa hóa số mục tiêu trong bán kính của Súng Cảm Biến. Làm mới hồi chiêu của Súng Cảm Biến."
+          }
+        },
+        {
+          "name": "Aurelion Sol",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Tia Tử Thần",
+            "kich_hoat": "Tụ năng lượng để bắn một tia tử thần theo đường thẳng về phía mục tiêu hiện tại trong 3 giây. Nó gây sát thương phép (tỉ lệ theo AP) mỗi giây, giảm đi 60% với mỗi kẻ địch mà nó xuyên qua. Tia Tử Thần bỏ qua 30% Kháng Phép của kẻ địch."
+          }
+        },
+        {
+          "name": "Robot",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Ma Trận Trọng Lực",
+            "kich_hoat": "Vào thế phòng thủ trong 4 giây, nhận 20/20/90% Chống Chịu. Khi ở tư thế phòng thủ, hút đường đạn của kẻ địch gần đó và hồi lại 850/1200/3000 (tỉ lệ theo AP) Máu trong suốt thời gian hiệu lực. Khi hiệu ứng này kết thúc, giải phóng một sóng xung kích gây sát thương vật lý (tỉ lệ theo Giáp + Kháng Phép) trong phạm vi 2 ô."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 3,
+            "effect": "Lõi Năng Lượng: Tướng Máy Móc nhận 20% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật"
+          },
+          {
+            "count": 4,
+            "effect": "Lõi Ép Xung: Tăng thành 35% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật"
+          },
+          {
+            "count": 6,
+            "effect": "Cơ Khí Chuẩn Xác: +1 số lượng tướng tối đa"
+          }
+        ]
+      }
+    },
+    {
+      "name": "N.O.V.A.",
+      "name_en": "DRX",
+      "type": "Tộc",
+      "description": "Mỗi tướng N.O.V.A. có hiệu ứng đột phá riêng: Aatrox (30% Cào Xé và Phân Tách), Caitlyn (20% Tốc Độ Đánh cho đồng minh), Akali (đồng minh nhận Chuẩn Xác), Maokai (đồng minh hồi 12% Máu tối đa), Kindred (800 lá chắn cho tướng Đỡ Đòn mạnh nhất). 6 giây sau khi bắt đầu giao tranh, tướng N.O.V.A. trao đột phá sức mạnh.",
+      "champions": [
+        {
+          "name": "Aatrox",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Nhát Chém Tinh Tú",
+            "kich_hoat": "Hồi lại một lượng máu (tỉ lệ theo AP), sau đó gây sát thương vật lý (tỉ lệ theo AD + Giáp) lên mục tiêu hiện tại.",
+            "nova_tan_cong": "Chém xuyên chiến trường, hất tung tất cả kẻ địch trong thoáng chốc và gây sát thương vật lý (tỉ lệ theo AD + Giáp)."
+          }
+        },
+        {
+          "name": "Caitlyn",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Nhắm Thẳng Đầu",
+            "noi_tai": "Đòn đánh có 15% tỉ lệ May Mắn bắn ra một cú Thiện Xạ cường hóa, gây sát thương vật lý (tỉ lệ theo AD + AP). May Mắn: Tính toán hai lần, lấy kết quả tốt hơn.",
+            "nova_tan_cong": "Đánh dấu tất cả kẻ địch, tăng sát thương chúng nhận vào thêm 10%. Lần đầu tiên mục tiêu bị đánh dấu còn ít hơn 50% Máu, Thiện Xạ chúng để gây sát thương vật lý (tỉ lệ theo AD + AP)."
+          }
+        },
+        {
+          "name": "Akali",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Phi Đao Tinh Tú",
+            "kich_hoat": "Chuyển vị trí tới cạnh mục tiêu giúp tấn công được nhiều kẻ địch nhất. Sau đó ném 5 phi tiêu xuyên qua, mỗi chiếc gây sát thương vật lý (tỉ lệ theo AD) lên kẻ địch đầu tiên trúng phải (giảm với mỗi mục tiêu tiếp theo). Phi tiêu loại bỏ 1 Giáp, 2 nếu chúng chí mạng.",
+            "nova_tan_cong": "Chém tất cả kẻ địch, gây Vết Thương Sâu và chảy máu (sát thương vật lý theo AD mỗi giây). Phi tiêu tăng sát thương của hiệu ứng chảy máu thêm 10%."
+          }
+        },
+        {
+          "name": "Maokai",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Bàn Tay Hội Tụ",
+            "noi_tai": "Nhận thêm 40% Máu tối đa từ mọi nguồn.",
+            "kich_hoat": "Triệu hồi những dây leo tạo thành hình chữ X hội tụ vào mục tiêu, gây sát thương phép (tỉ lệ theo AP) lên mỗi kẻ địch trúng phải và Làm Choáng chúng trong 1.5/1.5/1.75 giây.",
+            "nova_tan_cong": "Phóng ra một làn sóng rồng làm choáng tất cả kẻ địch trong 1.5/1.5/1.75 giây. Trong phần còn lại của giao tranh, các đòn đánh của Maokai gây thêm sát thương vật lý (tỉ lệ theo Máu)."
+          }
+        },
+        {
+          "name": "Kindred",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Truy Đuổi Vũ Trụ",
+            "noi_tai": "Đòn Đánh và Kỹ Năng sẽ đánh dấu mục tiêu. Khi kẻ địch đạt 3 dấu ấn, Sói sẽ tiêu thụ các dấu ấn đó gây sát thương vật lý (tỉ lệ theo AD + AP).",
+            "kich_hoat": "Nhảy ra xa tối đa 1 ô và bắn tên vào 3/3/5 mục tiêu gần nhất, mỗi mục tiêu chịu sát thương vật lý (tỉ lệ theo AD).",
+            "nova_tan_cong": "Nhận 5% Khuếch Đại Sát Thương. Ngay bây giờ và mỗi 5 giây sau đó, thêm một dấu ấn lên tất cả kẻ địch."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "6 giây sau khi bắt đầu giao tranh, tướng N.O.V.A. trao đột phá sức mạnh cho đồng minh tùy theo tướng"
+          },
+          {
+            "count": 5,
+            "effect": "Nhận 1 bộ chọn Tiến Công. Tướng N.O.V.A. được chọn sẽ kích hoạt Tiến Công của họ trong khi đột phá sức mạnh"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Nhân Bản",
+      "name_en": "Replicator",
+      "type": "Hệ",
+      "description": "Kỹ năng của tướng Nhân Bản kích hoạt lần hai với hiệu lực giảm bớt.",
+      "champions": [
+        {
+          "name": "Lissandra",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Thiên Thạch Đen",
+            "kich_hoat": "Ném một mảnh băng về phía mục tiêu hiện tại, gây 250/375/600 (tỉ lệ theo AP) sát thương phép lên mục tiêu đầu tiên trúng phải. Sau khi trúng mục tiêu đầu tiên hoặc khi bay hết tầm, mảnh băng phát nổ, gây sát thương phép (tỉ lệ theo AP) lên những mục tiêu ở gần."
+          }
+        },
+        {
+          "name": "Veigar",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Meep Thiên Thạch",
+            "kich_hoat": "Gọi một Meep Thiên Thạch rơi xuống mục tiêu gây 310/465/700 (tỉ lệ theo AP) sát thương phép. Thưởng Meep: các Meep Thiên Thạch tí hon bổ sung sẽ rơi xuống các mục tiêu lân cận, mỗi Meep gây sát thương phép (tỉ lệ theo AP)."
+          }
+        },
+        {
+          "name": "Pantheon",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Phòng Thủ Nâng Cao",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo Máu + AP) và 15% Chống Chịu trong 4 giây. Trong thời gian tác dụng, gây sát thương vật lý (tỉ lệ theo AD) mỗi giây lên kẻ địch theo hình nón."
+          }
+        },
+        {
+          "name": "Lulu",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Mưa Sao Rơi",
+            "noi_tai": "Nhận một hiệu ứng phụ khác nhau mỗi trận dựa trên chòm sao Chiêm Tinh.",
+            "kich_hoat": "Triệu hồi một thứ gì đó từ trên trời rơi xuống, gây 150/225/360 (tỉ lệ theo AP) sát thương phép lên 3 kẻ địch xung quanh và tạo hiệu ứng đặc biệt dựa trên Chòm Sao Chiêm Tinh của trận này."
+          }
+        },
+        {
+          "name": "Nami",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Bong Bóng Nổ",
+            "kich_hoat": "Ném một bong bóng disco vào mục tiêu, gây 430/650/5000 (tỉ lệ theo AP) chia đều cho những kẻ địch trong bán kính 1 ô. Vụ nổ phóng 3 khối cầu về phía các kẻ địch gần đó, gây sát thương phép (tỉ lệ theo AP). Khi tung chiêu, Nami vào trạng thái Vùng Phiêu trong 3 giây."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "22% sức mạnh lần kích hoạt thứ hai"
+          },
+          {
+            "count": 4,
+            "effect": "45% sức mạnh lần kích hoạt thứ hai"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Siêu Linh",
+      "name_en": "PsyOps",
+      "type": "Hệ",
+      "description": "Nhận trang bị Siêu Linh có thể lắp cho bất kỳ đồng minh nào.",
+      "champions": [
+        {
+          "name": "Gragas",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Nộ Hóa Chất",
+            "kich_hoat": "Hồi lại máu (tỉ lệ theo Máu + AP) trong vòng 2 giây. Sau đó, gây sát thương phép (tỉ lệ theo AP) lên mục tiêu và kẻ địch liền kề, đồng thời áp dụng Tê Tái 30% lên chúng trong 2 giây."
+          }
+        },
+        {
+          "name": "Pyke",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Dấu Ấn Tử Thần",
+            "kich_hoat": "Di chuyển tối đa 1 ô để phóng lao vào kẻ địch xa nhất. Cây lao móc kéo kẻ địch đầu tiên trúng phải tiến lên 1 ô và gây sát thương vật lý (tỉ lệ theo AP). Sau đó, dịch chuyển ra phía sau kẻ địch và chém lan, gây sát thương vật lý (tỉ lệ theo AD) lên mục tiêu và sát thương vật lý (tỉ lệ theo AD) lên các kẻ địch ở gần."
+          }
+        },
+        {
+          "name": "Viktor",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Bão Tâm Linh",
+            "kich_hoat": "Niệm chú tạo ra một cơn bão tâm linh rộng 1 ô đuổi theo kẻ địch trong 4 giây. Mỗi giây, nó lớn dần và gây 240/360/575 (tỉ lệ theo AP) sát thương phép lên kẻ địch bên trong, giảm 60% theo mỗi ô tính từ tâm bão."
+          }
+        },
+        {
+          "name": "Master Yi",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Tâm Kích",
+            "noi_tai": "Mỗi đòn đánh thứ ba là một cú chém kép gây thêm sát thương vật lý (tỉ lệ theo AD).",
+            "kich_hoat": "Sau khi thiền định trong chốc lát, bước vào trạng thái Tâm Linh trong 5 giây, nhận 15% Hút Máu Toàn Phần, 70% Tốc Độ Đánh, và tăng tốc độ di chuyển. Hai lần mỗi giây, bắn một ảo ảnh tâm linh vào kẻ địch ngẫu nhiên gần đó, gây sát thương vật lý (tỉ lệ theo AD + AP)."
+          }
+        },
+        {
+          "name": "Sona",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Sức Mạnh Tâm Linh",
+            "kich_hoat": "Ném một khối mảnh vỡ từ tính vào mục tiêu gần nhất chưa bị gắn mảnh vỡ, gây sát thương phép (tỉ lệ theo AP) và gắn nó vào chúng. Nếu một kẻ địch mang mảnh vỡ bị hạ gục, nó sẽ truyền sang kẻ địch gần nhất chưa có mảnh vỡ. Mỗi 5 lần tung chiêu, thay vào đó xé toạc tất cả mảnh vỡ gây sát thương phép (tỉ lệ theo AP), sau đó đè tất cả mảnh vỡ lên mục tiêu, gây sát thương phép (tỉ lệ theo AP) và làm choáng chúng trong thoáng chốc."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "Nhận trang bị Siêu Linh có thể lắp cho bất kỳ đồng minh nào"
+          },
+          {
+            "count": 4,
+            "effect": "Nhận thêm trang bị Siêu Linh có thể lắp cho bất kỳ đồng minh nào"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Siêu Thú",
+      "name_en": "Anima Squad",
+      "type": "Tộc",
+      "description": "Sau khi thua một giao tranh người chơi, nhận 20 Linh Kiện, cộng thêm số Linh Kiện bằng 5 lần độ dài chuỗi thua của bạn. Ngoài ra, nhận thêm 2 Linh Kiện mỗi khi tướng Siêu Thú tham gia hạ gục. Mỗi khi tướng Siêu Thú tích đủ 100 Linh Kiện, họ sẽ thử nghiệm các Vũ Khí Siêu Thú mới.",
+      "champions": [
+        {
+          "name": "Briar",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Cá Càn Quét",
+            "noi_tai": "Với mỗi 1% Máu đã mất, nhận thêm % Tốc Độ Đánh (tỉ lệ theo AP).",
+            "kich_hoat": "Gây sát thương vật lý (tỉ lệ theo AD) lên mục tiêu, tăng thêm 50% nếu chúng là tướng Đỡ Đòn."
+          }
+        },
+        {
+          "name": "Jinx",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Thái Độ Bùng Nổ",
+            "kich_hoat": "Bắn một loạt tên lửa (tỉ lệ theo Tốc Độ Đánh) theo hình nón, mỗi tên lửa gây sát thương vật lý (tỉ lệ theo AD) lên mục tiêu đầu tiên trúng phải."
+          }
+        },
+        {
+          "name": "Aurora",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Hack Cường Hóa",
+            "kich_hoat": "Mở một khe nứt 2 ô gồm cả mục tiêu, Hack các kẻ địch bên trong trong 4 giây và gây 80/120/190 (tỉ lệ theo AP) sát thương phép lên từng kẻ địch, cộng thêm sát thương phép (tỉ lệ theo AP) chia đều cho tất cả kẻ địch trúng phải. Kẻ địch bị hack sẽ tích trữ 10% tổng sát thương chúng nhận vào. Khi Hack kết thúc, chúng sẽ chịu sát thương chuẩn bằng với lượng sát thương đã tích trữ. Hack sẽ kết thúc sớm nếu nó hạ gục mục tiêu."
+          }
+        },
+        {
+          "name": "Illaoi",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Thử Thách Linh Hồn",
+            "kich_hoat": "Nhận 425/475/625 (tỉ lệ theo AP) Lá Chắn trong 3 giây. Trong thời gian này, hút Máu (tỉ lệ theo AP) từ 3 kẻ địch gần nhất. Sau đó dậm xuống mặt đất, gây 80/120/180 (tỉ lệ theo AP) sát thương phép lên tất kẻ địch trong phạm vi 2 ô."
+          }
+        },
+        {
+          "name": "Fiora",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Kiếm Thuật Hoàn Mỹ",
+            "noi_tai": "Mỗi 2 đòn đánh, lộ diện một Điểm Yếu trên mục tiêu. Nếu có một Điểm Yếu, lướt tới chém Điểm Yếu gây sát thương chuẩn (tỉ lệ theo AD) cộng thêm và hồi máu bằng 15% sát thương gây ra.",
+            "kich_hoat": "Lộ diện 6 Điểm Yếu trên mục tiêu và nhanh chóng chém vào chúng. Nếu mục tiêu bị hạ gục, các Điểm Yếu còn lại sẽ chuyển sang kẻ địch gần nhất. Khi đánh vào Điểm Yếu cuối cùng, tạo ra một vùng hào quang 2 ô giúp hồi máu cho đồng minh bên trong (tỉ lệ theo AP) trong 5 giây."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 3,
+            "effect": "Bắt Đầu Nghiên Cứu! Tích lũy Linh Kiện để nhận Vũ Khí Siêu Thú"
+          },
+          {
+            "count": 6,
+            "effect": "Sau khi thắng 1 vòng giao tranh người chơi, nhận được báu vật!"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Thách Đấu",
+      "name_en": "Challenger",
+      "type": "Hệ",
+      "description": "Đội của bạn nhận 10% Tốc Độ Đánh. Tướng Thách Đấu nhận Tốc Độ Đánh cộng thêm. Khi mục tiêu của họ bị hạ, tướng Thách Đấu lướt tới mục tiêu mới và tăng 50% lượng Tốc Độ Đánh cộng thêm trong 2.5 giây.",
+      "champions": [
+        {
+          "name": "Bel'Veth",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Chém Sóng",
+            "kich_hoat": "Tung ra một loạt nhát chém vào mục tiêu hiện tại trong 2 giây (số lượng tỉ lệ theo Tốc Độ Đánh), gây sát thương vật lý (tỉ lệ theo AD + AP) mỗi lần."
+          }
+        },
+        {
+          "name": "Jinx",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Thái Độ Bùng Nổ",
+            "kich_hoat": "Bắn một loạt tên lửa theo hình nón (số lượng tỉ lệ theo Tốc Độ Đánh), mỗi tên lửa gây sát thương vật lý (tỉ lệ theo AD) lên mục tiêu đầu tiên trúng phải."
+          }
+        },
+        {
+          "name": "Diana",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Thác Bạc",
+            "noi_tai": "Đòn đánh gây thêm sát thương phép (tỉ lệ theo AP).",
+            "kich_hoat": "Nhận 225/275/375 (tỉ lệ theo AP) Lá Chắn và triệu hồi 3 quả cầu bay quanh trong 3 giây. Các quả cầu gây sát thương phép (tỉ lệ theo AP) lên kẻ địch mà chúng đi qua, và quay nhanh hơn dựa trên Tốc Độ Đánh."
+          }
+        },
+        {
+          "name": "Kindred",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Truy Đuổi Vũ Trụ",
+            "noi_tai": "Đòn Đánh và Kỹ Năng sẽ đánh dấu mục tiêu. Khi kẻ địch đạt 3 dấu ấn, Sói sẽ tiêu thụ các dấu ấn đó gây sát thương vật lý (tỉ lệ theo AD + AP).",
+            "kich_hoat": "Nhảy ra xa tối đa 1 ô và bắn tên vào 3/3/5 mục tiêu gần nhất, mỗi mục tiêu chịu sát thương vật lý (tỉ lệ theo AD).",
+            "nova_tan_cong": "Nhận 5% Khuếch Đại Sát Thương. Ngay bây giờ và mỗi 5 giây sau đó, thêm một dấu ấn lên tất cả kẻ địch."
+          }
+        }
+      ],
+      "bonus": {
+        "team_passive": "Toàn đội nhận 10% Tốc Độ Đánh",
+        "on_kill": "Lướt tới mục tiêu mới và tăng 50% Tốc Độ Đánh cộng thêm trong 2.5 giây",
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "+15% Tốc Độ Đánh"
+          },
+          {
+            "count": 3,
+            "effect": "+22% Tốc Độ Đánh"
+          },
+          {
+            "count": 4,
+            "effect": "+36% Tốc Độ Đánh"
+          },
+          {
+            "count": 5,
+            "effect": "+48% Tốc Độ Đánh"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Thần Phán",
+      "name_en": "ADMIN",
+      "type": "Tộc",
+      "description": "Viết ra một luật lệ thần thánh độc nhất, cho phép bạn chọn một hệ quả để áp dụng lên tướng Thần Phán khi nguyên nhân được chọn xảy ra.",
+      "champions": [
+        {
+          "name": "Leona",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Khiên Mặt Trời",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo AP) trong 4 giây. Nện vào mục tiêu hiện tại, gây 100/150/225 (tỉ lệ theo Giáp + Kháng Phép) sát thương phép và làm choáng chúng trong 1.75/1.75/2 giây."
+          }
+        },
+        {
+          "name": "Zoe",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Nghịch Sao",
+            "kich_hoat": "Bắn một ngôi sao nghịch ngợm vào mục tiêu hiện tại, gây 68/102/153 (tỉ lệ theo AP) sát thương phép lên mục tiêu đầu tiên trúng phải và sát thương phép lên những kẻ địch khác mà nó đi qua. Khi ngôi sao đến điểm đích, chuyển hướng nó về phía một kẻ địch ở xa, tăng tốc độ và lặp lại sát thương. Có thể chuyển hướng 4 lần."
+          }
+        },
+        {
+          "name": "Diana",
+          "cost": 3
+        },
+        {
+          "name": "LeBlanc",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Phá Vỡ Thực Tại",
+            "noi_tai": "Thay vào đó, đòn đánh gây sát thương phép (tỉ lệ theo AP).",
+            "kich_hoat": "Triệu hồi 5 phân thân cùng tấn công trong 5 đòn đánh, gây 25/25/150% sát thương. Trong đòn tấn công cuối cùng, các phân thân bắn ra một tia gây sát thương phép (tỉ lệ theo AP)."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "Chọn một nguyên nhân và hệ quả cho luật lệ của bạn"
+          },
+          {
+            "count": 3,
+            "effect": "Hệ quả sẽ mạnh hơn"
+          }
         ]
       }
     },
@@ -269,71 +986,655 @@
       "name": "Thời Không",
       "name_en": "Timebreaker",
       "type": "Hệ",
-      "description": "Lật kèo tốt, tích lũy sức mạnh theo thời gian. Phù hợp cùng các carry AD.",
+      "description": "Khi bạn thua, nhận lượt đổi miễn phí. Khi bạn thắng, tích trữ XP trong một Lõi Thời Không (tăng theo giai đoạn).",
       "champions": [
-        { "name": "Ezreal", "cost": 1 },
-        { "name": "Milio", "cost": 2 },
-        { "name": "Pantheon", "cost": 2 },
-        { "name": "Riven", "cost": 4 }
+        {
+          "name": "Ezreal",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Phát Bắn Thời Gian",
+            "kich_hoat": "Bắn ra một phát đạn về phía mục tiêu hiện tại gây sát thương vật lý (tỉ lệ theo AD + AP). Cứ mỗi 8 hạ gục, nhận một drone gây sát thương vật lý lên mục tiêu hiện tại khi kích hoạt."
+          }
+        },
+        {
+          "name": "Milio",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Siêu Cước Thời Không",
+            "kich_hoat": "Sút một quả cầu về phía mục tiêu hiện tại, gây 230/345/520 (tỉ lệ theo AP) sát thương phép. Khi va chạm, quả cầu có 100% cơ hội May Mắn nảy sang mục tiêu mới, gây sát thương phép (tỉ lệ theo AP). Những lần nảy này có thể kích hoạt thêm các lần nảy khác, nhưng xác suất sẽ giảm một nửa sau mỗi lần nảy. May Mắn: Tính toán hai lần, lấy kết quả tốt hơn."
+          }
+        },
+        {
+          "name": "Pantheon",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Phòng Thủ Nâng Cao",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo Máu + AP) và 15% Chống Chịu trong 4 giây. Trong thời gian tác dụng, gây sát thương vật lý (tỉ lệ theo AD) mỗi giây lên kẻ địch theo hình nón."
+          }
+        },
+        {
+          "name": "Riven",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Bẻ Cong Thời Gian",
+            "noi_tai": "Kỹ năng này thích ứng theo Sức Mạnh Công Kích hoặc Sức Mạnh Phép Thuật, tùy vào chỉ số nào cao hơn. Đòn đánh gây sát thương phép (tỉ lệ theo AP) hoặc sát thương vật lý (tỉ lệ theo AD).",
+            "kich_hoat": "Lướt tới một ô gần đó, nhận 100/150/1200 Lá Chắn trong 2 giây và chém các kẻ địch liền kề gây sát thương. Mỗi lần tung chiêu thứ ba, nhảy lên không trung và phóng ra một luồng sóng năng lượng gây sát thương lên kẻ địch trên một đường thẳng."
+          }
+        }
       ],
       "bonus": {
         "tiers": [
-          { "count": 2, "effect": "Khi thua: nhận thêm lượt làm mới cửa hàng; khi thắng: tích trữ thêm EXP" },
-          { "count": 3, "effect": "Đồng minh nhận +15% Tốc Độ Đánh" },
-          { "count": 4, "effect": "Tướng Thời Không nhận thêm 50% Tốc Độ Đánh" }
+          {
+            "count": 2,
+            "effect": "Khi thua nhận lượt đổi miễn phí. Khi thắng tích trữ XP trong Lõi Thời Không"
+          },
+          {
+            "count": 3,
+            "effect": "VÀ Đồng minh nhận thêm 25% Tốc Độ Đánh"
+          },
+          {
+            "count": 4,
+            "effect": "VÀ Tướng Thời Không nhận thêm 50% Tốc Độ Đánh"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tiên Phong",
+      "name_en": "Vanguard",
+      "type": "Hệ",
+      "description": "Tướng Tiên Phong được tăng 5% Chống Chịu khi có Lá Chắn. Bắt đầu giao tranh và khi còn 50% Máu: Nhận một Lá Chắn theo Máu tối đa trong 10 giây.",
+      "champions": [
+        {
+          "name": "Leona",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Khiên Mặt Trời",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo AP) trong 4 giây. Nện vào mục tiêu hiện tại, gây 100/150/225 (tỉ lệ theo Giáp + Kháng Phép) sát thương phép và làm choáng chúng trong 1.75/1.75/2 giây."
+          }
+        },
+        {
+          "name": "Nasus",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Susan Phiêu Nhạc",
+            "kich_hoat": "Biến hình trong 6 giây, tạm thời nhận thêm 250/350/500 Máu tối đa, tiến vào trạng thái Vùng Phiêu và gây sát thương phép (tỉ lệ theo Máu + AP) mỗi giây lên những kẻ địch liền kề."
+          }
+        },
+        {
+          "name": "Mordekaiser",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Giáp Bất Diệt",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo AP). Mỗi giây trong 4 giây tiếp theo, nhận thêm Lá Chắn (tỉ lệ theo AP) và gây sát thương phép (tỉ lệ theo AP) lên kẻ địch liền kề. Khi kỹ năng này kết thúc, tiêu hao lượng Lá Chắn còn lại và hồi máu bằng 40% giá trị đó."
+          }
+        },
+        {
+          "name": "Illaoi",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Thử Thách Linh Hồn",
+            "kich_hoat": "Nhận 425/475/625 (tỉ lệ theo AP) Lá Chắn trong 3 giây. Trong thời gian này, hút Máu (tỉ lệ theo AP) từ 3 kẻ địch gần nhất. Sau đó dậm xuống mặt đất, gây 80/120/180 (tỉ lệ theo AP) sát thương phép lên tất kẻ địch trong phạm vi 2 ô."
+          }
+        },
+        {
+          "name": "Nunu & Willump",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Thảm Họa",
+            "kich_hoat": "Nhận 475/575/2000 (tỉ lệ theo AP) Lá Chắn trong 4 giây. Triệu hồi một kính thiên văn rơi xuống một ô ở gần, gây sát thương phép (tỉ lệ theo AP) lên kẻ địch trong phạm vi 2 ô. Sau đó, đẩy kính thiên văn về phía cuối sân đấu, gây sát thương phép (tỉ lệ theo AP). Tất cả kẻ địch trúng phải kính thiên văn sẽ bị hất tung trong 1.75/2/8 giây."
+          }
+        },
+        {
+          "name": "Blitzcrank",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Kẻ Phá Tiệc",
+            "noi_tai": "Mỗi 2/2/0.5 giây, triệu hồi một tia sét giáng xuống kẻ địch ở gần có lượng Máu cao nhất, gây sát thương phép (tỉ lệ theo AP).",
+            "kich_hoat": "Triệu hồi một quả cầu disco tại nơi tập trung đông kẻ địch nhất, sau đó hất tung mục tiêu hiện tại vào đó, gây sát thương phép (tỉ lệ theo AP). Mục tiêu rơi xuống quả cầu disco, gây sát thương phép (tỉ lệ theo AP) trong bán kính 3 ô. Vào trạng thái Vùng Phiêu trong 1 giây với mỗi kẻ địch trúng phải."
+          }
+        }
+      ],
+      "bonus": {
+        "trait_passive": "+5% Chống Chịu khi có Lá Chắn",
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "Lá Chắn bằng 16% Máu tối đa"
+          },
+          {
+            "count": 4,
+            "effect": "Lá Chắn bằng 30% Máu tối đa"
+          },
+          {
+            "count": 6,
+            "effect": "Lá Chắn bằng 40% Máu tối đa; +8% Chống Chịu khi có Lá Chắn"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tinh Linh Chuông",
+      "name_en": "Meep",
+      "type": "Tộc",
+      "description": "Tướng Tinh Linh Chuông sẽ thu hút Meep đến gia hộ kỹ năng của họ theo cách riêng. Họ còn được nhận Máu cộng thêm. Thời gian nhân bản = Giá tướng.",
+      "champions": [
+        {
+          "name": "Poppy",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Tập Hợp Lại!",
+            "kich_hoat": "Nhận 400/475/575 (tỉ lệ theo AP) Lá Chắn trong 4 giây. Trong thời gian tác dụng, đồng minh trong phạm vi 2 ô nhận được Giáp và Kháng Phép (tỉ lệ theo AP). Thưởng Meep: Meep trao Lá Chắn (tỉ lệ theo AP) cho đồng minh gần nhất trong 4 giây."
+          }
+        },
+        {
+          "name": "Veigar",
+          "cost": 1
+        },
+        {
+          "name": "Gnar",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Ná Đàn Hồi",
+            "noi_tai": "Mỗi đòn đánh thứ 5, phóng một chiếc boomerang vào mục tiêu, bay thêm 2 ô sau kẻ địch đầu tiên trúng phải rồi quay trở lại, gây sát thương vật lý (tỉ lệ theo AD + AP), giảm đi 75% với mỗi lần trúng. Thưởng Meep: Meep tấn công cùng Gnar, gây sát thương vật lý mỗi giây."
+          }
+        },
+        {
+          "name": "Meepsie",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Tác Động Meep",
+            "kich_hoat": "Hồi lại Máu (tỉ lệ theo Máu + AP) trong 3 giây. Đập mạnh vào mục tiêu, gây 160/240/360 (tỉ lệ theo AP) sát thương phép và hất tung trong 1.5/1.75/2 giây. Tác động tạo ra sóng meep gây 50% hiệu ứng này lên hàng của mục tiêu. Thưởng Meep: Các Meep tưới nước cho hoa của Meepsie, tăng tất cả Hồi Máu và Lá Chắn nhận vào."
+          }
+        },
+        {
+          "name": "Fizz",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Mồi Nhử Meep",
+            "kich_hoat": "Lướt xuyên qua mục tiêu hiện tại, gây sát thương phép (tỉ lệ theo AP). Mỗi lần tung chiêu thứ ba cũng sẽ triệu hồi một Meep Khổng Lồ sau một khoảng trễ, hất tung mục tiêu trong thoáng chốc và gây sát thương phép (tỉ lệ theo AP). Kẻ địch liền kề sẽ nhận 50% sát thương. Thưởng Meep: Thêm Meep vào mồi nhử, tăng sát thương của Meep Khổng Lồ (tỉ lệ theo AP)."
+          }
+        },
+        {
+          "name": "Corki",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Súng Phá Thiên Thạch",
+            "kich_hoat": "Lượn đến một vị trí gần bên, bắn ra 21 tên lửa chia đều lên mục tiêu và tất cả kẻ địch trong phạm vi 2 ô. Tên lửa gây sát thương vật lý (tỉ lệ theo AD) với 20% tỉ lệ May Mắn bắn ra một siêu tên lửa gây sát thương lớn hơn. Thưởng Meep: Mỗi vài giây, phóng một Meep Nổ vào mục tiêu, gây sát thương vật lý (tỉ lệ theo AD) trong bán kính 1 ô. May Mắn: Tính toán hai lần, lấy kết quả tốt hơn."
+          }
+        },
+        {
+          "name": "Rammus",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Vòng Xoáy Trọng Lực",
+            "kich_hoat": "Nhận lá chắn (tỉ lệ theo AP) trong 4 giây. Sau đó, tấn công kẻ địch trên một đường thẳng dài 3 ô, gây sát thương phép (tỉ lệ theo AP + Giáp). Thưởng Meep: Giảm sát thương từ đòn tấn công nhận vào. Sau khi bị tấn công 20 lần, gây sát thương phép (tỉ lệ theo Giáp) trong bán kính 2 ô."
+          }
+        },
+        {
+          "name": "Bard",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Vật Thể Siêu Thân Thiện",
+            "kich_hoat": "Triệu hồi một đĩa bay phía trên mục tiêu hiện tại, tồn tại trong 4 giây. Mỗi giây, nó gây sát thương phép (tỉ lệ theo AP) lên mục tiêu, cộng thêm sát thương phép (tỉ lệ theo AP) chia đều cho tất cả kẻ địch trong 1 ô. Đĩa bay gây thêm 30% sát thương lên các Tướng Đỡ Đòn. Nếu một kẻ địch bên dưới UFO bị hạ gục, Bard có 15/20/100% cơ hội bắt cóc và tạo một bản sao 1 sao của tướng đó trên hàng chờ của bạn. Thưởng Meep: Khi bắt đầu giao tranh, đồng minh Tinh Linh Chuông gần nhất nhận thêm 1 Meep."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 3,
+            "effect": "2 Meep gia hộ, +100 Máu"
+          },
+          {
+            "count": 5,
+            "effect": "3 Meep gia hộ, +400 Máu"
+          },
+          {
+            "count": 7,
+            "effect": "4 Meep gia hộ, +400 Máu. Tạo ra một Ô Nhân Bản trên hàng dự bị. Nhận vàng và 1 bản sao 1 sao khi quá trình nhân bản hoàn tất"
+          },
+          {
+            "count": 10,
+            "effect": "6 Meep gia hộ, +500 Máu. TRIỆU HỒI TỨ ĐẠI MEEP CHÚA!"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Toán Cướp",
+      "name_en": "Slayer",
+      "type": "Hệ",
+      "description": "Đội của bạn nhận 5% Hút Máu Toàn Phần. Tướng Toán Cướp nhận thêm Hút Máu Toàn Phần, Sức Mạnh Công Kích và lượng máu hồi vượt trội từ Hút Máu Toàn Phần sẽ được chuyển hóa thành Lá Chắn (tối đa 25% Máu tối đa).",
+      "champions": [
+        {
+          "name": "Akali",
+          "cost": 2
+        },
+        {
+          "name": "Bel'Veth",
+          "cost": 2
+        },
+        {
+          "name": "Urgot",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Thiết Hạm Vô Song",
+            "noi_tai": "Súng Cảm Biến: Bất cứ khi nào một kẻ địch tiến vào bán kính ô, bắn một luồng đạn hình nón về phía ô liền kề gần nhất gây sát thương vật lý (tỉ lệ theo AD), giảm 30% sát thương theo mỗi ô khoảng cách. Mỗi ô liền kề có 5 giây thời gian hồi chiêu.",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo AP) trong 3 giây và di chuyển tối đa 1 ô để tối đa hóa số mục tiêu trong bán kính của Súng Cảm Biến. Làm mới hồi chiêu của Súng Cảm Biến."
+          }
+        },
+        {
+          "name": "Master Yi",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Tâm Kích",
+            "noi_tai": "Mỗi đòn đánh thứ ba là một cú chém kép gây thêm sát thương vật lý (tỉ lệ theo AD).",
+            "kich_hoat": "Sau khi thiền định trong chốc lát, bước vào trạng thái Tâm Linh trong 5 giây, nhận 15% Hút Máu Toàn Phần, 70% Tốc Độ Đánh, và tăng tốc độ di chuyển. Hai lần mỗi giây, bắn một ảo ảnh tâm linh vào kẻ địch ngẫu nhiên gần đó, gây sát thương vật lý (tỉ lệ theo AD + AP)."
+          }
+        },
+        {
+          "name": "Fiora",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Kiếm Thuật Hoàn Mỹ",
+            "noi_tai": "Mỗi 2 đòn đánh, lộ diện một Điểm Yếu trên mục tiêu. Nếu có một Điểm Yếu, lướt tới chém Điểm Yếu gây sát thương chuẩn (tỉ lệ theo AD) cộng thêm và hồi máu bằng 15% sát thương gây ra.",
+            "kich_hoat": "Lộ diện 6 Điểm Yếu trên mục tiêu và nhanh chóng chém vào chúng. Nếu mục tiêu bị hạ gục, các Điểm Yếu còn lại sẽ chuyển sang kẻ địch gần nhất. Khi đánh vào Điểm Yếu cuối cùng, tạo ra một vùng hào quang 2 ô giúp hồi máu cho đồng minh bên trong (tỉ lệ theo AP) trong 5 giây."
+          }
+        }
+      ],
+      "bonus": {
+        "team_passive": "Toàn đội nhận 5% Hút Máu Toàn Phần",
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "5% Hút Máu, +20% Sức Mạnh Công Kích"
+          },
+          {
+            "count": 4,
+            "effect": "7% Hút Máu, +40% Sức Mạnh Công Kích"
+          },
+          {
+            "count": 6,
+            "effect": "10% Hút Máu, +60% Sức Mạnh Công Kích"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tộc Thượng Cổ",
+      "name_en": "Primordian",
+      "type": "Tộc",
+      "description": "8% sát thương gánh chịu được tính vào sát thương gây ra. Tướng Tộc Thượng Cổ gây sát thương sẽ sinh ra Bầy Đàn Hiểm Họa dựa trên cấp sao.",
+      "champions": [
+        {
+          "name": "Briar",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Cá Càn Quét",
+            "noi_tai": "Với mỗi 1% Máu đã mất, nhận thêm % Tốc Độ Đánh (tỉ lệ theo AP).",
+            "kich_hoat": "Gây sát thương vật lý (tỉ lệ theo AD) lên mục tiêu, tăng thêm 50% nếu chúng là tướng Đỡ Đòn."
+          }
+        },
+        {
+          "name": "Rek'Sai",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Chấn Động",
+            "kich_hoat": "Hồi máu (tỉ lệ theo Máu + AP), sau đó hất tung kẻ địch liền kề trong thoáng chốc và gây 80/120/180 (tỉ lệ theo AP) sát thương phép."
+          }
+        },
+        {
+          "name": "Bel'Veth",
+          "cost": 2
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "Gây sát thương sẽ sinh ra Bầy Đàn Hiểm Họa dựa trên cấp sao của tướng Tộc Thượng Cổ"
+          },
+          {
+            "count": 3,
+            "effect": "Sinh ra nhiều Bầy Đàn hơn nữa! Mỗi vòng đấu, nhận 1 tướng 1 vàng hoặc 2 vàng ngẫu nhiên"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tụ Năng",
+      "name_en": "Channeler",
+      "type": "Hệ",
+      "description": "Thiên Phú: Tướng Tụ Năng nhận thêm 20% Năng Lượng từ mọi nguồn. Đội của bạn được tăng Hồi Năng Lượng, tướng Tụ Năng nhận được nhiều hơn.",
+      "champions": [
+        {
+          "name": "Mordekaiser",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Giáp Bất Diệt",
+            "kich_hoat": "Nhận Lá Chắn (tỉ lệ theo AP). Mỗi giây trong 4 giây tiếp theo, nhận thêm Lá Chắn (tỉ lệ theo AP) và gây sát thương phép (tỉ lệ theo AP) lên kẻ địch liền kề. Khi kỹ năng này kết thúc, tiêu hao lượng Lá Chắn còn lại và hồi máu bằng 40% giá trị đó."
+          }
+        },
+        {
+          "name": "Zoe",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Nghịch Sao",
+            "kich_hoat": "Bắn một ngôi sao nghịch ngợm vào mục tiêu hiện tại, gây 68/102/153 (tỉ lệ theo AP) sát thương phép lên mục tiêu đầu tiên trúng phải và sát thương phép lên những kẻ địch khác mà nó đi qua. Khi ngôi sao đến điểm đích, chuyển hướng nó về phía một kẻ địch ở xa, tăng tốc độ và lặp lại sát thương. Có thể chuyển hướng 4 lần."
+          }
+        },
+        {
+          "name": "Viktor",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Bão Tâm Linh",
+            "kich_hoat": "Niệm chú tạo ra một cơn bão tâm linh rộng 1 ô đuổi theo kẻ địch trong 4 giây. Mỗi giây, nó lớn dần và gây 240/360/575 (tỉ lệ theo AP) sát thương phép lên kẻ địch bên trong, giảm 60% theo mỗi ô tính từ tâm bão."
+          }
+        },
+        {
+          "name": "Aurelion Sol",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Tia Tử Thần",
+            "kich_hoat": "Tụ năng lượng để bắn một tia tử thần theo đường thẳng về phía mục tiêu hiện tại trong 3 giây. Nó gây sát thương phép (tỉ lệ theo AP) mỗi giây, giảm đi 60% với mỗi kẻ địch mà nó xuyên qua. Tia Tử Thần bỏ qua 30% Kháng Phép của kẻ địch."
+          }
+        },
+        {
+          "name": "Bard",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Vật Thể Siêu Thân Thiện",
+            "kich_hoat": "Triệu hồi một đĩa bay phía trên mục tiêu hiện tại, tồn tại trong 4 giây. Mỗi giây, nó gây sát thương phép (tỉ lệ theo AP) lên mục tiêu, cộng thêm sát thương phép (tỉ lệ theo AP) chia đều cho tất cả kẻ địch trong 1 ô. Đĩa bay gây thêm 30% sát thương lên các Tướng Đỡ Đòn. Nếu một kẻ địch bên dưới UFO bị hạ gục, Bard có 15/20/100% cơ hội bắt cóc và tạo một bản sao 1 sao của tướng đó trên hàng chờ của bạn. Thưởng Meep: Khi bắt đầu giao tranh, đồng minh Tinh Linh Chuông gần nhất nhận thêm 1 Meep."
+          }
+        }
+      ],
+      "bonus": {
+        "trait_passive": "Tướng Tụ Năng nhận thêm 20% Năng Lượng từ mọi nguồn",
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "Đội: 1 Hồi Năng Lượng | Tụ Năng: 3 Hồi Năng Lượng"
+          },
+          {
+            "count": 3,
+            "effect": "Đội: 1 Hồi Năng Lượng | Tụ Năng: 5 Hồi Năng Lượng"
+          },
+          {
+            "count": 4,
+            "effect": "Đội: 2 Hồi Năng Lượng | Tụ Năng: 7 Hồi Năng Lượng"
+          },
+          {
+            "count": 5,
+            "effect": "Đội: 3 Hồi Năng Lượng | Tụ Năng: 9 Hồi Năng Lượng"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Viễn Chinh",
+      "name_en": "Expedition",
+      "type": "Hệ",
+      "description": "Bắt đầu giao tranh: Tướng Đỡ Đòn và Đấu Sĩ nhận được Lá Chắn trong 15 giây. Các đồng minh khác nhận được Khuếch Đại Sát Thương. Tướng Viễn Chinh nhận gấp đôi.",
+      "champions": [
+        {
+          "name": "Meepsie",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Tác Động Meep",
+            "kich_hoat": "Hồi lại Máu (tỉ lệ theo Máu + AP) trong 3 giây. Đập mạnh vào mục tiêu, gây 160/240/360 (tỉ lệ theo AP) sát thương phép và hất tung trong 1.5/1.75/2 giây. Tác động tạo ra sóng meep gây 50% hiệu ứng này lên hàng của mục tiêu. Thưởng Meep: Các Meep tưới nước cho hoa của Meepsie, tăng tất cả Hồi Máu và Lá Chắn nhận vào."
+          }
+        },
+        {
+          "name": "Pyke",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Dấu Ấn Tử Thần",
+            "kich_hoat": "Di chuyển tối đa 1 ô để phóng lao vào kẻ địch xa nhất. Cây lao móc kéo kẻ địch đầu tiên trúng phải tiến lên 1 ô và gây sát thương vật lý (tỉ lệ theo AP). Sau đó, dịch chuyển ra phía sau kẻ địch và chém lan, gây sát thương vật lý (tỉ lệ theo AD) lên mục tiêu và sát thương vật lý (tỉ lệ theo AD) lên các kẻ địch ở gần."
+          }
+        },
+        {
+          "name": "Aurora",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Hack Cường Hóa",
+            "kich_hoat": "Mở một khe nứt 2 ô gồm cả mục tiêu, Hack các kẻ địch bên trong trong 4 giây và gây 80/120/190 (tỉ lệ theo AP) sát thương phép lên từng kẻ địch, cộng thêm sát thương phép (tỉ lệ theo AP) chia đều cho tất cả kẻ địch trúng phải. Kẻ địch bị hack sẽ tích trữ 10% tổng sát thương chúng nhận vào. Khi Hack kết thúc, chúng sẽ chịu sát thương chuẩn bằng với lượng sát thương đã tích trữ. Hack sẽ kết thúc sớm nếu nó hạ gục mục tiêu."
+          }
+        },
+        {
+          "name": "Karma",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Hố Đen Kỳ Bí",
+            "kich_hoat": "Tập hợp sức mạnh của một hố đen, gây 570/855/5000 (tỉ lệ theo AP) sát thương phép, chia đều cho mục tiêu và 2/2/4 kẻ địch gần nhất. Mục tiêu chịu thêm sát thương phép (tỉ lệ theo AP)."
+          }
+        },
+        {
+          "name": "Robot",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Ma Trận Trọng Lực",
+            "kich_hoat": "Vào thế phòng thủ trong 4 giây, nhận 20/20/90% Chống Chịu. Khi ở tư thế phòng thủ, hút đường đạn của kẻ địch gần đó và hồi lại 850/1200/3000 (tỉ lệ theo AP) Máu trong suốt thời gian hiệu lực. Khi hiệu ứng này kết thúc, giải phóng một sóng xung kích gây sát thương vật lý (tỉ lệ theo Giáp + Kháng Phép) trong phạm vi 2 ô."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "175 Lá Chắn; 9% Khuếch Đại Sát Thương"
+          },
+          {
+            "count": 3,
+            "effect": "250 Lá Chắn; 15% Khuếch Đại Sát Thương"
+          },
+          {
+            "count": 4,
+            "effect": "350 Lá Chắn; 18% Khuếch Đại Sát Thương"
+          },
+          {
+            "count": 5,
+            "effect": "500 Lá Chắn; 22% Khuếch Đại Sát Thương"
+          },
+          {
+            "count": 6,
+            "effect": "700 Lá Chắn; 27% Khuếch Đại Sát Thương"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vô Pháp",
+      "name_en": "Assassin",
+      "type": "Hệ",
+      "description": "Tướng Vô Pháp nhận thêm Sức Mạnh Công Kích và Sức Mạnh Phép Thuật. Lần đầu tiên khi xuống dưới 50% máu, họ sẽ trốn vào trong bóng tối. Kẻ địch đang nhắm vào họ sẽ chuyển hướng sang một đơn vị ở gần, ưu tiên tướng Đỡ Đòn.",
+      "champions": [
+        {
+          "name": "Briar",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Cá Càn Quét",
+            "noi_tai": "Với mỗi 1% Máu đã mất, nhận thêm % Tốc Độ Đánh (tỉ lệ theo AP).",
+            "kich_hoat": "Gây sát thương vật lý (tỉ lệ theo AD) lên mục tiêu, tăng thêm 50% nếu chúng là tướng Đỡ Đòn."
+          }
+        },
+        {
+          "name": "Talon",
+          "cost": 1,
+          "chieu_thuc": {
+            "ten_chieu": "Thần Linh Định Đoạt",
+            "kich_hoat": "Đâm mục tiêu, khiến chúng bị chảy máu gây sát thương vật lý (tỉ lệ theo AD + AP) trong 18 giây. Sau đòn tấn công, nhảy tới kẻ địch có phần trăm Máu cao nhất trong vòng 3 ô."
+          }
+        },
+        {
+          "name": "Gwen",
+          "cost": 2,
+          "chieu_thuc": {
+            "ten_chieu": "Vũ Điệu Xúc Xắc",
+            "noi_tai": "Đòn đánh gây sát thương phép. Gwen vào trạng thái Vùng Phiêu khi nhắm mục tiêu vào kẻ địch dưới 40% Máu.",
+            "kich_hoat": "Lướt đến một ô lân cận để cắt kẻ địch có phần trăm Máu thấp nhất, gây 145/220/380 (tỉ lệ theo AP) sát thương phép lên mục tiêu và sát thương phép (tỉ lệ theo AP) lên mọi kẻ địch trong hình nón. Nếu chiêu này hạ gục, lướt và cắt thêm lần nữa với 65% sát thương!"
+          }
+        },
+        {
+          "name": "Fizz",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Mồi Nhử Meep",
+            "kich_hoat": "Lướt xuyên qua mục tiêu hiện tại, gây sát thương phép (tỉ lệ theo AP). Mỗi lần tung chiêu thứ ba cũng sẽ triệu hồi một Meep Khổng Lồ sau một khoảng trễ, hất tung mục tiêu trong thoáng chốc và gây sát thương phép (tỉ lệ theo AP). Kẻ địch liền kề sẽ nhận 50% sát thương. Thưởng Meep: Thêm Meep vào mồi nhử, tăng sát thương của Meep Khổng Lồ (tỉ lệ theo AP)."
+          }
+        },
+        {
+          "name": "Kai'Sa",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Chùm Đạn",
+            "noi_tai": "Khi tham gia hạ gục, nhận 10 năng lượng.",
+            "kich_hoat": "Bắn 16 tên lửa trong bán kính 2 ô quanh mục tiêu hiện tại, gây sát thương vật lý (tỉ lệ theo AD) với mỗi tên lửa."
+          }
+        },
+        {
+          "name": "Riven",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Bẻ Cong Thời Gian",
+            "noi_tai": "Kỹ năng này thích ứng theo Sức Mạnh Công Kích hoặc Sức Mạnh Phép Thuật, tùy vào chỉ số nào cao hơn. Đòn đánh gây sát thương phép (tỉ lệ theo AP) hoặc sát thương vật lý (tỉ lệ theo AD).",
+            "kich_hoat": "Lướt tới một ô gần đó, nhận 100/150/1200 Lá Chắn trong 2 giây và chém các kẻ địch liền kề gây sát thương. Mỗi lần tung chiêu thứ ba, nhảy lên không trung và phóng ra một luồng sóng năng lượng gây sát thương lên kẻ địch trên một đường thẳng."
+          }
+        }
+      ],
+      "bonus": {
+        "tiers": [
+          {
+            "count": 2,
+            "effect": "+12% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật"
+          },
+          {
+            "count": 3,
+            "effect": "+25% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật"
+          },
+          {
+            "count": 4,
+            "effect": "+40% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật"
+          },
+          {
+            "count": 5,
+            "effect": "+55% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật"
+          }
         ]
       }
     }
   ],
-  "special_5cost_traits": [
+  "unique_traits": [
     {
-      "name": "U Sầu",
-      "name_en": "Doomer",
-      "champion": "Vex",
+      "name": "Ác Nữ",
+      "name_en": "Dark Lady",
+      "champion": "Morgana",
       "cost": 5,
-      "effect": "Đánh dấu kẻ địch, cướp 8% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật giúp Vex mạnh nhất đội hình"
-    },
-    {
-      "name": "Tử Thần Không Gian",
-      "name_en": "Space Reaper",
-      "champion": "Zed",
-      "cost": 5,
-      "effect": "Kích hoạt từ Lõi Anh Hùng; Zed nhận thêm 40% Sức Mạnh Công Kích nếu bản sao vẫn tồn tại"
-    },
-    {
-      "name": "Nữ Thần Không Gian",
-      "name_en": "Space Goddess",
-      "champion": "Miss Fortune",
-      "cost": 5,
-      "effect": "Cho phép lựa chọn giữa các hệ Thách Đấu/Thuật Sư/Nhân Bản, sở hữu bộ kỹ năng riêng biệt"
-    },
-    {
-      "name": "Tiệc Tùng",
-      "name_en": "Party Time",
-      "champion": "Blitzcrank",
-      "cost": 5,
-      "effect": "Khi dưới 45% Máu: trở nên vô hình, hồi 15% Máu/giây; sau đó lao vào giao tranh với tốc độ cao và kỹ năng cường hóa"
-    },
-    {
-      "name": "Song Đấu Thần Thánh",
-      "name_en": "Divine Duel",
-      "champion": "Fiora",
-      "cost": 5,
-      "effect": "Hồi lại 15% lượng sát thương gây ra trên Linh Thú, chiếm ưu thế trong các tình huống 1v1"
+      "effect": "Đồng minh được giảm 5% sát thương nhận phải từ kỹ năng, tăng thành 10% khi Morgana ở Thể Hắc Ám.",
+      "chieu_thuc": {
+        "ten_chieu": "Thể Hắc Ám",
+        "noi_tai": "Hồi máu bằng 20% sát thương Kỹ Năng.",
+        "kich_hoat": "Hóa thân thành Thể Hắc Ám trong 5 giây, nhận 250/300/4000 (tỉ lệ theo AP) Lá Chắn trong thời gian này. Khi ở Thể Hắc Ám, kết nối với 3 kẻ địch gần nhất, gây sát thương phép (tỉ lệ theo AP) mỗi giây lên từng kẻ địch. Khi kết thúc biến hình, gây sát thương phép (tỉ lệ theo AP) lên tất cả kẻ địch bị kết nối."
+      }
     },
     {
       "name": "Chỉ Huy",
       "name_en": "Commander",
       "champion": "Sona",
       "cost": 5,
-      "effect": "Thay đổi chế độ Chỉ Huy sau mỗi 2 giao tranh, điều chỉnh lối chơi linh hoạt"
+      "effect": "Sona ban cho bạn một Lệnh Chỉ Huy ngẫu nhiên mỗi 2 vòng, giúp bạn thay đổi cách mà 1 đồng minh hành động trong giao tranh. Các Lệnh Chỉ Huy tồn tại trong 2 giao tranh người chơi ngay cả khi chúng không được trang bị."
     },
     {
-      "name": "Quý Cô Bóng Tối",
-      "name_en": "Dark Lady",
-      "champion": "Morgana",
+      "name": "Chiến Lũy",
+      "name_en": "Fortification",
+      "champion": "Shen",
       "cost": 5,
-      "effect": "Đồng minh gây ít hơn 5% sát thương từ kỹ năng; tăng lên 10% khi Morgana ở trạng thái Bóng Tối"
+      "effect": "Triệu hồi một di vật có thể đặt. Khi bắt đầu giao tranh, nó trao cho các đồng minh liền kề một lá chắn bằng 10% Máu tối đa và 10% Tốc Độ Đánh."
+    },
+    {
+      "name": "Chuộc Tội",
+      "name_en": "Atonement",
+      "champion": "Rhaast",
+      "cost": 3,
+      "effect": "Với mỗi tộc/hệ không phải duy nhất bạn đang kích hoạt, đội của bạn nhận được 2%/3%/3% Tốc Độ Đánh, 2/2.5/3 Giáp và Kháng Phép.",
+      "chieu_thuc": {
+        "ten_chieu": "Lưỡi Hái Thánh Thần",
+        "kich_hoat": "Nhận 20% Chống Chịu trong 2 giây, hồi máu (tỉ lệ theo AP) trong suốt thời gian hiệu lực. Sau đó, chém theo đường thẳng về phía trước, gây 120/180/300 (tỉ lệ theo AD) sát thương vật lý lên các kẻ địch trúng chiêu và hất tung chúng trong 1 giây."
+      }
+    },
+    {
+      "name": "Hủy Diệt",
+      "name_en": "Destroyer",
+      "champion": "Jhin",
+      "cost": 5,
+      "effect": "Kẻ địch bị giảm 10% Giáp và Kháng Phép."
+    },
+    {
+      "name": "Song Đấu",
+      "name_en": "Divine Duel",
+      "champion": "Fiora",
+      "cost": 5,
+      "effect": "Linh Thú của bạn hồi máu bằng 15% sát thương người chơi bạn gây ra khi chiến thắng. Fiora luôn giành chiến thắng trong trận đấu tay đôi."
+    },
+    {
+      "name": "Thợ Săn Vũ Trụ",
+      "name_en": "Space Reaper",
+      "champion": "Zed",
+      "cost": 5,
+      "effect": "Zed được nhận từ nâng cấp Zed Kẻ Xâm Lăng. Khi còn ít nhất một phân thân tồn tại, Zed nhận thêm 40% Sức Mạnh Công Kích.",
+      "chieu_thuc": {
+        "ten_chieu": "Phân Thân Lượng Tử",
+        "kich_hoat": "Tạo một phân thân phía sau mục tiêu với Máu tối đa giảm 33% và tiêu hao Năng Lượng tăng 30. Phân thân sẽ kế thừa các trang bị, chỉ số và Máu hiện tại của bản thể tạo ra nó, và có thể tung chiêu Phân Thân Lượng Tử."
+      }
+    },
+    {
+      "name": "Tiệc Tùng",
+      "name_en": "Party Time",
+      "champion": "Blitzcrank",
+      "cost": 5,
+      "effect": "Một lần mỗi giao tranh khi xuống dưới 45% Máu, trở nên không thể bị chọn mục tiêu và tự sửa chữa để hồi 15% Máu tối đa mỗi giây. Khi hồi đầy Máu, hoặc khi không còn đồng minh nào khác, quay trở lại giao tranh. Nếu được hồi đầy máu, Blitzcrank sẽ ở trạng thái Vùng Phiêu và nội tại bắn tia nhanh gấp bốn lần."
+    },
+    {
+      "name": "Tiên Tri",
+      "name_en": "Oracle",
+      "champion": "Tahm Kench",
+      "cost": 4,
+      "effect": "Mỗi 3 vòng, Tahm Kench sẽ cho 1 phần thưởng!"
+    },
+    {
+      "name": "Tối Tân",
+      "name_en": "Gunslinger",
+      "champion": "Graves",
+      "cost": 5,
+      "effect": "Sau khi tham gia giao tranh, mở 1 kho vũ khí để mua 1 nâng cấp vĩnh viễn cho Graves mạnh nhất của bạn. Cứ mỗi 3 nâng cấp, các nâng cấp trong tương lai sẽ lâu hơn một vòng.",
+      "chieu_thuc": {
+        "ten_chieu": "Đạn Nổ Thần Công",
+        "noi_tai": "Đòn đánh thường bắn ra 5 đường đạn theo hình nón, mỗi đường đạn gây sát thương vật lý (SMCK cơ bản).",
+        "kich_hoat": "Bắn ra một quả đạn nổ gây 360/540/5555 (tỉ lệ theo AD) sát thương vật lý lên mục tiêu, và sát thương vật lý (tỉ lệ theo AD + AP) lên những kẻ địch liền kề."
+      }
+    },
+    {
+      "name": "U Sầu",
+      "name_en": "Doomer",
+      "champion": "Vex",
+      "cost": 5,
+      "effect": "Bắt đầu giao tranh: Đánh dấu Buồn Bực lên tất cả kẻ địch. Lần đầu tiên kẻ địch chịu sát thương mỗi giao tranh, Buồn Bực sẽ được tiêu thụ, đánh cắp 12% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật từ chúng để trao cho Vex mạnh nhất của bạn.",
+      "chieu_thuc": {
+        "ten_chieu": "Giúp Ta Một Tay, Bóng Đen!",
+        "noi_tai": "Mỗi khi Vex tấn công, Bóng Đen sẽ ra đòn vào một kẻ địch ở gần, gây sát thương phép (tỉ lệ theo AP). Mỗi khi kẻ địch bị Bóng Đen đánh trúng 5 lần, Bóng Đen sẽ ra đòn lên chúng thêm một lần nữa.",
+        "kich_hoat": "Bóng Đen tung ra 3 đòn đánh cường hóa, gây sát thương phép (tỉ lệ theo AP)."
+      }
+    },
+    {
+      "name": "Xạ Thần",
+      "name_en": "Gunner",
+      "champion": "Miss Fortune",
+      "cost": 3,
+      "effect": "Khi bạn triển khai Miss Fortune, chọn giữa Chế Độ Tụ Năng, Chế Độ Thách Đấu và Chế Độ Nhân Bản. Miss Fortune sẽ có kỹ năng riêng biệt tùy theo chế độ và nhận được tộc/hệ tương ứng.",
+      "chieu_thuc": {
+        "ten_chieu": "Kho Vũ Khí Xạ Thần",
+        "kich_hoat": "Triển khai Miss Fortune để chọn kích hoạt Chế Độ Dẫn Truyền, Chế Độ Thách Đấu hoặc Chế Độ Nhân Bản. Chế độ được chọn sẽ quyết định kỹ năng và tộc/hệ của cô ấy."
+      }
     }
   ]
 }

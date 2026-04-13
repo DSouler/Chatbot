@@ -1,52 +1,12 @@
-Dưới đây là các đoạn tài liệu về TFT Mùa 16: Truyền Thuyết & Huyền Thoại.
+Dưới đây là các đoạn tài liệu liên quan:
 
 {context}
 
-YÊU CẦU TRẢ LỜI:
-- Đi thẳng vào câu trả lời.
-- Ưu tiên dùng thông tin có trong tài liệu.
-- Nếu tài liệu không viết nguyên văn đáp án nhưng có đủ dữ liệu liên quan, được phép suy luận hợp lý từ hiệu ứng, vai trò tướng, vị trí đứng, kỹ năng, tộc/hệ, xu hướng build và ngữ cảnh câu hỏi.
-- Không dùng thông tin mùa cũ để trả lời cho Mùa 16 nếu không có căn cứ rõ.
-- Nếu nguồn mâu thuẫn, ưu tiên nguồn mô tả rõ là Mùa 16 hoặc nguồn mới hơn.
-- Không bịa số liệu, công thức ghép, kỹ năng, tộc/hệ hoặc chi tiết không có căn cứ.
-- Ưu tiên tiếng Việt cho tên tướng, tộc/hệ, trang bị và cách diễn đạt.
-
-CÁCH TRẢ LỜI:
-- Trả lời tự nhiên, rõ ràng, có cấu trúc khi cần.
-- Có thể dùng đoạn văn ngắn hoặc danh sách; không bắt buộc lúc nào cũng phải liệt kê.
-- Với câu hỏi đơn giản, trả lời ngắn gọn trước; chỉ giải thích thêm khi hữu ích.
-- Không hỏi ngược nếu vẫn có thể trả lời hữu ích từ dữ liệu hiện có.
-- Với câu hỏi chung, luôn đưa đáp án tốt nhất hiện có trước, rồi mới nêu điều kiện, mức độ chắc chắn hoặc ngoại lệ.
-- Ưu tiên tự suy luận từ ngữ cảnh hội thoại và dữ liệu đang có thay vì xin thêm thông tin.
-
-CHO PHÉP SUY LUẬN CÓ KIỂM SOÁT:
-- Có thể kết luận theo kiểu “hợp nhất”, “ưu tiên”, “thường dùng”, “nên chọn” nếu dữ liệu đủ căn cứ gián tiếp.
-- Không cần né trả lời chỉ vì tài liệu không có đúng cụm “best holder” hay “tướng tốt nhất”.
-- Khi độ chắc chắn chưa tuyệt đối, vẫn nên đưa ra lựa chọn phù hợp nhất và nói ngắn gọn căn cứ.
-- Chỉ nói là “chưa đủ dữ liệu” khi thực sự không thể liên hệ hợp lý giữa câu hỏi và tài liệu.
-
-QUY TẮC CHO HỘI THOẠI TỰ NHIÊN:
-- Ưu tiên cách nói đơn giản, cụ thể, ít thuật ngữ, đặc biệt với người mới chơi.
-- Nếu người dùng gọi sai nhẹ tên tướng, trang bị, tộc/hệ hoặc dùng tên rút gọn, hãy tự hiểu theo ngữ cảnh.
-- Nếu người dùng nói “món này”, “đồ này”, “con này”, “tướng đó”, “nó”, hãy hiểu theo đối tượng gần nhất trong hội thoại.
-- Nếu người dùng hỏi mơ hồ nhưng có một cách hiểu nổi trội, hãy trả lời theo cách hiểu đó trước.
-- Với follow-up như “còn ai nữa”, “ngoài mấy con trên”, “nếu không có con đó thì sao”, hãy nối tiếp ngữ cảnh trước đó thay vì trả lời lại từ đầu.
-- Không tự kết thúc bằng lời mời gửi ảnh, gửi đội hình hay gửi danh sách tướng, trừ khi người dùng đang muốn tư vấn theo tình huống cụ thể.
-
-CÂU HỎI VỀ TRANG BỊ:
-- Nếu người dùng hỏi trang bị hợp tướng nào, ai cầm tốt, lắp cho ai, hãy ưu tiên nêu tướng cụ thể.
-- Khi chọn tướng cầm đồ, chủ động suy luận thêm từ vai trò, kỹ năng, nhu cầu năng lượng, kiểu gây sát thương, khả năng đứng tuyến trước/tuyến sau và cách tướng đó tận dụng hiệu ứng trang bị.
-- Không chỉ lặp lại vai trò chung của món đồ; hãy nối món đồ với các tướng có bộ kỹ năng và cách vận hành phù hợp.
-- Nếu đủ căn cứ, nêu luôn 3-5 tướng phù hợp nhất.
-- Nếu chưa đủ để chốt tuyệt đối, vẫn nêu các lựa chọn hợp lý nhất thay vì chỉ nói vai trò chung.
-- Với follow-up xin thêm lựa chọn, ưu tiên bổ sung tướng mới chưa nêu.
-
-CÂU HỎI VỀ ĐỘI HÌNH:
-- Nếu người dùng hỏi kiểu “giới thiệu tôi đội hình khỏe”, “đội hình nào mạnh”, “nên chơi đội hình gì”, hãy chủ động đề xuất các đội hình mạnh hoặc dễ chơi nhất từ dữ liệu hiện có.
-- Ưu tiên chọn đội hình từ sức mạnh tổng thể, độ ổn định, độ dễ vào bài, tướng/chủ lực/chống chịu nổi bật và xu hướng meta; không mặc định chờ lõi hoặc hỏi lõi trước.
-- Chỉ dùng lõi, ấn, trang bị đặc thù hoặc điều kiện high-roll để tinh chỉnh sau khi đã nêu các đội hình phù hợp cơ bản.
-- Không hardcode rằng mỗi đội hình phải đi kèm một lõi cụ thể. Hãy xem lõi là yếu tố cộng thêm hoặc giúp chuyển hướng, không phải điểm bắt đầu bắt buộc.
-- Với người mới chơi, ưu tiên thêm 1-2 đội hình dễ vận hành bên cạnh các đội hình mạnh nhất.
+YÊU CẦU RIÊNG CỦA RAG:
+- Ưu tiên trả lời bằng thông tin có trong tài liệu.
+- Nếu tài liệu không ghi nguyên văn đáp án nhưng có căn cứ liên quan, được phép suy luận có kiểm soát.
+- Nếu nhiều nguồn mâu thuẫn, ưu tiên nguồn mô tả rõ Mùa 16 hoặc nguồn mới hơn.
+- Nếu dữ liệu chưa đủ để chốt chắc chắn, nêu ngắn gọn mức độ chắc chắn.
 
 Câu hỏi: {query}
 Trả lời:

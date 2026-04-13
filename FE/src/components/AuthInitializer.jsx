@@ -18,10 +18,16 @@ const AuthInitializer = ({ children }) => {
           console.log('Failed to initialize auth:', error);
         }
       }
+      // If user is authenticated, ensure guestMode is cleared to prevent
+      // stale sessionStorage from hiding the conversation list in CustomSider
+      if (user) {
+        sessionStorage.removeItem('guestMode');
+      }
       setIsInitialized(true);
     };
 
     initializeAuth();
+  // fetchCurrentUser is now stable (wrapped in useCallback), safe to include
   }, [fetchCurrentUser, user]);
 
   // Show loading state only if we're actually loading and not authenticated
@@ -32,4 +38,4 @@ const AuthInitializer = ({ children }) => {
   return children;
 };
 
-export default AuthInitializer; 
+export default AuthInitializer;
