@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
-  Card, Row, Col, Statistic, Select, Button, Table, Tag, Tabs, Spin, Tooltip, Typography,
+  Card, Row, Col, Statistic, Select, Button, Table, Tag, Tabs, Spin, Tooltip, Typography, Dropdown,
 } from 'antd';
 import {
   LikeOutlined, DislikeOutlined, ReloadOutlined, BarChartOutlined, MessageOutlined,
+  DownloadOutlined, FileExcelOutlined, FilePdfOutlined,
 } from '@ant-design/icons';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip,
   Legend, ResponsiveContainer,
@@ -30,7 +34,7 @@ const cardStyle = {
 };
 
 // ── Token Usage Tab ──────────────────────────────────────────────────────────
-const TokenTab = ({ days }) => {
+const TokenTab = ({ days, onData }) => {
   const [loading, setLoading] = useState(false);
   const [stats, setStats]     = useState(null);
   const inputPrice  = DEFAULT_INPUT_PRICE;
@@ -39,8 +43,12 @@ const TokenTab = ({ days }) => {
 
   const fetch_ = useCallback(async () => {
     setLoading(true);
-    try   { setStats(await getUsageStats(null, days)); }
-    catch { setStats(null); }
+    try {
+      const data = await getUsageStats(null, days);
+      setStats(data);
+      onData && onData(data);
+    }
+    catch { setStats(null); onData && onData(null); }
     finally { setLoading(false); }
   }, [days]);
 
@@ -120,10 +128,11 @@ const TokenTab = ({ days }) => {
             <div style={{
               borderRadius: 14,
               padding: '20px 22px',
-              background: 'linear-gradient(135deg, #40E0F0 0%, #7BC8F0 50%, #B8A0F8 100%)',
+              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
               color: '#fff',
               height: '100%',
-              boxShadow: '0 4px 16px rgba(64,224,240,0.25)',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.35)',
+              border: '1px solid rgba(255,255,255,0.08)',
             }}>
               <div style={{ fontSize: 13, fontWeight: 500, opacity: 0.85, marginBottom: 8 }}>{card.title}</div>
               <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6 }}>{card.value}</div>
@@ -162,14 +171,18 @@ const TokenTab = ({ days }) => {
 };
 
 // ── Feedback Tab ─────────────────────────────────────────────────────────────
-const FeedbackTab = ({ days }) => {
+const FeedbackTab = ({ days, onData }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData]       = useState(null);
 
   const fetch_ = useCallback(async () => {
     setLoading(true);
-    try   { setData(await getAdminFeedbackReport(days)); }
-    catch { setData(null); }
+    try {
+      const d = await getAdminFeedbackReport(days);
+      setData(d);
+      onData && onData(d);
+    }
+    catch { setData(null); onData && onData(null); }
     finally { setLoading(false); }
   }, [days]);
 
@@ -207,7 +220,7 @@ const FeedbackTab = ({ days }) => {
       render: v => <Tag color="error">{v}</Tag>,
     },
     {
-      title: 'Ngày tạo', dataIndex: 'message_created_at', key: 'created', width: 130,
+      title: 'Ngày tạo', dataIndex: 'updated_at', key: 'created', width: 130,
       render: v => v ? String(v).slice(0, 10) : '—',
     },
   ];
@@ -295,27 +308,191 @@ const FeedbackTab = ({ days }) => {
 
 // ── Main Report Page ─────────────────────────────────────────────────────────
 const Report = () => {
-  const [days, setDays]         = useState(30);
-  const [activeTab, setActiveTab] = useState('token');
+  const [days, setDays]             = useState(30);
+  const [activeTab, setActiveTab]   = useState('token');
   const [refreshKey, setRefreshKey] = useState(0);
+  const tokenDataRef    = useRef(null);
+  const feedbackDataRef = useRef(null);
 
   const handleRefresh = () => setRefreshKey(k => k + 1);
+
+  // ── Excel export ────────────────────────────────────────────────────────────
+  const exportExcel = () => {
+    const wb = XLSX.utils.book_new();
+
+    // Token sheet
+    if (tokenDataRef.current) {
+      const daily = tokenDataRef.current.daily ?? [];
+      const summary = tokenDataRef.current.summary ?? {};
+      const tokenRows = daily.map(r => ({
+        'Ngày': String(r.day).slice(0, 10),
+        'Input tokens': r.prompt_tokens || 0,
+        'Output tokens': r.completion_tokens || 0,
+        'Tổng tokens': r.total_tokens || 0,
+        'Chi phí ($)': +calcCost(r.prompt_tokens || 0, r.completion_tokens || 0, DEFAULT_INPUT_PRICE, DEFAULT_OUTPUT_PRICE).toFixed(6),
+        'Chi phí (₫)': Math.round(calcCost(r.prompt_tokens || 0, r.completion_tokens || 0, DEFAULT_INPUT_PRICE, DEFAULT_OUTPUT_PRICE) * DEFAULT_USD_VND),
+        'Tin nhắn': r.messages || 0,
+      }));
+      tokenRows.push({
+        'Ngày': 'TỔNG',
+        'Input tokens': summary.prompt_tokens || 0,
+        'Output tokens': summary.completion_tokens || 0,
+        'Tổng tokens': summary.total_tokens || 0,
+        'Chi phí ($)': +calcCost(summary.prompt_tokens || 0, summary.completion_tokens || 0, DEFAULT_INPUT_PRICE, DEFAULT_OUTPUT_PRICE).toFixed(6),
+        'Chi phí (₫)': Math.round(calcCost(summary.prompt_tokens || 0, summary.completion_tokens || 0, DEFAULT_INPUT_PRICE, DEFAULT_OUTPUT_PRICE) * DEFAULT_USD_VND),
+        'Tin nhắn': summary.total_messages || 0,
+      });
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(tokenRows), 'Token Usage');
+    }
+
+    // Feedback sheet
+    if (feedbackDataRef.current) {
+      const summary = feedbackDataRef.current.summary ?? {};
+      const daily   = feedbackDataRef.current.daily   ?? [];
+      const fbSummaryRows = [
+        { 'Chỉ số': 'Tổng Like',   'Giá trị': summary.total_up   || 0 },
+        { 'Chỉ số': 'Tổng Dislike','Giá trị': summary.total_down || 0 },
+        { 'Chỉ số': 'Điểm ròng',   'Giá trị': (summary.total_up || 0) - (summary.total_down || 0) },
+        { 'Chỉ số': 'Người đã vote','Giá trị': summary.total_voters || 0 },
+      ];
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(fbSummaryRows), 'Feedback Summary');
+
+      const fbDailyRows = daily.map(r => ({
+        'Ngày': String(r.day).slice(5, 10),
+        'Like 👍': r.up_count   || 0,
+        'Dislike 👎': r.down_count || 0,
+      }));
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(fbDailyRows), 'Feedback Daily');
+
+      const topLiked    = (feedbackDataRef.current.top_liked    ?? []).map((r, i) => ({ '#': i + 1, 'Nội dung': r.content, 'Like': r.up_count, 'Dislike': r.down_count, 'Ngày': String(r.updated_at || '').slice(0, 10) }));
+      const topDisliked = (feedbackDataRef.current.top_disliked ?? []).map((r, i) => ({ '#': i + 1, 'Nội dung': r.content, 'Like': r.up_count, 'Dislike': r.down_count, 'Ngày': String(r.updated_at || '').slice(0, 10) }));
+      if (topLiked.length)    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(topLiked),    'Top Liked');
+      if (topDisliked.length) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(topDisliked), 'Top Disliked');
+    }
+
+    XLSX.writeFile(wb, `report_${days}days_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  };
+
+  // ── PDF export ──────────────────────────────────────────────────────────────
+  const exportPDF = () => {
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+    const pageW = doc.internal.pageSize.getWidth();
+    let y = 40;
+
+    doc.setFontSize(16); doc.setFont(undefined, 'bold');
+    doc.text(`Bao cao & Thong ke - ${days} ngay qua`, pageW / 2, y, { align: 'center' });
+    y += 14;
+    doc.setFontSize(9); doc.setFont(undefined, 'normal');
+    doc.text(`Xuat ngay: ${new Date().toLocaleDateString('vi-VN')}`, pageW / 2, y, { align: 'center' });
+    y += 20;
+
+    // Token section
+    if (tokenDataRef.current) {
+      const daily   = tokenDataRef.current.daily   ?? [];
+      const summary = tokenDataRef.current.summary ?? {};
+      doc.setFontSize(12); doc.setFont(undefined, 'bold');
+      doc.text('Token Usage', 40, y); y += 10;
+
+      autoTable(doc, {
+        startY: y,
+        head: [['Ngay', 'Input tokens', 'Output tokens', 'Tong tokens', 'Chi phi ($)', 'Chi phi (d)', 'Tin nhan']],
+        body: [
+          ...daily.map(r => [
+            String(r.day).slice(0, 10),
+            (r.prompt_tokens || 0).toLocaleString(),
+            (r.completion_tokens || 0).toLocaleString(),
+            (r.total_tokens || 0).toLocaleString(),
+            fmtUSD(calcCost(r.prompt_tokens || 0, r.completion_tokens || 0, DEFAULT_INPUT_PRICE, DEFAULT_OUTPUT_PRICE)),
+            fmtVND(calcCost(r.prompt_tokens || 0, r.completion_tokens || 0, DEFAULT_INPUT_PRICE, DEFAULT_OUTPUT_PRICE) * DEFAULT_USD_VND),
+            r.messages || 0,
+          ]),
+          [
+            'TONG',
+            (summary.prompt_tokens || 0).toLocaleString(),
+            (summary.completion_tokens || 0).toLocaleString(),
+            (summary.total_tokens || 0).toLocaleString(),
+            fmtUSD(calcCost(summary.prompt_tokens || 0, summary.completion_tokens || 0, DEFAULT_INPUT_PRICE, DEFAULT_OUTPUT_PRICE)),
+            fmtVND(calcCost(summary.prompt_tokens || 0, summary.completion_tokens || 0, DEFAULT_INPUT_PRICE, DEFAULT_OUTPUT_PRICE) * DEFAULT_USD_VND),
+            summary.total_messages || 0,
+          ],
+        ],
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [22, 33, 62] },
+        theme: 'striped',
+      });
+      y = doc.lastAutoTable.finalY + 20;
+    }
+
+    // Feedback section
+    if (feedbackDataRef.current) {
+      const summary  = feedbackDataRef.current.summary     ?? {};
+      const topLiked = feedbackDataRef.current.top_liked   ?? [];
+      const topDisliked = feedbackDataRef.current.top_disliked ?? [];
+
+      doc.setFontSize(12); doc.setFont(undefined, 'bold');
+      doc.text('Feedback Summary', 40, y); y += 10;
+
+      autoTable(doc, {
+        startY: y,
+        head: [['Tong Like', 'Tong Dislike', 'Diem rong', 'Nguoi da vote']],
+        body: [[summary.total_up || 0, summary.total_down || 0, (summary.total_up || 0) - (summary.total_down || 0), summary.total_voters || 0]],
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [22, 33, 62] },
+        theme: 'striped',
+      });
+      y = doc.lastAutoTable.finalY + 20;
+
+      if (topLiked.length) {
+        doc.setFontSize(11); doc.setFont(undefined, 'bold');
+        doc.text('Top Liked Messages', 40, y); y += 10;
+        autoTable(doc, {
+          startY: y,
+          head: [['#', 'Noi dung', 'Like', 'Dislike', 'Ngay']],
+          body: topLiked.map((r, i) => [i + 1, (r.content || '').slice(0, 80), r.up_count, r.down_count, String(r.updated_at || '').slice(0, 10)]),
+          styles: { fontSize: 7 },
+          headStyles: { fillColor: [82, 196, 26] },
+          theme: 'striped',
+        });
+        y = doc.lastAutoTable.finalY + 20;
+      }
+
+      if (topDisliked.length) {
+        doc.setFontSize(11); doc.setFont(undefined, 'bold');
+        doc.text('Top Disliked Messages', 40, y); y += 10;
+        autoTable(doc, {
+          startY: y,
+          head: [['#', 'Noi dung', 'Like', 'Dislike', 'Ngay']],
+          body: topDisliked.map((r, i) => [i + 1, (r.content || '').slice(0, 80), r.up_count, r.down_count, String(r.updated_at || '').slice(0, 10)]),
+          styles: { fontSize: 7 },
+          headStyles: { fillColor: [255, 77, 79] },
+          theme: 'striped',
+        });
+      }
+    }
+
+    doc.save(`report_${days}days_${new Date().toISOString().slice(0, 10)}.pdf`);
+  };
+
+  const exportMenuItems = [
+    { key: 'excel', label: <span><FileExcelOutlined style={{ color: '#217346', marginRight: 6 }} />Xuất Excel (.xlsx)</span>, onClick: exportExcel },
+    { key: 'pdf',   label: <span><FilePdfOutlined   style={{ color: '#e74c3c', marginRight: 6 }} />Xuất PDF (.pdf)</span>,   onClick: exportPDF },
+  ];
 
   const tabItems = [
     {
       key: 'token',
       label: <span><BarChartOutlined style={{ marginRight: 4 }} />Token Usage</span>,
-      children: <TokenTab key={`token-${days}-${refreshKey}`} days={days} />,
+      children: <TokenTab key={`token-${days}-${refreshKey}`} days={days} onData={d => { tokenDataRef.current = d; }} />,
     },
     {
       key: 'feedback',
       label: <span><LikeOutlined style={{ marginRight: 4 }} />Feedback</span>,
-      children: <FeedbackTab key={`feedback-${days}-${refreshKey}`} days={days} />,
+      children: <FeedbackTab key={`feedback-${days}-${refreshKey}`} days={days} onData={d => { feedbackDataRef.current = d; }} />,
     },
   ];
 
   return (
-    <div style={{ padding: '24px', background: 'linear-gradient(135deg, #40E0F0 0%, #B8F4F8 35%, #F0FFFF 65%, #F8F4FF 100%)', minHeight: '100vh' }}>
+    <div style={{ padding: '24px', background: '#ffffff', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20,
@@ -334,6 +511,9 @@ const Report = () => {
             <Option value={365}>1 năm qua</Option>
           </Select>
           <Button icon={<ReloadOutlined />} onClick={handleRefresh}>Làm mới</Button>
+          <Dropdown menu={{ items: exportMenuItems }} placement="bottomRight">
+            <Button type="primary" icon={<DownloadOutlined />}>Xuất báo cáo</Button>
+          </Dropdown>
         </div>
       </div>
 

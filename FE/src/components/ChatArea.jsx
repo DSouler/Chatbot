@@ -167,8 +167,8 @@ const ChatArea = ({
       .map(m => Number(m.id));
     if (assistantIds.length === 0) return;
     getBatchFeedback(assistantIds, userId)
-      .then(res => {
-        const data = res.data || {};
+      .then(data => {
+        if (!data || typeof data !== 'object') return;
         const counts = {};
         const votes = {};
         for (const [id, stats] of Object.entries(data)) {
@@ -176,13 +176,7 @@ const ChatArea = ({
           votes[id] = stats.user_vote || null;
         }
         setFeedbackCounts(prev => ({ ...prev, ...counts }));
-        setFeedbacks(prev => {
-          const next = { ...prev };
-          for (const [id, vote] of Object.entries(votes)) {
-            if (next[id] === undefined) next[id] = vote;
-          }
-          return next;
-        });
+        setFeedbacks(prev => ({ ...prev, ...votes }));
       })
       .catch(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -207,9 +201,14 @@ const ChatArea = ({
       if (newVote === 'down') updated.down++;
       return { ...prev, [msgId]: updated };
     });
-    if (newVote && userId) {
+    if (userId) {
       try {
-        await submitFeedback(msgId, userId, newVote);
+        const data = await submitFeedback(msgId, userId, newVote || 'none');
+        // Update with backend truth (cumulative counts across users)
+        if (data && typeof data === 'object') {
+          setFeedbackCounts(prev => ({ ...prev, [msgId]: { up: data.up || 0, down: data.down || 0 } }));
+          setFeedbacks(prev => ({ ...prev, [msgId]: data.user_vote || null }));
+        }
       } catch {
         // Revert on error
         setFeedbacks(prev => ({ ...prev, [msgId]: current }));
@@ -731,7 +730,7 @@ const ChatArea = ({
                 <div style={{ color: '#7C3AED', fontSize: 12 }}>Vui lòng đăng nhập để có trải nghiệm tốt hơn và không giới hạn.</div>
               </div>
               <button
-                onClick={() => { sessionStorage.removeItem('guestMode'); window.location.href = '/login'; }}
+                onClick={() => { window.location.href = '/login'; }}
                 style={{ padding: '7px 18px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg, #7C3AED, #9B59FF)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}
               >Đăng nhập</button>
             </div>

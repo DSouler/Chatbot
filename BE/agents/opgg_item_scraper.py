@@ -460,7 +460,7 @@ async def crawl_opgg_items_lite():
 
     # Download item images from Riot CDN (ggmeo mirrors)
     # Load existing item data for image URLs
-    existing_items_path = DATA_DIR / "tft_items_dtcl_s16.json"
+    existing_items_path = DATA_DIR / "tft_items_dtcl_s17.json"
     cdn_map = {}
     if existing_items_path.exists():
         with open(existing_items_path, encoding="utf-8") as f:

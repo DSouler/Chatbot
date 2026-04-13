@@ -2,34 +2,11 @@ Nội dung thu thập từ: {url}
 
 {context}
 
-Hãy trả lời câu hỏi sau dựa trên nội dung ở trên.
-
-QUY TẮC TRẢ LỜI:
-- Ưu tiên bám sát nội dung trang web.
+YÊU CẦU RIÊNG CỦA WEB SEARCH QA:
+- Ưu tiên bám sát nội dung web đã crawl.
 - Nếu có số liệu, trích đúng số liệu.
-- Nếu nội dung chưa đủ rõ, nói ngắn gọn phần chưa chắc chắn.
-- Ưu tiên tiếng Việt cho tên tướng, tộc/hệ, kỹ năng và trang bị.
-- Có thể suy luận có kiểm soát từ nội dung web, nhưng không được bịa.
-- Không hỏi lại người dùng trước khi trả lời nếu vẫn có thể đưa ra đáp án hữu ích.
-- Với người mới chơi, ưu tiên kết luận ngắn gọn, cụ thể, dễ áp dụng trước.
-- Nếu người dùng gọi sai nhẹ tên tướng, trang bị, tộc/hệ hoặc dùng tên rút gọn, hãy tự hiểu theo ngữ cảnh rồi trả lời.
-- Nếu người dùng nói “món này”, “đồ này”, “con này”, “nó”, hãy hiểu theo đối tượng gần nhất trong hội thoại.
-- Nếu người dùng hỏi tiếp kiểu “còn tướng nào nữa”, “có ai khác không”, hãy dùng ngữ cảnh của câu trả lời trước để bổ sung thêm lựa chọn mới chưa nêu.
-- Nếu người dùng hỏi kiểu “nếu không có con đó thì sao”, “thay bằng ai”, hãy nêu các lựa chọn thay thế gần nhất có căn cứ từ nội dung web.
-- Không tự kết thúc bằng lời mời gửi ảnh, đội hình hoặc bàn đấu hiện tại, trừ khi người dùng yêu cầu tư vấn theo tình huống cụ thể.
-
-VỚI CÂU HỎI VỀ TRANG BỊ:
-- Ưu tiên trả lời trực tiếp bằng tướng cụ thể.
-- Nếu web không ghi rõ “tướng cầm tốt nhất”, vẫn được phép suy luận từ hiệu ứng trang bị, vai trò tướng, vị trí đứng, kỹ năng, nhu cầu năng lượng và dữ liệu build/meta trong nội dung đã cho.
-- Không chỉ mô tả món đồ; hãy nối món đồ với các tướng có bộ kỹ năng và cách vận hành phù hợp.
-- Nếu đủ căn cứ, nêu 3-5 tướng phù hợp nhất.
-- Nếu dữ liệu chưa đủ để chốt tuyệt đối, vẫn nêu các lựa chọn hợp lý nhất và ghi chú ngắn căn cứ.
-
-VỚI CÂU HỎI VỀ ĐỘI HÌNH:
-- Nếu người dùng hỏi đội hình khỏe, đội hình mạnh, nên chơi gì, hãy chủ động nêu các đội hình phù hợp ngay.
-- Ưu tiên đánh giá theo sức mạnh tổng thể, độ ổn định, độ dễ vào bài, chất lượng chủ lực/chống chịu và dữ liệu xếp hạng trong nội dung web.
-- Không mặc định bắt đầu từ lõi. Chỉ dùng lõi để bổ sung, tinh chỉnh hoặc nêu trường hợp đội hình đặc biệt mạnh hơn.
-- Không hardcode rằng mỗi đội hình phải gắn với một lõi cụ thể nếu nội dung web không kết luận như vậy.
+- Nếu dữ liệu chưa đủ rõ, nêu ngắn gọn phần chưa chắc chắn.
+- Được phép suy luận có kiểm soát từ nội dung web, nhưng không bịa thêm dữ kiện.
 
 Câu hỏi: {query}
 Trả lời:

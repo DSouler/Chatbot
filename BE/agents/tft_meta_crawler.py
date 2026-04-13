@@ -15,17 +15,18 @@ logger = logging.getLogger(__name__)
 
 
 # ================================================================
-# Items removed from TFT Season 16 — filter from crawled data
+# Items removed/renamed from previous seasons — filter from crawled data
 # ================================================================
-REMOVED_ITEMS_S16 = [
-    "statikk", "shiv", "dao statikk",
+REMOVED_ITEMS_S17 = [
+    "rìu bóng đêm", "giáp sunfire", "kiên cường", "ẩn hình phủ",
+    "giáp thiên thần", "kiếm statikk", "gươm đao", "kiếm bão",
 ]
 
 
 def _is_removed_item(name: str) -> bool:
     """Check if an item name matches a removed item from Season 16."""
     name_lower = name.lower().strip()
-    return any(removed in name_lower for removed in REMOVED_ITEMS_S16)
+    return any(removed in name_lower for removed in REMOVED_ITEMS_S17)
 
 
 # ================================================================

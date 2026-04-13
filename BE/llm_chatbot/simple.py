@@ -34,7 +34,7 @@ _ITEMS_DATA = None  # lazy-loaded once
 def _load_items_data() -> dict:
     global _ITEMS_DATA
     if _ITEMS_DATA is None:
-        data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tft_items_dtcl_s16.json')
+        data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tft_items_dtcl_s17.json')
         with open(data_path, encoding='utf-8') as f:
             _ITEMS_DATA = json.load(f)
     return _ITEMS_DATA

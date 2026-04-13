@@ -16,8 +16,3 @@ class TimeoutError(Exception):
         self.message = message
         super().__init__(self.message)
 
-class CollectionExistsError(Exception):
-    """Exception raised when a collection already exists."""
-    def __init__(self, message: str, collection_name: str = None):
-        super().__init__(message)
-        self.collection_name = collection_name

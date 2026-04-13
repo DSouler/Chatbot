@@ -49,9 +49,13 @@ from db.db_utils import (
     update_last_bot_message,
     init_message_feedback_table,
     upsert_message_feedback,
+    delete_message_feedback,
     get_feedback_stats,
     get_batch_feedback_stats,
     get_message_with_context,
+    init_question_feedback_table,
+    update_question_feedback,
+    compute_question_hash,
 )
 
 from metadata_extractor.engine import MetaDataFilterEngine
@@ -133,6 +137,7 @@ try:
     init_token_usage_table()
     init_messages_images_column()
     init_message_feedback_table()
+    init_question_feedback_table()
 except Exception:
     pass  # Non-critical: table may already exist or DB may be unavailable
 
@@ -173,14 +178,14 @@ async def _generate_stream(request: QuestionRequest):
 
         llm_settings = reasoning_settings.llm
 
-        system_prompt = request.system_prompt or config.DEFAULT_SYSTEM_PROMPT
-        system_prompt = system_prompt.replace("{lang}", reasoning_settings.language)
+        base_system_prompt = request.system_prompt or config.DEFAULT_SYSTEM_PROMPT
+        base_system_prompt = base_system_prompt.replace("{lang}", reasoning_settings.language)
 
         chat_history = [
             msg.model_dump() for msg in request.chat_history
         ] if request.chat_history else []
 
-        messages = [{"role": "system", "content": system_prompt}]
+        messages = [{"role": "system", "content": base_system_prompt}]
         messages.extend(chat_history)
 
         original_question = request.question
@@ -279,7 +284,13 @@ async def _generate_stream(request: QuestionRequest):
                             "message": "Đang phân tích ảnh trực tiếp..."
                         }) + "\n\n"
 
-                        messages[0] = {"role": "system", "content": config.COMP_EVAL_IMAGE_ONLY_PROMPT}
+                        messages[0] = {
+                            "role": "system",
+                            "content": config.compose_system_prompt(
+                                base_system_prompt,
+                                config.COMP_EVAL_IMAGE_ONLY_PROMPT_BRANCH
+                            )
+                        }
                         messages.append({"role": "user", "content": user_content})
 
                         async for chunk in simple_pipeline.stream_completion(
@@ -323,11 +334,14 @@ async def _generate_stream(request: QuestionRequest):
 
                 # Dùng prompt phù hợp
                 if request.images:
-                    eval_prompt = config.COMP_EVAL_WITH_IMAGE_PROMPT.format(eval_context=eval_context)
+                    eval_prompt = config.COMP_EVAL_WITH_IMAGE_PROMPT_BRANCH.format(eval_context=eval_context)
                 else:
-                    eval_prompt = config.COMP_EVAL_PROMPT.format(eval_context=eval_context)
+                    eval_prompt = config.COMP_EVAL_PROMPT_BRANCH.format(eval_context=eval_context)
 
-                messages[0] = {"role": "system", "content": eval_prompt}
+                messages[0] = {
+                    "role": "system",
+                    "content": config.compose_system_prompt(base_system_prompt, eval_prompt)
+                }
                 messages.append({"role": "user", "content": user_content})
 
                 async for chunk in simple_pipeline.stream_completion(
@@ -341,6 +355,7 @@ async def _generate_stream(request: QuestionRequest):
                 return
 
             except Exception as e:
+                messages[0] = {"role": "system", "content": base_system_prompt}
                 yield "data: " + json.dumps({
                     "type": "info",
                     "message": f"⚠️ Không thể đánh giá đội hình: {e}. Tiếp tục với mode thường..."
@@ -379,13 +394,16 @@ async def _generate_stream(request: QuestionRequest):
 
                 if meta_context:
                     lang = reasoning_settings.language if reasoning_settings else "Vietnamese"
-                    meta_sys_prompt = config.TFT_META_SYS_PROMPT.replace("{lang}", lang)
+                    meta_sys_prompt = config.TFT_META_SYS_PROMPT_BRANCH.replace("{lang}", lang)
                     meta_qa_prompt = config.TFT_META_QA_PROMPT.format(
                         meta_context=meta_context,
                         query=original_question
                     )
 
-                    messages[0] = {"role": "system", "content": meta_sys_prompt}
+                    messages[0] = {
+                        "role": "system",
+                        "content": config.compose_system_prompt(base_system_prompt, meta_sys_prompt)
+                    }
                     messages.append({"role": "user", "content": meta_qa_prompt})
 
                     # Sources
@@ -420,6 +438,7 @@ async def _generate_stream(request: QuestionRequest):
                     }) + "\n\n"
 
             except Exception as e:
+                messages[0] = {"role": "system", "content": base_system_prompt}
                 logger.error(f"TFT Meta crawl error: {e}")
                 yield "data: " + json.dumps({
                     "type": "info",
@@ -495,8 +514,11 @@ async def _generate_stream(request: QuestionRequest):
         elif request.mode == "WEB_SEARCH":
 
             lang = reasoning_settings.language if reasoning_settings else "Vietnamese"
-            web_sys_prompt = config.DEFAULT_WEB_SEARCH_SYSTEM_PROMPT.replace("{lang}", lang)
-            messages[0] = {"role": "system", "content": web_sys_prompt}
+            web_sys_prompt = config.WEB_SEARCH_SYS_PROMPT_BRANCH.replace("{lang}", lang)
+            messages[0] = {
+                "role": "system",
+                "content": config.compose_system_prompt(base_system_prompt, web_sys_prompt)
+            }
 
             yield "data: " + json.dumps({"type": "status", "message": "Đang xử lý..."}) + "\n\n"
 
@@ -836,12 +858,16 @@ async def chat_message(request: QuestionRequest):
 
         if bot_answer.strip() and conversation_id:
 
-            add_message(
+            message_id = add_message(
                 conversation_id,
                 bot_answer,
                 0,
                 "assistant"
             )
+
+            # Notify frontend of real DB message_id so feedback buttons can be enabled immediately
+            if message_id:
+                yield f"data: {json.dumps({'type': 'saved', 'message_id': message_id})}\n\n"
 
             # Auto-cache successful RAG answers to Qdrant for cross-user knowledge sharing
             if request.mode == "RAG" and len(bot_answer.strip()) > 200:
@@ -1141,7 +1167,6 @@ def upload_stats():
         return {"collection": config.QDRANT_COLLECTION_NAME, "points_count": 0, "error": str(e)}
 
 
-
 # =========================
 # CHAMPION IMAGES
 # =========================
@@ -1191,9 +1216,16 @@ async def get_saved_images():
 
 
 def _feedback_qdrant_id(message_id: int) -> str:
-    """Generate a deterministic UUID for a feedback-boosted Qdrant point."""
+    """Generate a deterministic UUID for a feedback-boosted Qdrant point (legacy, per-message)."""
     import hashlib
     return str(uuid.UUID(hashlib.md5(f"feedback_{message_id}".encode()).hexdigest()))
+
+
+def _feedback_qdrant_id_by_question(question: str) -> str:
+    """Generate a deterministic UUID based on question text so all feedback converges."""
+    import hashlib
+    normalized = question.strip().lower()
+    return str(uuid.UUID(hashlib.md5(f"feedback_q_{normalized}".encode()).hexdigest()))
 
 
 def _auto_cache_qdrant_id(question: str) -> str:
@@ -1251,22 +1283,52 @@ def _auto_cache_to_qdrant(question: str, answer: str):
 
 @app.post("/messages/{message_id}/feedback")
 def api_submit_feedback(message_id: int, body: dict = Body(...)):
-    """Submit thumbs-up or thumbs-down for a bot message."""
+    """Submit thumbs-up or thumbs-down for a bot message, or 'none' to remove vote.
+    Feedback is accumulated at the question level so it persists across conversations."""
     user_id = body.get("user_id")
     feedback = body.get("feedback")
-    if feedback not in ("up", "down"):
-        raise HTTPException(status_code=400, detail="feedback must be 'up' or 'down'")
-    upsert_message_feedback(message_id, user_id, feedback)
-    stats = get_feedback_stats(message_id, user_id)
-    net_score = stats['up'] - stats['down']
+    if feedback not in ("up", "down", "none"):
+        raise HTTPException(status_code=400, detail="feedback must be 'up', 'down', or 'none'")
 
-    # Sync to Qdrant: upsert if net positive, delete if not
+    # Get old per-message vote BEFORE changing (for delta calculation)
+    old_vote = None
+    try:
+        old_stats = get_feedback_stats(message_id, user_id)
+        old_vote = old_stats.get('user_vote')
+    except Exception:
+        pass
+
+    # Handle vote removal
+    if feedback == "none":
+        delete_message_feedback(message_id, user_id)
+    else:
+        # Upsert per-message feedback (audit trail)
+        upsert_message_feedback(message_id, user_id, feedback)
+
+    # Update question-level cumulative feedback
+    q_text = None
+    msg = None
+    question = None
     try:
         msg, question = get_message_with_context(message_id)
         if msg and msg.get('role') == 'assistant' and question:
-            qdrant_id = _feedback_qdrant_id(message_id)
+            q_text = question.get('content', '').strip()
+            if q_text:
+                delta_up = (1 if feedback == 'up' else 0) - (1 if old_vote == 'up' else 0)
+                delta_down = (1 if feedback == 'down' else 0) - (1 if old_vote == 'down' else 0)
+                update_question_feedback(q_text, delta_up, delta_down)
+    except Exception as e:
+        logger.warning(f"Question feedback update error: {e}")
+
+    # Get updated stats (now returns cumulative question-level counts)
+    stats = get_feedback_stats(message_id, user_id)
+    net_score = stats['up'] - stats['down']
+
+    # Sync to Qdrant: use question-based ID so all feedback converges on one point
+    try:
+        if msg and msg.get('role') == 'assistant' and question and q_text:
+            qdrant_id = _feedback_qdrant_id_by_question(q_text)
             if net_score > 0:
-                q_text = question.get('content', '').strip()
                 a_text = msg.get('content', '').strip()
                 doc_text = f"Câu hỏi: {q_text}\n\nCâu trả lời: {a_text}"
                 openai_embeddings = OpenAIEmbeddings(
@@ -1290,14 +1352,22 @@ def api_submit_feedback(message_id: int, body: dict = Body(...)):
                                 "file_name": "⭐ Câu trả lời được cộng đồng đánh giá tốt",
                                 "is_feedback_boosted": True,
                                 "feedback_score": net_score,
-                                "feedback_message_id": message_id,
                             }
                         }
                     )]
                 )
-                logger.info(f"Upserted feedback-boosted doc for message {message_id} (net={net_score})")
+                logger.info(f"Upserted feedback-boosted doc for question (net={net_score})")
             else:
                 # Remove from Qdrant if score drops to 0 or below
+                try:
+                    from qdrant_client.http.models import PointIdsList
+                    vectordb_engine.qdrant_client.delete(
+                        collection_name=config.QDRANT_COLLECTION_NAME,
+                        points_selector=PointIdsList(points=[qdrant_id])
+                    )
+                except Exception:
+                    pass
+                # Also clean up legacy message-based points
                 try:
                     vectordb_engine.qdrant_client.delete(
                         collection_name=config.QDRANT_COLLECTION_NAME,
@@ -1310,7 +1380,6 @@ def api_submit_feedback(message_id: int, body: dict = Body(...)):
                             )
                         )
                     )
-                    logger.info(f"Removed feedback-boosted doc for message {message_id} (net={net_score})")
                 except Exception:
                     pass
     except Exception as e:

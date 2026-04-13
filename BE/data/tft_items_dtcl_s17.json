@@ -1,0 +1,439 @@
+{
+  "season": 17,
+  "source": "https://blitz.gg/vi/tft/set17/items",
+  "crawled_date": "2025-04-16",
+  "base_components": [
+    {
+      "name": "Kiếm B.F.",
+      "name_en": "B.F. Sword",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_BFSword.webp",
+      "item_id": "TFT_Item_BFSword",
+      "stat": "Sức Mạnh Công Kích"
+    },
+    {
+      "name": "Cung Gỗ",
+      "name_en": "Recurve Bow",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_RecurveBow.webp",
+      "item_id": "TFT_Item_RecurveBow",
+      "stat": "Tốc Độ Đánh"
+    },
+    {
+      "name": "Gậy Quá Khổ",
+      "name_en": "Needlessly Large Rod",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_NeedlesslyLargeRod.webp",
+      "item_id": "TFT_Item_NeedlesslyLargeRod",
+      "stat": "Sức Mạnh Phép Thuật"
+    },
+    {
+      "name": "Nước Mắt Nữ Thần",
+      "name_en": "Tear of the Goddess",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_TearOfTheGoddess.webp",
+      "item_id": "TFT_Item_TearOfTheGoddess",
+      "stat": "Năng Lượng"
+    },
+    {
+      "name": "Giáp Lưới",
+      "name_en": "Chain Vest",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_ChainVest.webp",
+      "item_id": "TFT_Item_ChainVest",
+      "stat": "Giáp"
+    },
+    {
+      "name": "Áo Choàng Bạc",
+      "name_en": "Negatron Cloak",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_NegatronCloak.webp",
+      "item_id": "TFT_Item_NegatronCloak",
+      "stat": "Kháng Phép"
+    },
+    {
+      "name": "Đai Khổng Lồ",
+      "name_en": "Giant's Belt",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_GiantsBelt.webp",
+      "item_id": "TFT_Item_GiantsBelt",
+      "stat": "Máu"
+    },
+    {
+      "name": "Găng Đấu Tập",
+      "name_en": "Sparring Gloves",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_SparringGloves.webp",
+      "item_id": "TFT_Item_SparringGloves",
+      "stat": "Tỉ Lệ Chí Mạng"
+    }
+  ],
+  "combined_items": [
+    {
+      "name": "Kiếm Tử Thần",
+      "name_en": "Deathblade",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_Deathblade",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_Deathblade.webp",
+      "item_id": "TFT_Item_Deathblade",
+      "recipe": ["TFT_Item_BFSword", "TFT_Item_BFSword"],
+      "recipe_vn": ["Kiếm B.F.", "Kiếm B.F."],
+      "description": "Nhận thêm Sức Mạnh Công Kích."
+    },
+    {
+      "name": "Diệt Khổng Lồ",
+      "name_en": "Giant Slayer",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_MadredsBloodrazor",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_MadredsBloodrazor.webp",
+      "item_id": "TFT_Item_MadredsBloodrazor",
+      "recipe": ["TFT_Item_BFSword", "TFT_Item_RecurveBow"],
+      "recipe_vn": ["Kiếm B.F.", "Cung Gỗ"],
+      "description": "Nhận thêm 15% Khuếch Đại Sát Thương trước Tướng Đỡ Đòn."
+    },
+    {
+      "name": "Kiếm Súng Hextech",
+      "name_en": "Hextech Gunblade",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_HextechGunblade",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_HextechGunblade.webp",
+      "item_id": "TFT_Item_HextechGunblade",
+      "recipe": ["TFT_Item_BFSword", "TFT_Item_NeedlesslyLargeRod"],
+      "recipe_vn": ["Kiếm B.F.", "Gậy Quá Khổ"],
+      "description": "Hồi máu cho đồng minh thấp Máu nhất bằng 20% lượng sát thương gây ra."
+    },
+    {
+      "name": "Ngọn Giáo Shojin",
+      "name_en": "Spear of Shojin",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_SpearOfShojin",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_SpearOfShojin.webp",
+      "item_id": "TFT_Item_SpearOfShojin",
+      "recipe": ["TFT_Item_BFSword", "TFT_Item_TearOfTheGoddess"],
+      "recipe_vn": ["Kiếm B.F.", "Nước Mắt Nữ Thần"],
+      "description": "Các đòn đánh giúp hồi lại 5 Năng Lượng."
+    },
+    {
+      "name": "Áo Choàng Bóng Tối",
+      "name_en": "Guardian Angel",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_GuardianAngel",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_GuardianAngel.webp",
+      "item_id": "TFT_Item_GuardianAngel",
+      "recipe": ["TFT_Item_BFSword", "TFT_Item_ChainVest"],
+      "recipe_vn": ["Kiếm B.F.", "Giáp Lưới"],
+      "description": "Khi còn 60% Máu, không thể bị nhắm tới, loại bỏ hiệu ứng bất lợi, hồi 30% Máu đã mất."
+    },
+    {
+      "name": "Huyết Kiếm",
+      "name_en": "Bloodthirster",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_Bloodthirster",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_Bloodthirster.webp",
+      "item_id": "TFT_Item_Bloodthirster",
+      "recipe": ["TFT_Item_BFSword", "TFT_Item_NegatronCloak"],
+      "recipe_vn": ["Kiếm B.F.", "Áo Choàng Bạc"],
+      "description": "Một lần mỗi giao tranh khi còn 40% Máu, nhận Lá Chắn bằng 25% Máu tối đa, 5 giây."
+    },
+    {
+      "name": "Móng Vuốt Sterak",
+      "name_en": "Sterak's Gage",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_SteraksGage",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_SteraksGage.webp",
+      "item_id": "TFT_Item_SteraksGage",
+      "recipe": ["TFT_Item_BFSword", "TFT_Item_GiantsBelt"],
+      "recipe_vn": ["Kiếm B.F.", "Đai Khổng Lồ"],
+      "description": "Khi còn 60% Máu, nhận một Lá Chắn bằng 40% Máu tối đa của chủ sở hữu, giảm dần trong vòng 4 giây."
+    },
+    {
+      "name": "Vô Cực Kiếm",
+      "name_en": "Infinity Edge",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_InfinityEdge",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_InfinityEdge.webp",
+      "item_id": "TFT_Item_InfinityEdge",
+      "recipe": ["TFT_Item_BFSword", "TFT_Item_SparringGloves"],
+      "recipe_vn": ["Kiếm B.F.", "Găng Đấu Tập"],
+      "description": "Nhận Chuẩn Xác. Chuẩn Xác: Sát thương kỹ năng có thể chí mạng. Chỉ số Chuẩn Xác cộng thêm tăng 10% Sát Thương Chí Mạng."
+    },
+    {
+      "name": "Bùa Đỏ",
+      "name_en": "Rapid Firecannon",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_RapidFireCannon",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_RapidFireCannon.webp",
+      "item_id": "TFT_Item_RapidFireCannon",
+      "recipe": ["TFT_Item_RecurveBow", "TFT_Item_RecurveBow"],
+      "recipe_vn": ["Cung Gỗ", "Cung Gỗ"],
+      "description": "Đòn Đánh và Kỹ Năng gây 1% Thiêu Đốt và 33% Vết Thương Sâu lên kẻ địch trong 5 giây."
+    },
+    {
+      "name": "Cuồng Đao Guinsoo",
+      "name_en": "Guinsoo's Rageblade",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_GuinsoosRageblade",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_GuinsoosRageblade.webp",
+      "item_id": "TFT_Item_GuinsoosRageblade",
+      "recipe": ["TFT_Item_RecurveBow", "TFT_Item_NeedlesslyLargeRod"],
+      "recipe_vn": ["Cung Gỗ", "Gậy Quá Khổ"],
+      "description": "Nhận 7% Tốc Độ Đánh cộng dồn mỗi giây."
+    },
+    {
+      "name": "Trượng Hư Vô",
+      "name_en": "Statikk Shiv",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_StatikkShiv",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_StatikkShiv.webp",
+      "item_id": "TFT_Item_StatikkShiv",
+      "recipe": ["TFT_Item_RecurveBow", "TFT_Item_TearOfTheGoddess"],
+      "recipe_vn": ["Cung Gỗ", "Nước Mắt Nữ Thần"],
+      "description": "30% Cào Xé mục tiêu trong 5 giây."
+    },
+    {
+      "name": "Quyền Năng Khổng Lồ",
+      "name_en": "Titan's Resolve",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_TitansResolve",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_TitansResolve.webp",
+      "item_id": "TFT_Item_TitansResolve",
+      "recipe": ["TFT_Item_RecurveBow", "TFT_Item_ChainVest"],
+      "recipe_vn": ["Cung Gỗ", "Giáp Lưới"],
+      "description": "Nhận 2% Sức Mạnh Công Kích và 2% Sức Mạnh Phép Thuật khi tấn công hoặc nhận sát thương, cộng dồn tối đa 25 lần. Ở cộng dồn tối đa, nhận 10% Khuếch Đại Sát Thương và đồng thời được miễn nhiễm khống chế."
+    },
+    {
+      "name": "Thịnh Nộ Thủy Quái",
+      "name_en": "Runaan's Hurricane",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_RunaansHurricane",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_RunaansHurricane.webp",
+      "item_id": "TFT_Item_RunaansHurricane",
+      "recipe": ["TFT_Item_RecurveBow", "TFT_Item_NegatronCloak"],
+      "recipe_vn": ["Cung Gỗ", "Áo Choàng Bạc"],
+      "description": "Đòn đánh cho 4% Sức Mạnh Công Kích cộng dồn, tối đa 15 đòn đánh. Sau 15 đòn đánh, nhận 15% Tốc Độ Đánh."
+    },
+    {
+      "name": "Nanh Nashor",
+      "name_en": "Nashor's Tooth",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_Leviathan",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_Leviathan.webp",
+      "item_id": "TFT_Item_Leviathan",
+      "recipe": ["TFT_Item_RecurveBow", "TFT_Item_GiantsBelt"],
+      "recipe_vn": ["Cung Gỗ", "Đai Khổng Lồ"],
+      "description": "Các đòn đánh giúp hồi lại 2 Năng Lượng, tăng lên 4 nếu là đòn chí mạng."
+    },
+    {
+      "name": "Cung Xanh",
+      "name_en": "Last Whisper",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_LastWhisper",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_LastWhisper.webp",
+      "item_id": "TFT_Item_LastWhisper",
+      "recipe": ["TFT_Item_RecurveBow", "TFT_Item_SparringGloves"],
+      "recipe_vn": ["Cung Gỗ", "Găng Đấu Tập"],
+      "description": "Sát thương từ đòn đánh và Kỹ Năng sẽ khiến mục tiêu phải chịu 30% Phân Tách trong 3 giây. Phân Tách: Giảm Giáp."
+    },
+    {
+      "name": "Mũ Phù Thủy Rabadon",
+      "name_en": "Rabadon's Deathcap",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_RabadonsDeathcap",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_RabadonsDeathcap.webp",
+      "item_id": "TFT_Item_RabadonsDeathcap",
+      "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_NeedlesslyLargeRod"],
+      "recipe_vn": ["Gậy Quá Khổ", "Gậy Quá Khổ"],
+      "description": "Nhận thêm Sức Mạnh Phép Thuật."
+    },
+    {
+      "name": "Quyền Trượng Thiên Thần",
+      "name_en": "Archangel's Staff",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_ArchangelsStaff",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_ArchangelsStaff.webp",
+      "item_id": "TFT_Item_ArchangelsStaff",
+      "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_TearOfTheGoddess"],
+      "recipe_vn": ["Gậy Quá Khổ", "Nước Mắt Nữ Thần"],
+      "description": "Bắt đầu giao tranh: Nhận 20% Sức Mạnh Phép Thuật mỗi 5 giây trong giao tranh."
+    },
+    {
+      "name": "Vương Miện Hoàng Gia",
+      "name_en": "Crownguard",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_Crownguard",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_Crownguard.webp",
+      "item_id": "TFT_Item_Crownguard",
+      "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_ChainVest"],
+      "recipe_vn": ["Gậy Quá Khổ", "Giáp Lưới"],
+      "description": "Bắt Đầu Giao Tranh: Lá Chắn 25% Máu tối đa trong 8 giây. Khi Lá Chắn hết: nhận thêm 25% Sức Mạnh Phép Thuật."
+    },
+    {
+      "name": "Nỏ Sét",
+      "name_en": "Ionic Spark",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_IonicSpark",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_IonicSpark.webp",
+      "item_id": "TFT_Item_IonicSpark",
+      "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_NegatronCloak"],
+      "recipe_vn": ["Gậy Quá Khổ", "Áo Choàng Bạc"],
+      "description": "30% Cào Xé kẻ địch trong vòng 2 ô. Khi kẻ địch sử dụng Kỹ Năng, gây sát thương phép tương đương 150% Năng Lượng đã tiêu hao. Cào Xé: Giảm Kháng Phép."
+    },
+    {
+      "name": "Quỷ Thư Morello",
+      "name_en": "Morellonomicon",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_Morellonomicon",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_Morellonomicon.webp",
+      "item_id": "TFT_Item_Morellonomicon",
+      "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_GiantsBelt"],
+      "recipe_vn": ["Gậy Quá Khổ", "Đai Khổng Lồ"],
+      "description": "Đòn Đánh và Kỹ Năng gây 1% Thiêu Đốt và 33% Vết Thương Sâu lên kẻ địch trong 10 giây. Thiêu Đốt: Gây sát thương chuẩn mỗi giây theo Máu tối đa của mục tiêu. Vết Thương Sâu: Giảm hồi máu nhận được."
+    },
+    {
+      "name": "Găng Bảo Thạch",
+      "name_en": "Jeweled Gauntlet",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_JeweledGauntlet",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_JeweledGauntlet.webp",
+      "item_id": "TFT_Item_JeweledGauntlet",
+      "recipe": ["TFT_Item_NeedlesslyLargeRod", "TFT_Item_SparringGloves"],
+      "recipe_vn": ["Gậy Quá Khổ", "Găng Đấu Tập"],
+      "description": "Nhận Chuẩn Xác. Chuẩn Xác: Sát thương kỹ năng có thể chí mạng. Chỉ số Chuẩn Xác cộng thêm tăng 10% Sát Thương Chí Mạng."
+    },
+    {
+      "name": "Bùa Xanh",
+      "name_en": "Blue Buff",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_BlueBuff",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_BlueBuff.webp",
+      "item_id": "TFT_Item_BlueBuff",
+      "recipe": ["TFT_Item_TearOfTheGoddess", "TFT_Item_TearOfTheGoddess"],
+      "recipe_vn": ["Nước Mắt Nữ Thần", "Nước Mắt Nữ Thần"],
+      "description": "Nhận thêm 10% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật từ mọi nguồn."
+    },
+    {
+      "name": "Lời Thề Hộ Vệ",
+      "name_en": "Frozen Heart",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_FrozenHeart",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_FrozenHeart.webp",
+      "item_id": "TFT_Item_FrozenHeart",
+      "recipe": ["TFT_Item_TearOfTheGoddess", "TFT_Item_ChainVest"],
+      "recipe_vn": ["Nước Mắt Nữ Thần", "Giáp Lưới"],
+      "description": "Bắt Đầu Giao Tranh: Nhận 20 Năng Lượng. Khi còn 40% Máu, nhận 15 Năng Lượng và Lá Chắn bằng 20% Máu tối đa."
+    },
+    {
+      "name": "Mũ Thích Nghi",
+      "name_en": "Adaptive Helm",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_AdaptiveHelm",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_AdaptiveHelm.webp",
+      "item_id": "TFT_Item_AdaptiveHelm",
+      "recipe": ["TFT_Item_TearOfTheGoddess", "TFT_Item_NegatronCloak"],
+      "recipe_vn": ["Nước Mắt Nữ Thần", "Áo Choàng Bạc"],
+      "description": "Nhận thêm 15% Năng Lượng từ mọi nguồn. Đỡ Đòn/Đấu Sĩ: +30 Giáp và Kháng Phép. Khác: +10% Sức Mạnh Công Kích và Sức Mạnh Phép Thuật."
+    },
+    {
+      "name": "Giáp Tâm Linh",
+      "name_en": "Redemption",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_Redemption",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_Redemption.webp",
+      "item_id": "TFT_Item_Redemption",
+      "recipe": ["TFT_Item_TearOfTheGoddess", "TFT_Item_GiantsBelt"],
+      "recipe_vn": ["Nước Mắt Nữ Thần", "Đai Khổng Lồ"],
+      "description": "Hồi lại 2% Máu đã mất mỗi giây."
+    },
+    {
+      "name": "Bàn Tay Công Lý",
+      "name_en": "Hand of Justice",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_UnstableConcoction",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_UnstableConcoction.webp",
+      "item_id": "TFT_Item_UnstableConcoction",
+      "recipe": ["TFT_Item_TearOfTheGoddess", "TFT_Item_SparringGloves"],
+      "recipe_vn": ["Nước Mắt Nữ Thần", "Găng Đấu Tập"],
+      "description": "Nhận 2 hiệu ứng: 15% Sức Mạnh Công Kích và 15% Sức Mạnh Phép Thuật; 12% Hút Máu Toàn Phần. Khi còn trên 50% Máu, tăng gấp đôi Sức Mạnh. Khi còn dưới 50% Máu, nhận gấp đôi lượng Hút Máu."
+    },
+    {
+      "name": "Áo Choàng Gai",
+      "name_en": "Bramble Vest",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_BrambleVest",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_BrambleVest.webp",
+      "item_id": "TFT_Item_BrambleVest",
+      "recipe": ["TFT_Item_ChainVest", "TFT_Item_ChainVest"],
+      "recipe_vn": ["Giáp Lưới", "Giáp Lưới"],
+      "description": "6% máu tối đa. Giảm 5% sát thương đòn đánh. Gây 100 sát thương phép lên kẻ địch liền kề."
+    },
+    {
+      "name": "Thú Tượng Thạch Giáp",
+      "name_en": "Gargoyle Stoneplate",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_GargoyleStoneplate",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_GargoyleStoneplate.webp",
+      "item_id": "TFT_Item_GargoyleStoneplate",
+      "recipe": ["TFT_Item_ChainVest", "TFT_Item_NegatronCloak"],
+      "recipe_vn": ["Giáp Lưới", "Áo Choàng Bạc"],
+      "description": "Tăng 10 Giáp và 10 Kháng Phép với mỗi kẻ địch đang nhắm vào chủ sở hữu."
+    },
+    {
+      "name": "Áo Choàng Lửa",
+      "name_en": "Red Buff",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_RedBuff",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_RedBuff.webp",
+      "item_id": "TFT_Item_RedBuff",
+      "recipe": ["TFT_Item_ChainVest", "TFT_Item_GiantsBelt"],
+      "recipe_vn": ["Giáp Lưới", "Đai Khổng Lồ"],
+      "description": "8% Máu tối đa. Mỗi 2 giây gây 1% Thiêu Đốt và 33% Vết Thương Sâu."
+    },
+    {
+      "name": "Trái Tim Kiên Định",
+      "name_en": "Night Harvester",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_NightHarvester",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_NightHarvester.webp",
+      "item_id": "TFT_Item_NightHarvester",
+      "recipe": ["TFT_Item_ChainVest", "TFT_Item_SparringGloves"],
+      "recipe_vn": ["Giáp Lưới", "Găng Đấu Tập"],
+      "description": "Nhận 5% Chống Chịu. Khi còn hơn 50% Máu, nhận thêm 15% Chống Chịu."
+    },
+    {
+      "name": "Vuốt Rồng",
+      "name_en": "Dragon's Claw",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_DragonsClaw",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_DragonsClaw.webp",
+      "item_id": "TFT_Item_DragonsClaw",
+      "recipe": ["TFT_Item_NegatronCloak", "TFT_Item_NegatronCloak"],
+      "recipe_vn": ["Áo Choàng Bạc", "Áo Choàng Bạc"],
+      "description": "Nhận 6% máu tối đa. Sau mỗi 2 giây, hồi lại 2.5% Máu tối đa."
+    },
+    {
+      "name": "Giáp Vai Nguyệt Thần",
+      "name_en": "Spectral Gauntlet",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_SpectralGauntlet",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_SpectralGauntlet.webp",
+      "item_id": "TFT_Item_SpectralGauntlet",
+      "recipe": ["TFT_Item_NegatronCloak", "TFT_Item_GiantsBelt"],
+      "recipe_vn": ["Áo Choàng Bạc", "Đai Khổng Lồ"],
+      "description": "30% Phân Tách kẻ địch trong vòng 2 ô. Tăng 15 Giáp và Kháng Phép trong 15 giây đầu giao tranh."
+    },
+    {
+      "name": "Áo Choàng Thủy Ngân",
+      "name_en": "Quicksilver",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_Quicksilver",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_Quicksilver.webp",
+      "item_id": "TFT_Item_Quicksilver",
+      "recipe": ["TFT_Item_NegatronCloak", "TFT_Item_SparringGloves"],
+      "recipe_vn": ["Áo Choàng Bạc", "Găng Đấu Tập"],
+      "description": "Miễn nhiễm khống chế 18 giây. 3% Tốc Độ Đánh cộng dồn mỗi giây."
+    },
+    {
+      "name": "Giáp Máu Warmog",
+      "name_en": "Warmog's Armor",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_WarmogsArmor",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_WarmogsArmor.webp",
+      "item_id": "TFT_Item_WarmogsArmor",
+      "recipe": ["TFT_Item_GiantsBelt", "TFT_Item_GiantsBelt"],
+      "recipe_vn": ["Đai Khổng Lồ", "Đai Khổng Lồ"],
+      "description": "Nhận 18% Máu tối đa."
+    },
+    {
+      "name": "Chùy Đoản Côn",
+      "name_en": "Power Gauntlet",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_PowerGauntlet",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_PowerGauntlet.webp",
+      "item_id": "TFT_Item_PowerGauntlet",
+      "recipe": ["TFT_Item_GiantsBelt", "TFT_Item_SparringGloves"],
+      "recipe_vn": ["Đai Khổng Lồ", "Găng Đấu Tập"],
+      "description": "Đòn Chí Mạng sẽ cho 5% Khuếch Đại Sát Thương trong 5 giây, cộng dồn tối đa 4 lần."
+    },
+    {
+      "name": "Găng Đạo Tặc",
+      "name_en": "Thief's Gloves",
+      "url": "https://blitz.gg/vi/tft/set17/items/TFT_Item_ThiefsGloves",
+      "image": "https://blitz-cdn.blitz.gg/blitz/tft/items/set17/TFT_Item_ThiefsGloves.webp",
+      "item_id": "TFT_Item_ThiefsGloves",
+      "recipe": ["TFT_Item_SparringGloves", "TFT_Item_SparringGloves"],
+      "recipe_vn": ["Găng Đấu Tập", "Găng Đấu Tập"],
+      "description": "Mỗi vòng: Mang 2 trang bị ngẫu nhiên."
+    }
+  ],
+  "combination_table": {
+    "description": "Bảng ghép đồ DTCL mùa 17 Space Gods - mỗi ô hiển thị trang bị kết hợp từ 2 nguyên liệu cơ bản",
+    "headers": ["Kiếm B.F.", "Cung Gỗ", "Gậy Quá Khổ", "Nước Mắt Nữ Thần", "Giáp Lưới", "Áo Choàng Bạc", "Đai Khổng Lồ", "Găng Đấu Tập"],
+    "grid": [
+      ["Kiếm Tử Thần",        "Diệt Khổng Lồ",          "Kiếm Súng Hextech",       "Ngọn Giáo Shojin",        "Áo Choàng Bóng Tối",      "Huyết Kiếm",              "Móng Vuốt Sterak",        "Vô Cực Kiếm"],
+      ["Diệt Khổng Lồ",       "Bùa Đỏ",                 "Cuồng Đao Guinsoo",       "Trượng Hư Vô",            "Quyền Năng Khổng Lồ",     "Thịnh Nộ Thủy Quái",      "Nanh Nashor",              "Cung Xanh"],
+      ["Kiếm Súng Hextech",   "Cuồng Đao Guinsoo",      "Mũ Phù Thủy Rabadon",    "Quyền Trượng Thiên Thần", "Vương Miện Hoàng Gia",     "Nỏ Sét",                  "Quỷ Thư Morello",          "Găng Bảo Thạch"],
+      ["Ngọn Giáo Shojin",    "Trượng Hư Vô",           "Quyền Trượng Thiên Thần", "Bùa Xanh",                "Lời Thề Hộ Vệ",           "Mũ Thích Nghi",           "Giáp Tâm Linh",            "Bàn Tay Công Lý"],
+      ["Áo Choàng Bóng Tối",  "Quyền Năng Khổng Lồ",    "Vương Miện Hoàng Gia",    "Lời Thề Hộ Vệ",           "Áo Choàng Gai",            "Thú Tượng Thạch Giáp",    "Áo Choàng Lửa",            "Trái Tim Kiên Định"],
+      ["Huyết Kiếm",          "Thịnh Nộ Thủy Quái",     "Nỏ Sét",                  "Mũ Thích Nghi",           "Thú Tượng Thạch Giáp",     "Vuốt Rồng",               "Giáp Vai Nguyệt Thần",     "Áo Choàng Thủy Ngân"],
+      ["Móng Vuốt Sterak",    "Nanh Nashor",             "Quỷ Thư Morello",         "Giáp Tâm Linh",           "Áo Choàng Lửa",            "Giáp Vai Nguyệt Thần",    "Giáp Máu Warmog",           "Chùy Đoản Côn"],
+      ["Vô Cực Kiếm",         "Cung Xanh",              "Găng Bảo Thạch",          "Bàn Tay Công Lý",         "Trái Tim Kiên Định",        "Áo Choàng Thủy Ngân",     "Chùy Đoản Côn",             "Găng Đạo Tặc"]
+    ]
+  }
+}

@@ -114,34 +114,33 @@ def format_eval_context(user_champions: List[str], similar_comps: List[Dict]) ->
     return "\n".join(lines)
 
 
-# Danh sách tướng TFT Set 16 chính xác (từ tftactics.gg)
-TFT_SET16_CHAMPIONS = [
-    # Standard (1-5 cost)
-    "Ahri", "Ambessa", "Anivia", "Annie", "Aphelios", "Ashe", "Azir",
-    "Bel'Veth", "Blitzcrank", "Braum", "Briar", "Caitlyn", "Cho'Gath",
-    "Dr. Mundo", "Draven", "Ekko", "Fiddlesticks", "Gangplank", "Garen",
-    "Illaoi", "Jarvan IV", "Jhin", "Jinx", "Kindred", "Kog'Maw",
-    "Leona", "Lissandra", "Loris", "Lucian & Senna", "Lulu", "Lux",
-    "Malzahar", "Milio", "Miss Fortune", "Nautilus", "Neeko", "Ornn",
-    "Qiyana", "Rek'Sai", "Rumble", "Sejuani", "Seraphine", "Shen",
-    "Shyvana", "Sion", "Sona", "Swain", "Taric", "Teemo", "Tristana",
-    "Twisted Fate", "Vayne", "Vi", "Viego", "Wukong", "Xin Zhao",
-    "Yasuo", "Yunara", "Zilean", "Zoe",
-    # Unlockable / Secret
-    "Aatrox", "Aurelion Sol", "Bard", "Darius", "Diana", "Fizz",
-    "Galio", "Graves", "Gwen", "Kai'Sa", "Kalista", "Kennen",
-    "Kobuko", "LeBlanc", "Mel", "Nasus", "Nidalee", "Orianna",
-    "Poppy", "Renekton", "Ryze", "Sett", "Singed", "Skarner",
-    "Sylas", "Tahm Kench", "Thresh", "Tryndamere", "Veigar",
-    "Volibear", "Warwick", "Xerath", "Yone", "Yorick", "Ziggs",
-    # Summons / Special
-    "T-Hex", "Tibbers", "Zaahen",
+# Danh sách tướng TFT Set 17 (Thần Không Gian) chính xác
+TFT_SET17_CHAMPIONS = [
+    # Cost 1
+    "Aatrox", "Caitlyn", "Corki", "Gnar", "Leona", "Nami", "Robot", "Teemo",
+    # Cost 2
+    "Akali", "Briar", "Diana", "Ezreal", "Gragas", "Illaoi", "Karma",
+    "LeBlanc", "Rammus", "Sona", "Talon", "Zoe",
+    # Cost 3
+    "Bard", "Blitzcrank", "Cho'Gath", "Fizz", "Gwen", "Jinx", "Kindred",
+    "Lissandra", "Maokai", "Master Yi", "Nasus", "Poppy", "Rek'Sai",
+    "Twisted Fate", "Urgot", "Veigar",
+    # Cost 4
+    "Aurora", "Aurelion Sol", "Bel'Veth", "Jax", "Jhin", "Kai'Sa",
+    "Karma", "Lulu", "Mordekaiser", "Nunu & Willump", "Pantheon",
+    "Pyke", "Riven", "Shen", "Viktor", "Xayah",
+    # Cost 5
+    "Fiora", "Milio", "Ornn", "Samira", "Tahm Kench", "Xayah",
+    # Unique trait champions
+    "Graves", "Miss Fortune", "Morgana", "Rhaast", "Vex", "Zed",
+    # Special
+    "Meepsie",
 ]
 
-VISION_EXTRACT_PROMPT = """You are analyzing a TFT (Teamfight Tactics) Set 16 screenshot.
+VISION_EXTRACT_PROMPT = """You are analyzing a TFT (Teamfight Tactics) Set 17: Space Gods screenshot.
 
 You are given TWO images:
-1. **IMAGE 1 (Reference Grid)**: A labeled grid showing ALL 90 TFT Set 16 champion portraits with their names in YELLOW text below each portrait. Each row has 10 champions, sorted alphabetically.
+1. **IMAGE 1 (Reference Grid)**: A labeled grid showing TFT Set 17 champion portraits with their names in YELLOW text below each portrait.
 2. **IMAGE 2 (User's Board)**: The user's actual TFT game screenshot showing champion units on a hex board.
 
 **YOUR TASK:** Identify each champion unit on the user's board by matching their visual appearance to the reference grid.
@@ -154,18 +153,15 @@ You are given TWO images:
 5. Use that EXACT name.
 
 **STRICT RULES:**
-- You MUST ONLY use names from this list (these are the ONLY valid TFT Set 16 champions):
-  Aatrox, Ahri, Ambessa, Anivia, Annie, Aphelios, Ashe, Aurelion Sol, Azir, Bard,
-  Bel'Veth, Blitzcrank, Braum, Briar, Caitlyn, Cho'Gath, Darius, Diana, Dr. Mundo, Draven,
-  Ekko, Fiddlesticks, Fizz, Galio, Gangplank, Garen, Graves, Gwen, Illaoi, Jarvan IV,
-  Jhin, Jinx, Kai'Sa, Kalista, Kennen, Kindred, Kog'Maw, LeBlanc, Leona, Lissandra,
-  Loris, Lucian & Senna, Lulu, Lux, Malzahar, Mel, Milio, Miss Fortune, Nasus, Nautilus,
-  Neeko, Nidalee, Orianna, Ornn, Poppy, Qiyana, Rek'Sai, Renekton, Rumble, Ryze,
-  Sejuani, Seraphine, Sett, Shen, Shyvana, Singed, Sion, Skarner, Sona, Swain,
-  Sylas, Tahm Kench, Taric, Teemo, Thresh, Tristana, Tryndamere, Twisted Fate, Vayne,
-  Veigar, Vi, Viego, Volibear, Warwick, Wukong, Xerath, Xin Zhao, Yasuo, Yone, Yorick,
-  Yunara, Ziggs, Zilean, Zoe, Kobuko, Milio
-- Do NOT invent names not in this list. Champions like Gragas, Katarina, Zyra, etc. do NOT exist in TFT Set 16.
+- You MUST ONLY use names from this list (these are the ONLY valid TFT Set 17: Space Gods champions):
+  Aatrox, Akali, Aurelion Sol, Aurora, Bard, Bel'Veth, Blitzcrank, Briar, Caitlyn,
+  Cho'Gath, Corki, Diana, Ezreal, Fiora, Fizz, Gnar, Gragas, Graves, Gwen, Illaoi,
+  Jax, Jhin, Jinx, Kai'Sa, Karma, Kindred, LeBlanc, Leona, Lissandra, Lulu,
+  Maokai, Master Yi, Meepsie, Milio, Miss Fortune, Mordekaiser, Morgana, Nami,
+  Nasus, Nunu & Willump, Ornn, Pantheon, Poppy, Pyke, Rammus, Rek'Sai, Rhaast,
+  Riven, Robot, Samira, Shen, Sona, Tahm Kench, Talon, Teemo, Twisted Fate,
+  Urgot, Veigar, Vex, Viktor, Xayah, Zed, Zoe
+- Do NOT invent names not in this list. Champions from previous sets (Ahri, Azir, Yasuo, etc.) do NOT exist in TFT Set 17.
 - If a unit cannot be confidently matched, skip it rather than guessing a wrong name.
 - Include units on the bench (bottom row) if visible.
 
@@ -215,8 +211,8 @@ def extract_champions_from_image(
             "image_url": {"url": f"data:{img.media_type};base64,{img.data}"}
         })
 
-    # Dùng danh sách Set 16 đầy đủ để match
-    all_known = list(set(TFT_SET16_CHAMPIONS + (known_champions or [])))
+    # Dùng danh sách Set 17 đầy đủ để match
+    all_known = list(set(TFT_SET17_CHAMPIONS + (known_champions or [])))
 
     try:
         response = llm_client.chat.completions.create(

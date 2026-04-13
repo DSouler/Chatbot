@@ -1,5 +1,5 @@
 """
-Upload TFT items data from tft_items_dtcl_s16.json into Qdrant.
+Upload TFT items data from tft_items_dtcl_s17.json into Qdrant.
 
 Each item becomes a Document with rich text content suitable for RAG retrieval,
 then gets embedded (OpenAI text-embedding-ada-002) and upserted via langchain-qdrant.
@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 logger = logging.getLogger(__name__)
 
 VECTOR_NAME = "dense"
-DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "tft_items_dtcl_s16.json")
+DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "tft_items_dtcl_s17.json")
 
 
 def load_items(path: str) -> dict:
