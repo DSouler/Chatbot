@@ -5,7 +5,7 @@ Dưới đây là các đoạn tài liệu liên quan:
 YÊU CẦU RIÊNG CỦA RAG:
 - Ưu tiên trả lời bằng thông tin có trong tài liệu.
 - Nếu tài liệu không ghi nguyên văn đáp án nhưng có căn cứ liên quan, được phép suy luận có kiểm soát.
-- Nếu nhiều nguồn mâu thuẫn, ưu tiên nguồn mô tả rõ Mùa 16 hoặc nguồn mới hơn.
+- Nếu nhiều nguồn mâu thuẫn, ưu tiên nguồn mô tả rõ Mùa 17 hoặc nguồn mới hơn.
 - Nếu dữ liệu chưa đủ để chốt chắc chắn, nêu ngắn gọn mức độ chắc chắn.
 
 Câu hỏi: {query}

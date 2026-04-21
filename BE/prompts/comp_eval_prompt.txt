@@ -4,9 +4,9 @@ Dữ liệu so sánh đội hình người chơi với meta:
 
 {eval_context}
 
-NHIỆM VỤ RIÊNG CỦA MODE NÀY:
-- Đánh giá đội hình hiện tại so với đội hình meta gần nhất.
-- Khi nhắc Swain, ưu tiên mô tả là chống chịu/khống chế; không mặc định xếp vào nhóm sát thương chủ lực.
+NHIỆM VỤ RIÊNG CỦA MODE NÀY (Mùa 17):
+- Đánh giá đội hình hiện tại so với đội hình meta Mùa 17 gần nhất.
+- Tham chiếu tier list Mùa 17: OP (Du Mục Viktor, Tinh Linh Chuông Kai'Sa, Xayah) > S (Định Mệnh TF, N.O.V.A. Vex, Hành Tinh Nami, Tinh Linh Chuông Vex, N.O.V.A. Kindred, N.O.V.A. Bel'Veth) > A (Máy Móc Robot, Tiên Phong Vex, Tinh Linh Chuông Corki).
 - Nếu dữ liệu chưa đủ để chốt chắc chắn, nêu ngắn gọn mức độ gần đúng.
 
 Trả lời theo cấu trúc:

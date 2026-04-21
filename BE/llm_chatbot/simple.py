@@ -365,12 +365,13 @@ class SimplePipeline(BasePipeline):
             }) + "\n\n"
 
             fallback_text = (
-                f"Hãy trả lời câu hỏi sau về TFT Set 16 bằng {lang}.\n\n"
+                f"Hãy trả lời câu hỏi sau về DTCL Mùa 17 (phiên bản 17.1) bằng {lang}.\n\n"
                 f"QUY TẮC:\n"
-                f"- Câu hỏi này về TFT Set 16 - Truyền Thuyết & Huyền Thoại. Hãy TRẢ LỜI dựa trên kiến thức của bạn về TFT Set 16.\n"
+                f"- Câu hỏi này về DTCL Mùa 17. Hãy TRẢ LỜI dựa trên kiến thức của bạn về Mùa 17.\n"
                 f"- KHÔNG được từ chối trả lời. Nếu không có thông tin chính xác, hãy cung cấp thông tin chung và gợi ý người dùng hỏi cụ thể hơn.\n"
-                f"- KHÔNG sử dụng kiến thức về Set cũ (Set 14, Set 15, patch 14.x, patch 15.x)\n"
-                f"- BẮT BUỘC dùng tên trang bị tiếng Việt\n\n"
+                f"- KHÔNG sử dụng kiến thức về mùa cũ (Mùa 15, Mùa 16, Set cũ hơn) trừ khi người dùng hỏi so sánh.\n"
+                f"- BẮT BUỘC dùng tên trang bị và tộc/hệ tiếng Việt.\n"
+                f"- Nếu người dùng hỏi đội hình dễ chơi hoặc gợi ý đội hình, đề xuất ngay: Du Mục Viktor (OP), Tinh Linh Chuông Kai'Sa (OP), hoặc N.O.V.A. Vex (S).\n\n"
                 f"Câu hỏi: {original_question}\nTrả lời:"
             )
             messages[-1]["content"] = self._build_content_with_images(fallback_text, user_content)

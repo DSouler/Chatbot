@@ -117,24 +117,19 @@ def format_eval_context(user_champions: List[str], similar_comps: List[Dict]) ->
 # Danh sách tướng TFT Set 17 (Thần Không Gian) chính xác
 TFT_SET17_CHAMPIONS = [
     # Cost 1
-    "Aatrox", "Caitlyn", "Corki", "Gnar", "Leona", "Nami", "Robot", "Teemo",
+    "Aatrox", "Briar", "Caitlyn", "Cho'Gath", "Ezreal", "Leona", "Lissandra",
+    "Nasus", "Poppy", "Rek'Sai", "Talon", "Teemo", "Twisted Fate", "Veigar",
     # Cost 2
-    "Akali", "Briar", "Diana", "Ezreal", "Gragas", "Illaoi", "Karma",
-    "LeBlanc", "Rammus", "Sona", "Talon", "Zoe",
+    "Akali", "Bel'Veth", "Gnar", "Gragas", "Gwen", "Jax", "Jinx", "Meepsie",
+    "Milio", "Mordekaiser", "Pantheon", "Pyke", "Zoe",
     # Cost 3
-    "Bard", "Blitzcrank", "Cho'Gath", "Fizz", "Gwen", "Jinx", "Kindred",
-    "Lissandra", "Maokai", "Master Yi", "Nasus", "Poppy", "Rek'Sai",
-    "Twisted Fate", "Urgot", "Veigar",
+    "Aurora", "Diana", "Fizz", "Illaoi", "Kai'Sa", "Lulu", "Maokai",
+    "Miss Fortune", "Ornn", "Rhaast", "Samira", "Urgot", "Viktor",
     # Cost 4
-    "Aurora", "Aurelion Sol", "Bel'Veth", "Jax", "Jhin", "Kai'Sa",
-    "Karma", "Lulu", "Mordekaiser", "Nunu & Willump", "Pantheon",
-    "Pyke", "Riven", "Shen", "Viktor", "Xayah",
+    "Aurelion Sol", "Corki", "Karma", "Kindred", "LeBlanc", "Master Yi",
+    "Nami", "Nunu & Willump", "Rammus", "Riven", "Robot", "Tahm Kench", "Xayah",
     # Cost 5
-    "Fiora", "Milio", "Ornn", "Samira", "Tahm Kench", "Xayah",
-    # Unique trait champions
-    "Graves", "Miss Fortune", "Morgana", "Rhaast", "Vex", "Zed",
-    # Special
-    "Meepsie",
+    "Bard", "Blitzcrank", "Fiora", "Graves", "Jhin", "Morgana", "Shen", "Sona", "Vex", "Zed",
 ]
 
 VISION_EXTRACT_PROMPT = """You are analyzing a TFT (Teamfight Tactics) Set 17: Space Gods screenshot.
@@ -161,6 +156,8 @@ You are given TWO images:
   Nasus, Nunu & Willump, Ornn, Pantheon, Poppy, Pyke, Rammus, Rek'Sai, Rhaast,
   Riven, Robot, Samira, Shen, Sona, Tahm Kench, Talon, Teemo, Twisted Fate,
   Urgot, Veigar, Vex, Viktor, Xayah, Zed, Zoe
+  (Note: Gnar, Gwen, Meepsie, Milio, Mordekaiser, Pantheon are Cost 2;
+   Bard, Blitzcrank, Fiora, Graves, Jhin, Morgana, Shen, Sona, Vex, Zed are Cost 5)
 - Do NOT invent names not in this list. Champions from previous sets (Ahri, Azir, Yasuo, etc.) do NOT exist in TFT Set 17.
 - If a unit cannot be confidently matched, skip it rather than guessing a wrong name.
 - Include units on the bench (bottom row) if visible.
