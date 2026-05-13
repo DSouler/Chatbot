@@ -44,6 +44,7 @@ const CustomSider = ({
   onResetChat,
   conversationList = [],
   onDeleteConversation,
+  isLoadingConversations = false,
 }) => {
   const { user, logout, fetchCurrentUser } = useUser();
   const userId = user?.user_id;
@@ -247,16 +248,18 @@ const CustomSider = ({
   };
 
   // Group conversations by date
-  const groupedConversations = filteredConversations.reduce((acc, conv) => {
-    const createdAt = dayjs(conv.created_at);
-    let groupLabel = createdAt.format('YYYY-MM-DD');
-    if (createdAt.isToday()) groupLabel = 'Hôm nay';
-    else if (createdAt.isYesterday()) groupLabel = 'Hôm qua';
-    else groupLabel = createdAt.format('DD/MM/YYYY');
-    if (!acc[groupLabel]) acc[groupLabel] = [];
-    acc[groupLabel].push(conv);
-    return acc;
-  }, {});
+  const groupedConversations = useMemo(() => {
+    return filteredConversations.reduce((acc, conv) => {
+      const createdAt = dayjs(conv.created_at);
+      let groupLabel;
+      if (createdAt.isToday()) groupLabel = 'Hôm nay';
+      else if (createdAt.isYesterday()) groupLabel = 'Hôm qua';
+      else groupLabel = createdAt.format('DD/MM/YYYY');
+      if (!acc[groupLabel]) acc[groupLabel] = [];
+      acc[groupLabel].push(conv);
+      return acc;
+    }, {});
+  }, [filteredConversations]);
 
   return (
     <Sider
@@ -323,56 +326,39 @@ const CustomSider = ({
       {!collapsed && (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
           {/* Header */}
-          <div style={{ padding: '20px 16px 12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="pt-5 pb-3 px-4 flex items-center justify-between flex-shrink-0 border-b border-slate-100/50 mb-1">
+            <div className="flex items-center gap-2.5">
               <TFTLogo size={44} onClick={onResetChat} />
-              <span style={{ fontSize: 18, fontWeight: 800, background: 'linear-gradient(135deg, #7C3AED, #6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: 0.5 }}>TFTChat</span>
+              <span className="text-[19px] font-extrabold premium-gradient-text tracking-wide drop-shadow-sm">TFTChat</span>
             </div>
             <Button
-              className="sider-icon-btn"
+              className="flex-shrink-0 flex items-center justify-center border-none bg-premium-50/80 text-premium-600 hover:bg-premium-100 transition-colors shadow-sm"
               shape="circle"
               icon={<MenuFoldOutlined />}
               size="small"
               onClick={onToggle}
-              style={{ background: 'rgba(124,58,237,0.08)', border: 'none', color: '#7C3AED' }}
               title="Close sidebar"
             />
           </div>
 
           {/* Action buttons */}
-          <div style={{ padding: '4px 14px 8px 14px', display: 'flex', gap: 8, flexShrink: 0 }}>
+          <div className="px-3.5 py-2 flex gap-2 flex-shrink-0">
             <button
               onClick={onResetChat}
-              style={{
-                flex: 1, padding: '9px 0', borderRadius: 10, border: 'none',
-                background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)',
-                color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                boxShadow: '0 2px 10px rgba(124,58,237,0.4)', transition: 'all 0.2s',
-              }}
+              className="flex-1 py-2.5 rounded-xl border-none premium-gradient-bg font-semibold text-[13px] cursor-pointer flex items-center justify-center gap-2 hover:opacity-90 hover:shadow-lg hover:-translate-y-[1px] transition-all duration-300"
             >
               <EditOutlined /> New Chat
             </button>
             <button
               onClick={openUploadModal}
-              style={{
-                padding: '9px 12px', borderRadius: 10, border: '1px solid rgba(124,58,237,0.15)',
-                background: 'rgba(124,58,237,0.06)', color: '#7C3AED', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15,
-                transition: 'all 0.2s',
-              }}
+              className="px-3 py-2.5 rounded-xl border border-premium-100 bg-premium-50/50 text-premium-600 cursor-pointer flex items-center justify-center text-[15px] hover:bg-premium-100 hover:border-premium-200 hover:-translate-y-[1px] transition-all duration-300 shadow-sm"
               title="Upload Document"
             >
               <UploadOutlined />
             </button>
             <button
               onClick={() => setReportModalOpen(true)}
-              style={{
-                padding: '9px 12px', borderRadius: 10, border: '1px solid rgba(124,58,237,0.15)',
-                background: 'rgba(124,58,237,0.06)', color: '#7C3AED', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15,
-                transition: 'all 0.2s',
-              }}
+              className="px-3 py-2.5 rounded-xl border border-premium-100 bg-premium-50/50 text-premium-600 cursor-pointer flex items-center justify-center text-[15px] hover:bg-premium-100 hover:border-premium-200 hover:-translate-y-[1px] transition-all duration-300 shadow-sm"
               title="Report"
             >
               <BarChartOutlined />
@@ -471,6 +457,28 @@ const CustomSider = ({
             ref={scrollContainerRef}
             style={{ flex: 1, overflowY: 'auto', padding: '0 8px', minHeight: 0, cursor: 'grab' }}
           >
+            {!isGuest && isLoadingConversations && conversationList.length === 0 && (
+              <div style={{ padding: '8px 4px' }}>
+                {[...Array(5)].map((_, i) => (
+                  <div
+                    key={`skeleton-${i}`}
+                    className="sider-skeleton-item"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '9px 10px',
+                      margin: '2px 0',
+                      borderRadius: 10,
+                      gap: 8,
+                    }}
+                  >
+                    <div className="sider-skeleton-pulse" style={{ width: 13, height: 13, borderRadius: 3, flexShrink: 0 }} />
+                    <div className="sider-skeleton-pulse" style={{ width: 22, height: 18, borderRadius: 5, flexShrink: 0 }} />
+                    <div className="sider-skeleton-pulse" style={{ flex: 1, height: 13, borderRadius: 6, maxWidth: `${60 + (i % 3) * 15}%` }} />
+                  </div>
+                ))}
+              </div>
+            )}
             {!isGuest && Object.keys(groupedConversations).length === 0 && searchQuery.trim() && (
               <div style={{ textAlign: 'center', color: '#9B8FCC', padding: '24px 0', fontSize: 13 }}>
                 Không tìm thấy đoạn chat
@@ -579,61 +587,39 @@ const CustomSider = ({
 
           {/* User section */}
           {isGuest ? (
-            <div style={{
-              padding: '14px 14px', borderTop: '1px solid rgba(124,58,237,0.1)',
-              display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0,
-            }}>
-              <span style={{ color: '#8B7FB8', fontSize: 13 }}>Đang dùng thử</span>
+            <div className="p-3.5 border-t border-premium-100 flex flex-col gap-2 flex-shrink-0 bg-slate-50/50">
+              <span className="text-premium-400 text-[13px] font-medium">Đang dùng thử</span>
               <button
                 onClick={() => { navigate('/login'); }}
-                style={{
-                  fontSize: 12, color: '#fff', padding: '9px 12px', borderRadius: 10, border: 'none',
-                  background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)',
-                  cursor: 'pointer', fontWeight: 600, boxShadow: '0 2px 8px rgba(124,58,237,0.25)',
-                }}
+                className="text-xs text-white px-3 py-2.5 rounded-xl border-none premium-gradient-bg cursor-pointer font-semibold shadow-md hover:shadow-lg hover:-translate-y-[1px] transition-all"
               >
                 Đăng nhập / Tạo tài khoản
               </button>
               <button
                 onClick={handleGuestExit}
-                style={{
-                  fontSize: 12, color: '#7C3AED', padding: '7px 12px', borderRadius: 10,
-                  border: '1px solid rgba(124,58,237,0.2)', background: 'transparent', cursor: 'pointer',
-                }}
+                className="text-xs text-premium-600 px-3 py-2 rounded-xl border border-premium-200 bg-transparent cursor-pointer font-medium hover:bg-premium-50 transition-colors"
               >
                 Trang chủ
               </button>
             </div>
           ) : user && (
-            <div style={{
-              padding: '14px 14px', borderTop: '1px solid rgba(124,58,237,0.1)',
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0,
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-                <div style={{
-                  width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: 'linear-gradient(135deg, #7C3AED, #9B59FF)', color: '#fff', fontWeight: 700, fontSize: 14, flexShrink: 0,
-                }}>
+            <div className="p-3.5 border-t border-premium-100 flex justify-between items-center flex-shrink-0 bg-slate-50/50">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center premium-gradient-bg text-white font-bold text-sm flex-shrink-0 shadow-sm">
                   {(displayName || '?')[0].toUpperCase()}
                 </div>
-                <span style={{ color: '#333', fontWeight: 600, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span className="text-slate-800 font-semibold text-[13px] overflow-hidden text-ellipsis whitespace-nowrap">
                   {displayName}
                 </span>
               </div>
-              <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+              <div className="flex gap-1.5 flex-shrink-0">
                 <button
                   onClick={() => {
                     profileForm.setFieldsValue({ first_name: user.first_name || '', last_name: user.last_name || '' });
                     setProfileModalOpen(true);
                   }}
                   title="Cài đặt tài khoản"
-                  style={{
-                    fontSize: 13, color: '#8B7FB8', padding: '5px 8px', borderRadius: 8,
-                    border: '1px solid rgba(124,58,237,0.15)', background: 'transparent',
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', transition: 'all 0.2s',
-                  }}
-                  onMouseOver={e => { e.currentTarget.style.color = '#7C3AED'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.3)'; }}
-                  onMouseOut={e => { e.currentTarget.style.color = '#8B7FB8'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.15)'; }}
+                  className="text-[13px] text-premium-400 px-2 py-1.5 rounded-lg border border-premium-200 bg-transparent cursor-pointer flex items-center transition-colors hover:text-premium-600 hover:border-premium-300 hover:bg-premium-50"
                 >
                   <SettingOutlined />
                 </button>
@@ -643,13 +629,7 @@ const CustomSider = ({
                     logout();
                     navigate('/home');
                   }}
-                  style={{
-                    fontSize: 11, color: '#8B7FB8', padding: '6px 12px', borderRadius: 8,
-                    border: '1px solid rgba(124,58,237,0.15)', background: 'transparent',
-                    cursor: 'pointer', fontWeight: 500, transition: 'all 0.2s',
-                  }}
-                  onMouseOver={e => { e.currentTarget.style.color = '#ff6b6b'; e.currentTarget.style.borderColor = 'rgba(255,107,107,0.3)'; }}
-                  onMouseOut={e => { e.currentTarget.style.color = '#8B7FB8'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.15)'; }}
+                  className="text-[11px] text-premium-400 px-3 py-1.5 rounded-lg border border-premium-200 bg-transparent cursor-pointer font-medium transition-colors hover:text-red-500 hover:border-red-300 hover:bg-red-50"
                 >
                   Sign Out
                 </button>
@@ -745,6 +725,15 @@ const CustomSider = ({
         .sider-search .ant-input-clear-icon { color: #9B8FCC !important; }
         .sider-icon-btn { transition: all 0.25s ease !important; }
         .sider-icon-btn:hover { background: rgba(124,58,237,0.1) !important; color: #7C3AED !important; transform: scale(1.1); box-shadow: 0 0 12px rgba(124,58,237,0.15) !important; }
+        @keyframes sider-shimmer {
+          0% { background-position: -200px 0; }
+          100% { background-position: calc(200px + 100%) 0; }
+        }
+        .sider-skeleton-pulse {
+          background: linear-gradient(90deg, rgba(124,58,237,0.07) 25%, rgba(124,58,237,0.14) 50%, rgba(124,58,237,0.07) 75%);
+          background-size: 400px 100%;
+          animation: sider-shimmer 1.4s ease-in-out infinite;
+        }
       `}</style>
     </Sider>
   );

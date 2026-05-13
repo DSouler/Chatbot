@@ -1,0 +1,161 @@
+2026-05-06 09:29:35,816 INFO ============================================================
+2026-05-06 09:29:35,816 INFO AUDIT & FIX QDRANT — Bắt đầu
+2026-05-06 09:29:35,835 INFO ============================================================
+2026-05-06 09:29:35,835 INFO Đọc file: C:\Users\quan2\Downloads\chatbot\BE\data\tft_traits_dtcl_s17.json
+2026-05-06 09:29:35,838 INFO Tổng documents sẽ upload: 105
+2026-05-06 09:29:35,839 INFO ============================================================
+2026-05-06 09:29:35,839 INFO VALIDATE: Kiểm tra tính nhất quán dữ liệu...
+2026-05-06 09:29:35,840 WARNING   Phát hiện 1 vấn đề:
+2026-05-06 09:29:35,841 WARNING   [WRONG_TRAIT] Mordekaiser: thiếu tộc/hệ 'Dẫn Truyền' (hiện có: Hắc Tinh, Tiên Phong, Tụ Năng)
+2026-05-06 09:29:35,842 ERROR Có 1 vấn đề dữ liệu, dừng lại để tránh upload sai!
+2026-05-06 09:29:35,842 ERROR Hãy sửa file JSON và chạy lại.
+2026-05-06 09:32:20,709 INFO ============================================================
+2026-05-06 09:32:20,710 INFO AUDIT & FIX QDRANT — Bắt đầu
+2026-05-06 09:32:20,712 INFO ============================================================
+2026-05-06 09:32:20,712 INFO Đọc file: C:\Users\quan2\Downloads\chatbot\BE\data\tft_traits_dtcl_s17.json
+2026-05-06 09:32:20,715 INFO Tổng documents sẽ upload: 105
+2026-05-06 09:32:20,716 INFO ============================================================
+2026-05-06 09:32:20,716 INFO VALIDATE: Kiểm tra tính nhất quán dữ liệu...
+2026-05-06 09:32:20,717 INFO   Không phát hiện vấn đề! Dữ liệu nhất quán.
+2026-05-06 09:32:21,296 INFO HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,303 INFO ============================================================
+2026-05-06 09:32:21,303 INFO AUDIT: Kiểm tra collection 'tài liệu TFT'
+2026-05-06 09:32:21,319 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,321 INFO Tổng số points: 394
+2026-05-06 09:32:21,370 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,403 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,434 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,452 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,476 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,512 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,526 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,526 INFO Phân bố theo doc_type:
+2026-05-06 09:32:21,527 INFO   tft_trait                      : 84
+2026-05-06 09:32:21,527 INFO   tft_champion_trait             : 126
+2026-05-06 09:32:21,527 INFO   tft_meta_comp                  : 17
+2026-05-06 09:32:21,527 INFO   tft_meta_comp_carry            : 25
+2026-05-06 09:32:21,528 INFO   tft_item                       : 46
+2026-05-06 09:32:21,528 INFO   tft_champion_items             : 53
+2026-05-06 09:32:21,528 INFO   tft_opgg_item                  : 0
+2026-05-06 09:32:21,541 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,542 INFO   ORPHAN (no doc_type)           : 0
+2026-05-06 09:32:21,542 INFO ============================================================
+2026-05-06 09:32:21,542 INFO DELETE: Xóa toàn bộ chunk tft_trait và tft_champion_trait...
+2026-05-06 09:32:21,570 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/delete?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,572 INFO Đã xóa doc_type='tft_trait': operation_id=250 status=<UpdateStatus.COMPLETED: 'completed'>
+2026-05-06 09:32:21,585 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/delete?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:32:21,585 INFO Đã xóa doc_type='tft_champion_trait': operation_id=251 status=<UpdateStatus.COMPLETED: 'completed'>
+2026-05-06 09:32:21,587 INFO ============================================================
+2026-05-06 09:32:21,587 INFO UPLOAD: Đang upload 105 documents...
+2026-05-06 09:32:22,593 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+2026-05-06 09:32:23,385 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:32:24,100 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:32:24,626 INFO HTTP Request: PUT http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,003 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,236 INFO HTTP Request: PUT http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,238 INFO Upload thành công 105 documents.
+2026-05-06 09:32:25,238 INFO ============================================================
+2026-05-06 09:32:25,238 INFO AUDIT: Kiểm tra collection 'tài liệu TFT'
+2026-05-06 09:32:25,242 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,243 INFO Tổng số points: 289
+2026-05-06 09:32:25,268 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,284 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,289 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,315 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,330 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,337 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,348 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,349 INFO Phân bố theo doc_type:
+2026-05-06 09:32:25,350 INFO   tft_trait                      : 42
+2026-05-06 09:32:25,350 INFO   tft_champion_trait             : 63
+2026-05-06 09:32:25,350 INFO   tft_meta_comp                  : 17
+2026-05-06 09:32:25,350 INFO   tft_meta_comp_carry            : 25
+2026-05-06 09:32:25,350 INFO   tft_item                       : 46
+2026-05-06 09:32:25,350 INFO   tft_champion_items             : 53
+2026-05-06 09:32:25,350 INFO   tft_opgg_item                  : 0
+2026-05-06 09:32:25,364 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:32:25,364 INFO   ORPHAN (no doc_type)           : 0
+2026-05-06 09:32:25,364 INFO ============================================================
+2026-05-06 09:32:25,364 INFO SUMMARY:
+2026-05-06 09:32:25,365 INFO   Traits trước: 84 | sau: 42
+2026-05-06 09:32:25,365 INFO   Champion traits trước: 126 | sau: 63
+2026-05-06 09:32:25,366 INFO   Tổng documents upload: 105
+2026-05-06 09:32:25,366 INFO   Tổng tướng trong dữ liệu: 63
+2026-05-06 09:32:25,367 INFO   Tổng tộc/hệ: 23 (+ 12 duy nhất)
+2026-05-06 09:32:25,367 INFO DONE!
+2026-05-06 09:32:25,367 INFO ============================================================
+2026-05-06 09:44:17,198 INFO ============================================================
+2026-05-06 09:44:17,198 INFO AUDIT & FIX QDRANT — Bắt đầu
+2026-05-06 09:44:17,200 INFO ============================================================
+2026-05-06 09:44:17,200 INFO Đọc file: C:\Users\quan2\Downloads\chatbot\BE\data\tft_traits_dtcl_s17.json
+2026-05-06 09:44:17,203 INFO Tổng documents sẽ upload: 105
+2026-05-06 09:44:17,204 INFO ============================================================
+2026-05-06 09:44:17,204 INFO VALIDATE: Kiểm tra tính nhất quán dữ liệu...
+2026-05-06 09:44:17,204 INFO   Không phát hiện vấn đề! Dữ liệu nhất quán.
+2026-05-06 09:44:17,698 INFO HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,704 INFO ============================================================
+2026-05-06 09:44:17,704 INFO AUDIT: Kiểm tra collection 'tài liệu TFT'
+2026-05-06 09:44:17,723 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,725 INFO Tổng số points: 289
+2026-05-06 09:44:17,734 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,757 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,763 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,785 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,815 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,831 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,847 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,847 INFO Phân bố theo doc_type:
+2026-05-06 09:44:17,848 INFO   tft_trait                      : 42
+2026-05-06 09:44:17,848 INFO   tft_champion_trait             : 63
+2026-05-06 09:44:17,848 INFO   tft_meta_comp                  : 17
+2026-05-06 09:44:17,848 INFO   tft_meta_comp_carry            : 25
+2026-05-06 09:44:17,848 INFO   tft_item                       : 46
+2026-05-06 09:44:17,848 INFO   tft_champion_items             : 53
+2026-05-06 09:44:17,848 INFO   tft_opgg_item                  : 0
+2026-05-06 09:44:17,857 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,857 INFO   ORPHAN (no doc_type)           : 0
+2026-05-06 09:44:17,857 INFO ============================================================
+2026-05-06 09:44:17,858 INFO DELETE: Xóa toàn bộ chunk tft_trait và tft_champion_trait...
+2026-05-06 09:44:17,879 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/delete?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,880 INFO Đã xóa doc_type='tft_trait': operation_id=254 status=<UpdateStatus.COMPLETED: 'completed'>
+2026-05-06 09:44:17,910 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/delete?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,910 INFO Đã xóa doc_type='tft_champion_trait': operation_id=255 status=<UpdateStatus.COMPLETED: 'completed'>
+2026-05-06 09:44:17,911 INFO ============================================================
+2026-05-06 09:44:17,911 INFO UPLOAD: Đang upload 105 documents...
+2026-05-06 09:44:18,738 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+2026-05-06 09:44:20,251 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:44:21,025 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:44:21,625 INFO HTTP Request: PUT http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,110 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,277 INFO HTTP Request: PUT http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,278 INFO Upload thành công 105 documents.
+2026-05-06 09:44:22,278 INFO ============================================================
+2026-05-06 09:44:22,278 INFO AUDIT: Kiểm tra collection 'tài liệu TFT'
+2026-05-06 09:44:22,294 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,295 INFO Tổng số points: 289
+2026-05-06 09:44:22,310 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,324 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,346 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,363 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,378 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,384 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,410 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,411 INFO Phân bố theo doc_type:
+2026-05-06 09:44:22,412 INFO   tft_trait                      : 42
+2026-05-06 09:44:22,412 INFO   tft_champion_trait             : 63
+2026-05-06 09:44:22,412 INFO   tft_meta_comp                  : 17
+2026-05-06 09:44:22,412 INFO   tft_meta_comp_carry            : 25
+2026-05-06 09:44:22,412 INFO   tft_item                       : 46
+2026-05-06 09:44:22,412 INFO   tft_champion_items             : 53
+2026-05-06 09:44:22,412 INFO   tft_opgg_item                  : 0
+2026-05-06 09:44:22,418 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,419 INFO   ORPHAN (no doc_type)           : 0
+2026-05-06 09:44:22,419 INFO ============================================================
+2026-05-06 09:44:22,419 INFO SUMMARY:
+2026-05-06 09:44:22,419 INFO   Traits trước: 42 | sau: 42
+2026-05-06 09:44:22,420 INFO   Champion traits trước: 63 | sau: 63
+2026-05-06 09:44:22,421 INFO   Tổng documents upload: 105
+2026-05-06 09:44:22,421 INFO   Tổng tướng trong dữ liệu: 63
+2026-05-06 09:44:22,422 INFO   Tổng tộc/hệ: 23 (+ 12 duy nhất)
+2026-05-06 09:44:22,422 INFO DONE!
+2026-05-06 09:44:22,422 INFO ============================================================

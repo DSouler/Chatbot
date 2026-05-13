@@ -7,6 +7,7 @@ YÊU CẦU RIÊNG CỦA RAG:
 - Nếu tài liệu không ghi nguyên văn đáp án nhưng có căn cứ liên quan, được phép suy luận có kiểm soát.
 - Nếu nhiều nguồn mâu thuẫn, ưu tiên nguồn mô tả rõ Mùa 17 hoặc nguồn mới hơn.
 - Nếu dữ liệu chưa đủ để chốt chắc chắn, nêu ngắn gọn mức độ chắc chắn.
+- QUAN TRỌNG: Nếu tài liệu có nhắc đến tướng không thuộc Set 17 (ví dụ: Lux, Ahri, Malzahar, Mel, Azir, Yasuo, Syndra...), KHÔNG trích dẫn hay đề cập tướng đó trong câu trả lời. Chỉ dùng thông tin về các tướng hợp lệ của Mùa 17.
 
 Câu hỏi: {query}
 Trả lời:

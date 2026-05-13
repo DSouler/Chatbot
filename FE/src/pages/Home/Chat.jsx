@@ -69,6 +69,7 @@ const Chat = () => {
   const [streamingThinking, setStreamingThinking] = useState('');
   const [streamingType, setStreamingType] = useState(null); 
   const [conversationList, setConversationList] = useState([]);
+  const [isLoadingConversations, setIsLoadingConversations] = useState(false);
   const [streamingStatus, setStreamingStatus] = useState('');
   const [streamingInfo, setStreamingInfo] = useState('');
   const [streamingUsage, setStreamingUsage] = useState(null);
@@ -169,13 +170,16 @@ const Chat = () => {
       // Reset guard và tăng gen để hủy fetch cũ (if any) khi userId thay đổi
       isFetchingConversationsRef.current = false;
       fetchConvGenRef.current++;
+      setIsLoadingConversations(true);
       fetchConversations();
     } else {
       // Hủy fetch đang chạy và xóa list khi logout / guest mode
       fetchConvGenRef.current++;
       setConversationList([]);
+      setIsLoadingConversations(false);
     }
-  }, [userId, urlConversationId, isGuest]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, isGuest]);
 
   // Đảm bảo hiển thị welcome screen khi không có conversation nào được chọn
   // Chỉ hiển thị welcome khi đã fetch xong conversationList và không có conversation hợp lệ
@@ -226,6 +230,7 @@ const Chat = () => {
     } finally {
       if (myGen === fetchConvGenRef.current) {
         isFetchingConversationsRef.current = false;
+        setIsLoadingConversations(false);
       }
     }
   };
@@ -706,6 +711,7 @@ const Chat = () => {
         onResetChat={handleResetChat}
         conversationList={conversationList}
         onDeleteConversation={handleDeleteConversation}
+        isLoadingConversations={isLoadingConversations}
       />
       <Layout style={{
           position: 'relative',

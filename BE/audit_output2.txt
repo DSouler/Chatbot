@@ -1,0 +1,389 @@
+﻿2026-05-06 09:44:17,198 INFO ============================================================
+python : --- Logging error ---
+At line:1 char:1
++ python -u audit_and_fix_qdrant.py 2>&1 | Out-File -Encoding utf8 audi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (--- Logging error ---:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1eaf' in position 51: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 415, in main
+    logger.info("AUDIT & FIX QDRANT — B\u1eaft đ\u1ea7u")
+Message: 'AUDIT & FIX QDRANT — B\u1eaft đ\u1ea7u'
+Arguments: ()
+2026-05-06 09:44:17,200 INFO ============================================================
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ecd' in position 30: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 419, in main
+    logger.info("Đ\u1ecdc file: %s", DATA_PATH)
+Message: 'Đ\u1ecdc file: %s'
+Arguments: ('C:\\Users\\quan2\\Downloads\\chatbot\\BE\\data\\tft_traits_dtcl_s17.json',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed5' in position 30: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 425, in main
+    logger.info("T\u1ed5ng documents s\u1ebd upload: %d", len(docs))
+Message: 'T\u1ed5ng documents s\u1ebd upload: %d'
+Arguments: (105,)
+2026-05-06 09:44:17,204 INFO ============================================================
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ec3' in position 41: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 427, in main
+    issues = validate_data(data, champion_info, all_champs)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 346, in validate_data
+    logger.info("VALIDATE: Ki\u1ec3m tra tính nh\u1ea5t quán d\u1eef li\u1ec7u...")
+Message: 'VALIDATE: Ki\u1ec3m tra tính nh\u1ea5t quán d\u1eef li\u1ec7u...'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ec7' in position 44: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 427, in main
+    issues = validate_data(data, champion_info, all_champs)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 401, in validate_data
+    logger.info("  Không phát hi\u1ec7n v\u1ea5n đ\u1ec1! D\u1eef li\u1ec7u nh\u1ea5t quán.")
+Message: '  Không phát hi\u1ec7n v\u1ea5n đ\u1ec1! D\u1eef li\u1ec7u nh\u1ea5t quán.'
+Arguments: ()
+2026-05-06 09:44:17,698 INFO HTTP Request: GET http://localhost:6333 "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,704 INFO ============================================================
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ec3' in position 38: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 443, in main
+    counts_before = audit_collection(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 49, in audit_collection
+    logger.info("AUDIT: Ki\u1ec3m tra collection '%s'", collection_name)
+Message: "AUDIT: Ki\u1ec3m tra collection '%s'"
+Arguments: ('tài li\u1ec7u TFT',)
+2026-05-06 09:44:17,723 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed5' in position 30: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 443, in main
+    counts_before = audit_collection(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 53, in audit_collection
+    logger.info("T\u1ed5ng s\u1ed1 points: %d", total)
+Message: 'T\u1ed5ng s\u1ed1 points: %d'
+Arguments: (289,)
+2026-05-06 09:44:17,734 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,757 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,763 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,785 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,815 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,831 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,847 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed1' in position 35: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 443, in main
+    counts_before = audit_collection(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 78, in audit_collection
+    logger.info("Phân b\u1ed1 theo doc_type:")
+Message: 'Phân b\u1ed1 theo doc_type:'
+Arguments: ()
+2026-05-06 09:44:17,848 INFO   tft_trait                      : 42
+2026-05-06 09:44:17,848 INFO   tft_champion_trait             : 63
+2026-05-06 09:44:17,848 INFO   tft_meta_comp                  : 17
+2026-05-06 09:44:17,848 INFO   tft_meta_comp_carry            : 25
+2026-05-06 09:44:17,848 INFO   tft_item                       : 46
+2026-05-06 09:44:17,848 INFO   tft_champion_items             : 53
+2026-05-06 09:44:17,848 INFO   tft_opgg_item                  : 0
+2026-05-06 09:44:17,857 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:17,857 INFO   ORPHAN (no doc_type)           : 0
+2026-05-06 09:44:17,857 INFO ============================================================
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed9' in position 47: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 446, in main
+    delete_trait_docs(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 108, in delete_trait_docs
+    logger.info("DELETE: Xóa toàn b\u1ed9 chunk tft_trait và tft_champion_trait...")
+Message: 'DELETE: Xóa toàn b\u1ed9 chunk tft_trait và tft_champion_trait...'
+Arguments: ()
+2026-05-06 09:44:17,879 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/delete?wait=true "HTTP/1.1 200 OK"
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\xe3' in position 30: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 446, in main
+    delete_trait_docs(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 124, in delete_trait_docs
+    logger.info("Đ\xe3 xóa doc_type='%s': %s", doc_type, result)
+Message: "Đ\xe3 xóa doc_type='%s': %s"
+Arguments: ('tft_trait', UpdateResult(operation_id=254, status=<UpdateStatus.COMPLETED: 'completed'>))
+2026-05-06 09:44:17,910 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/delete?wait=true "HTTP/1.1 200 OK"
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\xe3' in position 30: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 446, in main
+    delete_trait_docs(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 124, in delete_trait_docs
+    logger.info("Đ\xe3 xóa doc_type='%s': %s", doc_type, result)
+Message: "Đ\xe3 xóa doc_type='%s': %s"
+Arguments: ('tft_champion_trait', UpdateResult(operation_id=255, status=<UpdateStatus.COMPLETED: 'completed'>))
+2026-05-06 09:44:17,911 INFO ============================================================
+2026-05-06 09:44:17,911 INFO UPLOAD: Đang upload 105 documents...
+2026-05-06 09:44:18,738 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+2026-05-06 09:44:20,251 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:44:21,025 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:44:21,625 INFO HTTP Request: PUT http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,110 INFO HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,277 INFO HTTP Request: PUT http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points?wait=true "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,278 INFO Upload thành công 105 documents.
+2026-05-06 09:44:22,278 INFO ============================================================
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ec3' in position 38: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 469, in main
+    counts_after = audit_collection(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 49, in audit_collection
+    logger.info("AUDIT: Ki\u1ec3m tra collection '%s'", collection_name)
+Message: "AUDIT: Ki\u1ec3m tra collection '%s'"
+Arguments: ('tài li\u1ec7u TFT',)
+2026-05-06 09:44:22,294 INFO HTTP Request: GET http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT "HTTP/1.1 200 OK"
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed5' in position 30: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 469, in main
+    counts_after = audit_collection(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 53, in audit_collection
+    logger.info("T\u1ed5ng s\u1ed1 points: %d", total)
+Message: 'T\u1ed5ng s\u1ed1 points: %d'
+Arguments: (289,)
+2026-05-06 09:44:22,310 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,324 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,346 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,363 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,378 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,384 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,410 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed1' in position 35: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 469, in main
+    counts_after = audit_collection(client, collection_name)
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 78, in audit_collection
+    logger.info("Phân b\u1ed1 theo doc_type:")
+Message: 'Phân b\u1ed1 theo doc_type:'
+Arguments: ()
+2026-05-06 09:44:22,412 INFO   tft_trait                      : 42
+2026-05-06 09:44:22,412 INFO   tft_champion_trait             : 63
+2026-05-06 09:44:22,412 INFO   tft_meta_comp                  : 17
+2026-05-06 09:44:22,412 INFO   tft_meta_comp_carry            : 25
+2026-05-06 09:44:22,412 INFO   tft_item                       : 46
+2026-05-06 09:44:22,412 INFO   tft_champion_items             : 53
+2026-05-06 09:44:22,412 INFO   tft_opgg_item                  : 0
+2026-05-06 09:44:22,418 INFO HTTP Request: POST http://localhost:6333/collections/t%C3%A0i%20li%E1%BB%87u%20TFT/points/count "HTTP/1.1 200 OK"
+2026-05-06 09:44:22,419 INFO   ORPHAN (no doc_type)           : 0
+2026-05-06 09:44:22,419 INFO ============================================================
+2026-05-06 09:44:22,419 INFO SUMMARY:
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1edb' in position 41: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 474, in main
+    logger.info("  Traits trư\u1edbc: %s | sau: %s", counts_before.get("tft_trait"), counts_after.get("tft_trait"))
+Message: '  Traits trư\u1edbc: %s | sau: %s'
+Arguments: (42, 42)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1edb' in position 50: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 475, in main
+    logger.info("  Champion traits trư\u1edbc: %s | sau: %s", counts_before.get("tft_champion_trait"), 
+counts_after.get("tft_champion_trait"))
+Message: '  Champion traits trư\u1edbc: %s | sau: %s'
+Arguments: (63, 63)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed5' in position 32: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 476, in main
+    logger.info("  T\u1ed5ng documents upload: %d", len(ids))
+Message: '  T\u1ed5ng documents upload: %d'
+Arguments: (105,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed5' in position 32: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 477, in main
+    logger.info("  T\u1ed5ng tư\u1edbng trong d\u1eef li\u1ec7u: %d", len(champion_info))
+Message: '  T\u1ed5ng tư\u1edbng trong d\u1eef li\u1ec7u: %d'
+Arguments: (63,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\quan2\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1258.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u1ed5' in position 32: character maps to <undefined>
+Call stack:
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 486, in <module>
+    main()
+  File "C:\Users\quan2\Downloads\chatbot\BE\audit_and_fix_qdrant.py", line 478, in main
+    logger.info("  T\u1ed5ng t\u1ed9c/h\u1ec7: %d (+ %d duy nh\u1ea5t)",
+Message: '  T\u1ed5ng t\u1ed9c/h\u1ec7: %d (+ %d duy nh\u1ea5t)'
+Arguments: (23, 12)
+2026-05-06 09:44:22,422 INFO DONE!
+2026-05-06 09:44:22,422 INFO ============================================================

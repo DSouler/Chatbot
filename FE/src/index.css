@@ -3,10 +3,44 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-    min-height: 100vh;
+@layer base {
+  html {
+      min-height: 100vh;
+      background-color: #fafafa;
+  }
+  
+  body {
+      font-family: 'Inter', system-ui, sans-serif !important;
+      @apply text-slate-800 antialiased bg-slate-50;
+  }
 }
 
-body {
-    font-family: 'Inter', system-ui, sans-serif !important;
-}
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+  }
+  
+  .glass-panel-hover {
+    @apply transition-all duration-300 hover:bg-white/90 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)];
+  }
+
+  .premium-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-premium-600 to-premium-400;
+  }
+
+  .premium-gradient-bg {
+    @apply bg-gradient-to-r from-premium-600 to-premium-500 text-white shadow-lg shadow-premium-500/30;
+  }
+  
+  /* Custom modern scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 rounded-full transition-colors hover:bg-slate-300;
+  }
+}

@@ -18,72 +18,146 @@ import 'katex/dist/katex.min.css';
 import remarkGfm from 'remark-gfm';
 import { saveImage } from '../services/chat';
 import { submitFeedback, getBatchFeedback } from '../services/chat';
+import ChampionTooltip from './ChampionTooltip';
+import { getChampionRegex, getChampionImage } from '../data/championData';
+import ItemTooltip from './ItemTooltip';
+import { getItemRegex, getItemImage } from '../data/itemData';
 
 
 const { Text } = Typography;
 
+// Helper: recursively process React children to detect and wrap champion names with tooltips
+const processChampionNames = (children) => {
+  if (!children) return children;
+  return React.Children.map(children, (child) => {
+    // Only process plain text strings
+    if (typeof child === 'string') {
+      const regex = getChampionRegex();
+      const parts = [];
+      let lastIndex = 0;
+      let match;
+      while ((match = regex.exec(child)) !== null) {
+        if (match.index > lastIndex) {
+          parts.push(child.slice(lastIndex, match.index));
+        }
+        const matchedText = match[0];
+        // Normalize curly quotes → straight quote cho lookup trong CHAMPION_DATA
+        const normalizedName = matchedText.replace(/[\u2018\u2019]/g, "'");
+        parts.push(
+          <ChampionTooltip key={`champ-${matchedText}-${match.index}`} name={normalizedName}>
+            {matchedText}
+          </ChampionTooltip>
+        );
+        lastIndex = regex.lastIndex;
+      }
+      if (parts.length === 0) return child; // no champion found
+      if (lastIndex < child.length) parts.push(child.slice(lastIndex));
+      return <>{parts}</>;
+    }
+    // If it's a React element with children, recurse into it
+    if (React.isValidElement(child) && child.props?.children) {
+      return React.cloneElement(child, {}, processChampionNames(child.props.children));
+    }
+    return child;
+  });
+};
+
+// Helper: recursively process React children to detect and wrap item names with tooltips
+const processItemNames = (children) => {
+  if (!children) return children;
+  return React.Children.map(children, (child) => {
+    if (typeof child === 'string') {
+      const regex = getItemRegex();
+      const parts = [];
+      let lastIndex = 0;
+      let match;
+      while ((match = regex.exec(child)) !== null) {
+        if (match.index > lastIndex) {
+          parts.push(child.slice(lastIndex, match.index));
+        }
+        const matchedText = match[0];
+        const normalizedName = matchedText.replace(/[\u2018\u2019]/g, "'");
+        parts.push(
+          <ItemTooltip key={`item-${matchedText}-${match.index}`} name={normalizedName}>
+            {matchedText}
+          </ItemTooltip>
+        );
+        lastIndex = regex.lastIndex;
+      }
+      if (parts.length === 0) return child;
+      if (lastIndex < child.length) parts.push(child.slice(lastIndex));
+      return <>{parts}</>;
+    }
+    if (React.isValidElement(child) && child.props?.children) {
+      return React.cloneElement(child, {}, processItemNames(child.props.children));
+    }
+    return child;
+  });
+};
+
+// Xử lý cả champion và item tooltips (champion trước, item sau)
+const processTooltips = (children) => {
+  const withChampions = processChampionNames(children);
+  return processItemNames(withChampions);
+};
+
 // Shared markdown components for bot responses (modern, colorful styling)
 const BOT_MD_COMPONENTS = {
   h1: ({ children }) => (
-    <div style={{ margin: '28px 0 16px', padding: '14px 20px', background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)', borderRadius: 14, color: '#fff', fontSize: '1.5em', fontWeight: 800, lineHeight: 1.4, letterSpacing: '0.01em', boxShadow: '0 6px 20px rgba(124,58,237,0.25)' }}>
+    <div className="my-6 px-5 py-3.5 premium-gradient-bg rounded-xl font-extrabold text-2xl tracking-wide">
       {children}
     </div>
   ),
   h2: ({ children }) => (
-    <div style={{ margin: '24px 0 14px', padding: '14px 20px', background: 'linear-gradient(135deg, #F0EBFF 0%, #E8E0FF 100%)', borderLeft: '6px solid #7C3AED', borderRadius: '0 14px 14px 0', fontSize: '1.45em', fontWeight: 800, color: '#3B0764', lineHeight: 1.4, boxShadow: '0 4px 16px rgba(124,58,237,0.13)' }}>
+    <div className="my-5 px-5 py-3.5 bg-premium-50 border-l-4 border-premium-600 rounded-r-xl font-extrabold text-premium-900 text-xl shadow-sm">
       {children}
     </div>
   ),
   h3: ({ children }) => (
-    <div style={{ margin: '18px 0 10px', padding: '10px 16px', background: '#f3eeff', borderLeft: '5px solid #8B5CF6', borderRadius: '0 10px 10px 0', fontSize: '1.25em', fontWeight: 700, color: '#4C1D95', lineHeight: 1.4, boxShadow: '0 2px 8px rgba(124,58,237,0.09)' }}>
+    <div className="my-4 px-4 py-2.5 bg-premium-50/50 border-l-4 border-premium-500 rounded-r-lg font-bold text-premium-800 text-lg shadow-sm">
       {children}
     </div>
   ),
-  p: ({ children }) => <p style={{ margin: '8px 0', lineHeight: 1.8, color: '#2d2d2d' }}>{children}</p>,
-  ul: ({ children }) => <ul className="bot-ul" style={{ paddingLeft: 18, margin: '8px 0', listStyleType: 'none' }}>{children}</ul>,
-  ol: ({ children }) => <ol className="bot-ol" style={{ paddingLeft: 18, margin: '8px 0', listStyleType: 'none', counterReset: 'bot-ol' }}>{children}</ol>,
+  p: ({ children }) => <p className="my-2 leading-relaxed text-slate-700">{processTooltips(children)}</p>,
+  ul: ({ children }) => <ul className="pl-5 my-2 list-none">{children}</ul>,
+  ol: ({ children }) => <ol className="pl-5 my-2 list-none" style={{ counterReset: 'bot-ol' }}>{children}</ol>,
   li: ({ children, node }) => {
     const isOrdered = node?.parentNode?.tagName === 'ol';
-    // Detect header-like li: first child is strong, or paragraph whose first child is strong
     const astFirst = node?.children?.[0];
     const isHeaderItem =
       astFirst?.tagName === 'strong' ||
       (astFirst?.tagName === 'p' && astFirst?.children?.[0]?.tagName === 'strong');
     return (
-      <li style={{ margin: '6px 0', lineHeight: 1.8, display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+      <li className="my-1.5 leading-relaxed flex items-start gap-2.5">
         {!isHeaderItem && (
-          <span style={{
-            flexShrink: 0, width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: isOrdered ? 'linear-gradient(135deg, #7C3AED, #9B59FF)' : '#F0EBFF',
-            color: isOrdered ? '#fff' : '#7C3AED', fontSize: 12, fontWeight: 700, marginTop: 3,
-          }}>
+          <span className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-1 ${isOrdered ? 'premium-gradient-bg' : 'bg-premium-100 text-premium-600'}`}>
             {isOrdered ? '✦' : '•'}
           </span>
         )}
-        <span style={{ flex: 1 }}>{children}</span>
+        <span className="flex-1 text-slate-700">{processTooltips(children)}</span>
       </li>
     );
   },
   code: ({ node, inline, className, children, ...props }) => {
     if (inline) {
-      return <code style={{ background: 'linear-gradient(135deg, #F0EBFF, #E8E0FF)', borderRadius: 5, padding: '2px 7px', fontSize: '0.875em', fontFamily: '"SFMono-Regular", Consolas, monospace', color: '#7C3AED', fontWeight: 500, border: '1px solid #DDD6FE' }}>{children}</code>;
+      return <code className="bg-premium-50 border border-premium-200 rounded px-1.5 py-0.5 text-sm font-mono text-premium-600 font-medium">{children}</code>;
     }
     return (
-      <pre style={{ background: 'linear-gradient(160deg, #1a1b2e 0%, #252640 100%)', borderRadius: 12, padding: '16px 18px', overflowX: 'auto', margin: '12px 0', border: '1px solid #35365a' }}>
-        <code style={{ color: '#c9d1d9', fontSize: '0.875em', fontFamily: '"SFMono-Regular", Consolas, monospace', whiteSpace: 'pre' }}>{children}</code>
+      <pre className="bg-slate-900 rounded-xl p-4 overflow-x-auto my-3 border border-slate-800 shadow-inner custom-scrollbar">
+        <code className="text-slate-300 text-sm font-mono whitespace-pre">{children}</code>
       </pre>
     );
   },
   blockquote: ({ children }) => (
-    <blockquote style={{ borderLeft: '4px solid #7C3AED', margin: '12px 0', color: '#4a4a6a', background: 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)', borderRadius: '0 10px 10px 0', padding: '10px 16px', fontStyle: 'italic' }}>
+    <blockquote className="border-l-4 border-premium-600 my-3 bg-premium-50 rounded-r-lg px-4 py-2.5 italic text-slate-600">
       {children}
     </blockquote>
   ),
-  strong: ({ children }) => <strong style={{ fontWeight: 700, color: '#3B0764', background: 'linear-gradient(transparent 55%, #E8E0FF 55%)', padding: '0 2px', fontSize: '1.02em' }}>{children}</strong>,
-  hr: () => <hr style={{ margin: '18px 0', border: 'none', height: 2, background: 'linear-gradient(90deg, transparent, #C4B5FD, transparent)' }} />,
+  strong: ({ children }) => <strong className="font-bold text-premium-900 bg-premium-100/50 px-1 rounded-sm">{processTooltips(children)}</strong>,
+  hr: () => <hr className="my-5 border-t-2 border-premium-200/50" />,
   a: ({ href, children }) => (
     <a href={href} target="_blank" rel="noopener noreferrer"
-      style={{ color: '#7C3AED', textDecoration: 'none', fontWeight: 500, borderBottom: '2px solid #C4B5FD', transition: 'all 0.2s' }}
+      className="text-premium-600 font-medium border-b border-premium-300 hover:border-premium-600 hover:text-premium-700 transition-colors"
       onClick={e => { e.preventDefault(); window.open(href, '_blank', 'noopener,noreferrer'); }}>
       {children}
     </a>
@@ -93,27 +167,21 @@ const BOT_MD_COMPONENTS = {
     if (isItemIcon) {
       return (
         <img src={src} alt={alt} title={alt}
-          style={{
-            width: 40, height: 40, borderRadius: 8, display: 'inline-block',
-            verticalAlign: 'middle', margin: '2px 4px',
-            boxShadow: '0 2px 8px rgba(124,58,237,0.18)',
-            border: '2px solid #DDD6FE',
-            background: '#1a1b2e',
-          }} />
+          className="w-10 h-10 rounded-lg inline-block align-middle mx-1 shadow-sm border border-premium-200 bg-slate-900" />
       );
     }
     return (
       <img src={src} alt={alt}
-        style={{ maxWidth: '100%', maxHeight: 320, borderRadius: 12, display: 'block', margin: '10px 0', boxShadow: '0 4px 16px rgba(124,58,237,0.15)', border: '2px solid #E8E0FF' }} />
+        className="max-w-full max-h-80 rounded-xl block my-2 shadow-md border border-premium-100" />
     );
   },
   table: ({ children }) => (
-    <div style={{ overflowX: 'auto', margin: '14px 0', borderRadius: 10, border: '1px solid #DDD6FE', boxShadow: '0 2px 8px rgba(124,58,237,0.08)' }}>
-      <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: '0.95em' }}>{children}</table>
+    <div className="overflow-x-auto my-3 rounded-xl border border-premium-200 shadow-sm custom-scrollbar">
+      <table className="w-full text-sm border-collapse">{children}</table>
     </div>
   ),
-  th: ({ children }) => <th style={{ border: '1px solid #C0D8E8', padding: '10px 14px', background: 'linear-gradient(135deg, #7C3AED 0%, #9B59FF 100%)', color: '#fff', fontWeight: 600, textAlign: 'left', fontSize: '0.9em', letterSpacing: '0.02em' }}>{children}</th>,
-  td: ({ children }) => <td style={{ border: '1px solid #EDE9FE', padding: '9px 14px', background: '#faf9ff' }}>{children}</td>,
+  th: ({ children }) => <th className="border-b border-premium-200 px-4 py-2.5 premium-gradient-bg font-semibold text-left tracking-wide">{children}</th>,
+  td: ({ children }) => <td className="border-b border-premium-100 px-4 py-2 bg-slate-50/50 text-slate-700">{processTooltips(children)}</td>,
 };
 
 const BotMarkdown = memo(({ children }) => (
@@ -396,27 +464,8 @@ const ChatArea = ({
                     }}
                   >
                     {/* User message div - fixed height */}
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginBottom: '16px',
-                      }}
-                    >
-                      <div
-                        style={{
-                          maxWidth: '80%',
-                          borderRadius: '24px',
-                          background: '#fff',
-                          color: '#1a1a1a',
-                          padding: '14px 20px',
-                          fontSize: 15,
-                          border: '2px solid #7C3AED',
-                          boxShadow: '0 4px 18px rgba(124,58,237,0.12)',
-                          whiteSpace: 'normal',
-                          lineHeight: 1.5,
-                        }}
-                      >
+                    <div className="flex justify-end mb-4 animate-fade-in-up">
+                      <div className="max-w-[80%] rounded-[24px] bg-white text-slate-900 px-5 py-3.5 text-[15px] border-2 border-premium-600 shadow-[0_4px_18px_rgba(124,58,237,0.12)] whitespace-normal leading-relaxed">
                         {/* Render ảnh đính kèm trong message */}
                         {msg.images && msg.images.length > 0 && (
                           <div style={{ display: 'flex', gap: 6, marginBottom: msg.content ? 8 : 0, flexWrap: 'wrap' }}>
@@ -454,31 +503,8 @@ const ChatArea = ({
                     </div>
                     {/* Assistant message div - takes remaining height only for latest message */}
                     {hasAssistantResponse && (
-                      <div
-                        style={{
-                          flex: isLatestPair ? '1 1 auto' : '0 0 auto',
-                          display: 'flex',
-                          justifyContent: 'flex-start',
-                          alignItems: 'flex-start',
-                        }}
-                      >
-                        <div
-                          style={{
-                            maxWidth: '100%',
-                            borderRadius: 20,
-                            background: 'rgba(255,255,255,0.65)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            color: '#222',
-                            padding: '20px 24px',
-                            fontSize: 15,
-                            boxShadow: '0 4px 24px rgba(124,58,237,0.06), 0 1px 4px rgba(124,58,237,0.08)',
-                            border: '1.5px solid rgba(124,58,237,0.12)',
-                            whiteSpace: 'normal',
-                            lineHeight: 1.5,
-                            width: '100%',
-                          }}
-                        >
+                      <div className={`flex justify-start items-start ${isLatestPair ? 'flex-auto' : 'flex-none'} animate-fade-in-up`}>
+                        <div className="max-w-full rounded-[20px] glass-panel text-slate-800 px-6 py-5 text-[15px] w-full border border-premium-200 shadow-sm leading-relaxed">
                         <BotMarkdown>{nextAssistantMsg.content}</BotMarkdown>
                         {/* Feedback buttons */}
                         {(() => {
@@ -533,31 +559,8 @@ const ChatArea = ({
                     )}
                     {/* Nếu là user cuối cùng, đang active và có streamingMessage thì render chunk ngay dưới user */}
                     {isLastUser && streamingMessage && isActive && (
-                      <div
-                        style={{
-                          flex: '1 1 auto',
-                          display: 'flex',
-                          justifyContent: 'flex-start',
-                          alignItems: 'flex-start',
-                        }}
-                      >
-                        <div
-                          style={{
-                            maxWidth: '100%',
-                            borderRadius: 20,
-                            background: 'rgba(255,255,255,0.65)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            color: '#222',
-                            padding: '20px 24px',
-                            fontSize: 15,
-                            boxShadow: '0 4px 24px rgba(124,58,237,0.06), 0 1px 4px rgba(124,58,237,0.08)',
-                            border: '1.5px solid rgba(124,58,237,0.12)',
-                            whiteSpace: 'normal',
-                            lineHeight: 1.5,
-                            width: '100%',
-                          }}
-                        >
+                      <div className="flex-auto flex justify-start items-start animate-fade-in-up">
+                        <div className="max-w-full rounded-[20px] glass-panel text-slate-800 px-6 py-5 text-[15px] w-full border border-premium-200 shadow-sm leading-relaxed">
                           <BotMarkdown>{streamingMessage}</BotMarkdown>
                           {isLoading && isActive && <span className="streaming-cursor" />}
                         </div>
@@ -566,17 +569,8 @@ const ChatArea = ({
                     {/* Thinking section for last user message */}
                     {isLastUser && isActive && streamingThinking && !streamingMessage && (
                       <div
-                        style={{
-                          flex: '0 0 auto',
-                          marginTop: '16px',
-                          background: 'linear-gradient(135deg, #F0EBFF 0%, #E8E0FF 100%)',
-                          borderRadius: 16,
-                          padding: 16,
-                          boxShadow: '0 2px 8px rgba(124,58,237,0.08)',
-                          border: '1px solid rgba(124,58,237,0.1)',
-                          maxWidth: showThinking ? '100%' : 360,
-                          transition: 'all 0.3s ease',
-                        }}
+                        className="flex-none mt-4 premium-gradient-bg rounded-2xl p-4 shadow-md border border-premium-400 transition-all duration-300 animate-fade-in-up"
+                        style={{ maxWidth: showThinking ? '100%' : 360 }}
                       >
                         <div
                           style={{
@@ -787,22 +781,11 @@ const ChatArea = ({
             )}
             {/* Input row */}
             <div
-              className="chat-input-wrapper"
-              style={{
-                width: '100%',
-                padding: '12px 14px 12px 18px',
-                background: '#ffffff',
-                borderRadius: 24,
-                display: 'flex',
-                alignItems: 'center',
-                border: inputFocused
-                  ? '1.5px solid #7C3AED'
-                  : '1.5px solid #C8DCF0',
-                boxShadow: inputFocused
-                  ? '0 8px 32px rgba(124,58,237,0.12), 0 0 0 3px rgba(124,58,237,0.06)'
-                  : '0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04)',
-                transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
-              }}
+              className={`chat-input-wrapper w-full px-5 py-3.5 bg-white/80 backdrop-blur-md rounded-full flex items-center transition-all duration-300 ${
+                inputFocused
+                  ? 'border-2 border-premium-500 shadow-[0_8px_32px_rgba(124,58,237,0.15)] ring-4 ring-premium-500/10'
+                  : 'border-2 border-slate-200 shadow-sm hover:border-premium-300 hover:shadow-md'
+              }`}
             >
               {!isGuest && (
                 <Button
@@ -811,8 +794,7 @@ const ChatArea = ({
                   shape="circle"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isLoading}
-                  className="img-btn"
-                  style={{ marginRight: 6, color: '#7BAAC4', flexShrink: 0, fontSize: 18 }}
+                  className="img-btn flex-shrink-0 text-slate-400 hover:text-premium-600 hover:bg-premium-50 transition-colors mr-2 text-lg"
                   title="Đính kèm ảnh"
                 />
               )}
@@ -826,39 +808,14 @@ const ChatArea = ({
                 onBlur={() => setInputFocused(false)}
                 disabled={isLoading}
                 autoSize={{ minRows: 1, maxRows: 6 }}
-                style={{
-                  border: 'none',
-                  background: 'transparent',
-                  resize: 'none',
-                  fontSize: 15,
-                  flex: 1,
-                  lineHeight: 1.5,
-                }}
+                className="flex-1 text-[15px] leading-relaxed bg-transparent border-none resize-none placeholder-slate-400 text-slate-800 focus:ring-0 custom-scrollbar"
               />
               <button
-                className="send-btn"
-                onClick={handleSend}
-                disabled={(!inputValue.trim() && selectedImages.length === 0) || isLoading}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  border: 'none',
-                  background: (!inputValue.trim() && selectedImages.length === 0)
-                    ? 'rgba(200,200,200,0.3)'
-                    : 'linear-gradient(135deg, #7C3AED, #9B59FF)',
-                  color: '#fff',
-                  cursor: (!inputValue.trim() && selectedImages.length === 0) ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  boxShadow: (!inputValue.trim() && selectedImages.length === 0)
-                    ? 'none'
-                    : '0 3px 12px rgba(124,58,237,0.35)',
-                  transition: 'all 0.25s ease',
-                  marginLeft: 8,
-                }}
+                className={`send-btn w-10 h-10 rounded-full border-none flex items-center justify-center flex-shrink-0 ml-2 transition-all duration-300 ${
+                  (!inputValue.trim() && selectedImages.length === 0)
+                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                    : 'premium-gradient-bg cursor-pointer hover:scale-105 active:scale-95'
+                }`}
               >
                 {isLoading ? <Spin size="small" /> : <SendOutlined style={{ fontSize: 16 }} />}
               </button>
@@ -869,25 +826,10 @@ const ChatArea = ({
       </div>
 
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(5px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
         .chat-input-wrapper .ant-input:focus,
         .chat-input-wrapper .ant-input-focused,
         .chat-input-wrapper textarea:focus {
           box-shadow: none !important;
-        }
-        .send-btn:hover:not(:disabled) {
-          transform: scale(1.08);
-          box-shadow: 0 4px 16px rgba(124,58,237,0.45) !important;
-        }
-        .send-btn:active:not(:disabled) {
-          transform: scale(0.95);
-        }
-        .img-btn:hover {
-          color: #7C3AED !important;
-          background: rgba(124,58,237,0.08) !important;
         }
         .chat-mode-btn:hover {
           opacity: 0.85;
@@ -912,6 +854,10 @@ const ChatArea = ({
           animation: blink 1s step-start infinite; vertical-align: text-bottom;
         }
         @keyframes blink { 50% { opacity: 0; } }
+        @keyframes championTooltipFadeIn {
+          from { opacity: 0; transform: translate(-50%, -90%); }
+          to { opacity: 1; transform: translate(-50%, -100%); }
+        }
       `}</style>
     </div>
   );
