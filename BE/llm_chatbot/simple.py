@@ -1,26 +1,23 @@
-from http.client import responses
-from concurrent.futures import ThreadPoolExecutor
 import asyncio
-import asyncio
-import logging
 import json
+import logging
 import os
+import threading
 from collections import Counter
 from typing import List, Dict, Any, Optional, AsyncGenerator, Callable
 
-from llms.engine import get_client
-from vectordb.engine import VectorDBEngine
-from models.exceptions import StreamGenerationError, TimeoutError
-from reflection.engine import ReflectionEngine
 import config
-from langchain_qdrant import RetrievalMode
-from models.requests import RetrievalSettings, ReasoningSettings
-from .base import BasePipeline
-import threading
 from langchain_openai import OpenAIEmbeddings
-from time import sleep
-from metadata_extractor.engine import MetaDataFilterEngine
+from langchain_qdrant import RetrievalMode
+
+from .base import BasePipeline
 from hyde.engine import HyDEEngine
+from llms.engine import get_client
+from metadata_extractor.engine import MetaDataFilterEngine
+from models.exceptions import StreamGenerationError, TimeoutError
+from models.requests import RetrievalSettings, ReasoningSettings
+from reflection.engine import ReflectionEngine
+from vectordb.engine import VectorDBEngine
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -159,6 +156,18 @@ class SimplePipeline(BasePipeline):
             logger.info("Initialized RAG Chatbot")
 
 
+    @staticmethod
+    def _deduplicate_docs(docs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Remove duplicate documents based on content, filtering out empty docs."""
+        seen = set()
+        unique = []
+        for doc in docs:
+            content = doc.get('content', '').strip()
+            if content and content not in seen:
+                seen.add(content)
+                unique.append(doc)
+        return unique
+
     def _create_augmented_prompt(self, query: str, relevant_docs: List[Dict[str, Any]], lang: Optional[str] = None) -> str:
         """Create an augmented prompt with relevant context for the query"""
         if not relevant_docs:
@@ -167,15 +176,7 @@ class SimplePipeline(BasePipeline):
         if lang is None:
             lang = config.DEFAULT_LANGUAGE
 
-        # Remove duplicate documents based on content and filter out empty documents
-        seen_contents = set()
-        unique_docs = []
-        
-        for doc in relevant_docs:
-            content = doc.get('content', '').strip()
-            if content and content not in seen_contents:
-                seen_contents.add(content)
-                unique_docs.append(doc)
+        unique_docs = self._deduplicate_docs(relevant_docs)
 
         # Ưu tiên feedback-boosted docs lên đầu
         boosted = [d for d in unique_docs if d.get('metadata', {}).get('is_feedback_boosted')]
@@ -334,15 +335,7 @@ class SimplePipeline(BasePipeline):
                 relevant_docs = []
 
         if relevant_docs:
-            # Remove duplicate documents for consistent numbering
-            seen_contents = set()
-            unique_docs = []
-            
-            for doc in relevant_docs:
-                content = doc.get('content', '').strip()
-                if content and content not in seen_contents:
-                    seen_contents.add(content)
-                    unique_docs.append(doc)
+            unique_docs = self._deduplicate_docs(relevant_docs)
             
             # Send info about found documents
             yield "data: " + json.dumps({
@@ -381,27 +374,16 @@ class SimplePipeline(BasePipeline):
 
         # Display sources
         if relevant_docs:
-            # Remove duplicate documents for sources display (same logic as in _create_augmented_prompt)
-            seen_contents = set()
-            unique_docs = []
-            
-            for doc in relevant_docs:
-                content = doc.get('content', '').strip()
-                if content and content not in seen_contents:
-                    seen_contents.add(content)
-                    unique_docs.append(doc)
-            
-                sources = [
-                    {
-                        "content": doc["content"],
-                        "source": doc["metadata"].get("source", "Unknown"),
-                        "embedding_score": doc.get("embedding_score", 0.0),
-                        "relevance_score": None,
-                        "metadata": doc["metadata"]
-                    } for doc in unique_docs
-                ]
-
-            # Send sources information
+            unique_docs = self._deduplicate_docs(relevant_docs)
+            sources = [
+                {
+                    "content": doc["content"],
+                    "source": doc["metadata"].get("source", "Unknown"),
+                    "embedding_score": doc.get("embedding_score", 0.0),
+                    "relevance_score": None,
+                    "metadata": doc["metadata"]
+                } for doc in unique_docs
+            ]
             yield "data: " + json.dumps({"type": "sources", "data": sources}) + "\n\n"
         
         # Send completion message

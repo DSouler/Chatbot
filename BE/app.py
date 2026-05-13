@@ -5,11 +5,15 @@ import io
 import os
 import base64
 import uuid
+import hashlib
 import asyncio
+import threading
+import concurrent.futures as _cf
 from pathlib import Path as FilePath
 from difflib import SequenceMatcher
 import traceback
 
+import numpy as np
 from fastapi import FastAPI, HTTPException, Path, UploadFile, File, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
@@ -22,7 +26,6 @@ from models.requests import (
     ConversationCreateRequest,
     ConversationRenameRequest
 )
-
 from models.responses import QueryResponse
 
 from llms.engine import get_client
@@ -91,7 +94,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.documents import Document
 from langchain_qdrant import QdrantVectorStore, FastEmbedSparse
-from qdrant_client.models import VectorParams, Distance
+from qdrant_client.models import VectorParams, Distance, PointStruct
 from qdrant_client.http import models as qdrant_models
 
 
@@ -145,6 +148,24 @@ try:
     init_question_feedback_table()
 except Exception:
     pass  # Non-critical: table may already exist or DB may be unavailable
+
+
+# =========================
+# SHARED HELPERS
+# =========================
+
+def _get_openai_embeddings():
+    """Create OpenAI embeddings instance with project-level config."""
+    return OpenAIEmbeddings(
+        openai_api_key=config.LLM_API_KEY,
+        model="text-embedding-ada-002"
+    )
+
+
+def _deterministic_qdrant_id(prefix: str, text: str) -> str:
+    """Generate a deterministic UUID from a prefix + normalized text."""
+    normalized = text.strip().lower()
+    return str(uuid.UUID(hashlib.md5(f"{prefix}_{normalized}".encode()).hexdigest()))
 
 # =========================
 # ROUTES
@@ -849,10 +870,7 @@ async def _generate_stream(request: QuestionRequest):
                     pass
 
                 # Embed và lưu vào Qdrant
-                openai_embeddings = OpenAIEmbeddings(
-                    openai_api_key=config.LLM_API_KEY,
-                    model="text-embedding-ada-002"
-                )
+                openai_embeddings = _get_openai_embeddings()
                 _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
 
                 vectors = await asyncio.to_thread(
@@ -860,7 +878,6 @@ async def _generate_stream(request: QuestionRequest):
                     [d.page_content for d in all_docs]
                 )
 
-                from qdrant_client.models import PointStruct
                 points = [
                     PointStruct(
                         id=str(uuid.uuid4()),
@@ -1267,10 +1284,7 @@ async def upload_document(file: UploadFile = File(...)):
     ]
 
     # OpenAI embeddings (text-embedding-ada-002, 1536-dim)
-    openai_embeddings = OpenAIEmbeddings(
-        openai_api_key=config.LLM_API_KEY,
-        model="text-embedding-ada-002"
-    )
+    openai_embeddings = _get_openai_embeddings()
 
     # Ensure collection has correct schema
     _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
@@ -1283,7 +1297,6 @@ async def upload_document(file: UploadFile = File(...)):
     )
 
     # Build Qdrant points
-    from qdrant_client.models import PointStruct
     points = [
         PointStruct(
             id=str(uuid.uuid4()),
@@ -1321,17 +1334,13 @@ async def ingest_meta():
         if not comps:
             return JSONResponse({"status": "error", "message": "Không parse được comp nào từ op.gg"}, status_code=500)
 
-        openai_embeddings = OpenAIEmbeddings(
-            openai_api_key=config.LLM_API_KEY,
-            model="text-embedding-ada-002"
-        )
+        openai_embeddings = _get_openai_embeddings()
         _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
 
         texts = [c["document_text"] for c in comps]
         logger.info(f"Embedding {len(texts)} comp documents...")
         vectors = await asyncio.to_thread(openai_embeddings.embed_documents, texts)
 
-        from qdrant_client.models import PointStruct
         points = [
             PointStruct(
                 id=str(uuid.uuid4()),
@@ -1437,29 +1446,22 @@ async def get_saved_images():
 
 def _feedback_qdrant_id(message_id: int) -> str:
     """Generate a deterministic UUID for a feedback-boosted Qdrant point (legacy, per-message)."""
-    import hashlib
-    return str(uuid.UUID(hashlib.md5(f"feedback_{message_id}".encode()).hexdigest()))
+    return _deterministic_qdrant_id("feedback", str(message_id))
 
 
 def _feedback_qdrant_id_by_question(question: str) -> str:
     """Generate a deterministic UUID based on question text so all feedback converges."""
-    import hashlib
-    normalized = question.strip().lower()
-    return str(uuid.UUID(hashlib.md5(f"feedback_q_{normalized}".encode()).hexdigest()))
+    return _deterministic_qdrant_id("feedback_q", question)
 
 
 def _auto_cache_qdrant_id(question: str) -> str:
     """Generate a deterministic UUID based on the question text (deduplication)."""
-    import hashlib
-    normalized = question.strip().lower()
-    return str(uuid.UUID(hashlib.md5(f"auto_cache_{normalized}".encode()).hexdigest()))
+    return _deterministic_qdrant_id("auto_cache", question)
 
 
 def _auto_cache_to_qdrant(question: str, answer: str):
     """Auto-cache a successful RAG Q&A pair to Qdrant for cross-user knowledge sharing.
     Runs in a background thread to avoid blocking the response."""
-    import concurrent.futures as _cf
-    import threading
 
     def _do_cache():
         try:
@@ -1471,14 +1473,10 @@ def _auto_cache_to_qdrant(question: str, answer: str):
             doc_text = f"Câu hỏi: {q_text}\n\nCâu trả lời: {a_text}"
             qdrant_id = _auto_cache_qdrant_id(q_text)
 
-            openai_embeddings = OpenAIEmbeddings(
-                openai_api_key=config.LLM_API_KEY,
-                model="text-embedding-ada-002"
-            )
+            openai_embeddings = _get_openai_embeddings()
             vec = openai_embeddings.embed_query(q_text)
             _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
 
-            from qdrant_client.models import PointStruct
             vectordb_engine.qdrant_client.upsert(
                 collection_name=config.QDRANT_COLLECTION_NAME,
                 points=[PointStruct(
@@ -1551,15 +1549,10 @@ def api_submit_feedback(message_id: int, body: dict = Body(...)):
             if net_score > 0:
                 a_text = msg.get('content', '').strip()
                 doc_text = f"Câu hỏi: {q_text}\n\nCâu trả lời: {a_text}"
-                openai_embeddings = OpenAIEmbeddings(
-                    openai_api_key=config.LLM_API_KEY,
-                    model="text-embedding-ada-002"
-                )
-                import concurrent.futures as _cf
+                openai_embeddings = _get_openai_embeddings()
                 with _cf.ThreadPoolExecutor() as _pool:
                     vec = _pool.submit(openai_embeddings.embed_query, q_text).result()
                 _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
-                from qdrant_client.models import PointStruct
                 vectordb_engine.qdrant_client.upsert(
                     collection_name=config.QDRANT_COLLECTION_NAME,
                     points=[PointStruct(

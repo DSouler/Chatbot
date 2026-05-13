@@ -27,46 +27,31 @@ class BasePipeline(ABC):
         pass
 
     @abstractmethod
-    async def retrieve(self, retrieval_settings: RetrievalSettings, query: str, top_k: int, filter_payload: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
-        """
-        Retrieve relevant documents for a query
-        """
+    async def retrieve(self, embedding: Any, retrieval_settings: RetrievalSettings, query: str, top_k: int, filter_payload: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+        """Retrieve relevant documents for a query."""
         pass
 
     @abstractmethod
     async def stream(
-            self, 
+            self,
             original_question: str,
-            llm_client: Any,
             chat_history: List[Dict[str, str]],
+            llm_client: Any,
             messages: List[Dict[str, str]],
-            n_last_interactions: int,
-            max_context_rewrite_length: int,
-            collection_id: str,
-            tenant_id: str,
-            user_group_id: str,
-            top_k: int,
-            qa_prompt: str,
             retrieval_settings: RetrievalSettings,
-            reasoning_settings: ReasoningSettings
+            reasoning_settings: ReasoningSettings,
+            user_content=None,
     ) -> AsyncGenerator[str, None]:
-        """
-        Stream a response from the LLM
-        Must be implemented by concrete pipeline classes
-        """
+        """Stream a response from the LLM."""
         pass
 
     @abstractmethod
     async def stream_completion(
             self,
-            provider_name: str,
             model_name: str,
-            messages: List[Dict[str, str]],
             llm_client: Any,
+            messages: List[Dict[str, str]],
             callback: Optional[Callable[[str], None]] = None,
     ) -> AsyncGenerator[str, None]:
-        """
-        Stream a response from the LLM
-        Must be implemented by concrete pipeline classes
-        """
+        """Stream a response from the LLM."""
         pass 
