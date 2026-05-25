@@ -410,7 +410,7 @@ const Chat = () => {
   const handleDeleteConversation = async (conversationId) => {
     try { localStorage.removeItem(`chat_imgs_${conversationId}`); } catch { /* ignore */ }
     await fetchConversations();
-    if (selectedConversationId === conversationId) {
+    if (String(selectedConversationId) === String(conversationId)) {
       handleResetChat();
     }
   };

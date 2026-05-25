@@ -1060,13 +1060,19 @@ async def chat_message(request: QuestionRequest):
 
     if conversation_id and created_by:
         images_data = [{"data": img.data, "media_type": img.media_type} for img in (request.images or [])]
-        add_message(
-            conversation_id,
-            request.question,
-            created_by,
-            "user",
-            images=images_data if images_data else None
-        )
+        try:
+            add_message(
+                conversation_id,
+                request.question,
+                created_by,
+                "user",
+                images=images_data if images_data else None
+            )
+        except Exception as e:
+            if "ForeignKeyViolation" in type(e).__name__ or "foreign key" in str(e).lower():
+                logger.warning(f"Conversation {conversation_id} no longer exists, skipping message save")
+                raise HTTPException(status_code=404, detail=f"Conversation {conversation_id} not found")
+            raise
 
     bot_answer = ""
     usage_data = {}
