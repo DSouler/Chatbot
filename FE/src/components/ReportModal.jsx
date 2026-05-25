@@ -61,7 +61,7 @@ const ReportModal = ({ open, onClose, userId }) => {
 
   const fetchStats = async () => {
     setLoading(true);
-    try   { setStats(await getUsageStats(userId, days)); }
+    try   { setStats(await getUsageStats(null, days)); }
     catch { setStats(null); }
     finally { setLoading(false); }
   };

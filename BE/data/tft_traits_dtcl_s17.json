@@ -541,8 +541,44 @@
             "noi_tai": "Đòn đánh gây sát thương phép. Gwen vào trạng thái Vùng Phiêu khi nhắm mục tiêu vào kẻ địch dưới 40% Máu.",
             "kich_hoat": "Lướt đến một ô lân cận để cắt kẻ địch có phần trăm Máu thấp nhất, gây 145/220/380 (tỉ lệ theo AP) sát thương phép lên mục tiêu và sát thương phép (tỉ lệ theo AP) lên mọi kẻ địch trong hình nón. Nếu chiêu này hạ gục, lướt và cắt thêm lần nữa với 65% sát thương!"
           }
+        },
+        {
+          "name": "Ornn",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Địa Ngục Disco",
+            "noi_tai": "Khi bắt đầu giao tranh, rèn một trang bị hoàn chỉnh tạm thời. Nếu đã mang 3 trang bị, thay vào đó, 1 trang bị hoàn chỉnh ngẫu nhiên sẽ trở thành dạng Ánh Sáng trong giao tranh này.",
+            "kich_hoat": "Nhận 100/150/500 (tỉ lệ theo AP) Lá Chắn trong 3 giây, sau đó khạc lửa theo hình nón gây 180/270/430 (tỉ lệ theo AP) sát thương phép. Sau khi Lá Chắn bất kỳ trên Ornn hết hiệu lực, Ornn vào trạng thái Vùng Phiêu trong 3 giây."
+          }
+        },
+        {
+          "name": "Samira",
+          "cost": 3,
+          "chieu_thuc": {
+            "ten_chieu": "Nhảy Múa",
+            "noi_tai": "Bất cứ khi nào một kẻ địch bị hất tung, bắn chúng, gây sát thương vật lý (tỉ lệ theo AD + AP) và vào trạng thái Vùng Phiêu trong 3 giây.",
+            "kich_hoat": "Phóng một loạt đạn vào mục tiêu, gây 360/540/860 (tỉ lệ theo AD) sát thương vật lý và hất tung trong 1.25 giây."
+          }
+        },
+        {
+          "name": "Nami",
+          "cost": 4,
+          "chieu_thuc": {
+            "ten_chieu": "Bong Bóng Nổ",
+            "kich_hoat": "Ném một bong bóng disco vào mục tiêu, gây 430/650/5000 (tỉ lệ theo AP) chia đều cho những kẻ địch trong bán kính 1 ô. Vụ nổ phóng 3 khối cầu về phía các kẻ địch gần đó, gây sát thương phép (tỉ lệ theo AP). Khi tung chiêu, Nami vào trạng thái Vùng Phiêu trong 3 giây."
+          }
+        },
+        {
+          "name": "Blitzcrank",
+          "cost": 5,
+          "chieu_thuc": {
+            "ten_chieu": "Kẻ Phá Tiệc",
+            "noi_tai": "Mỗi 2/2/0.5 giây, triệu hồi một tia sét giáng xuống kẻ địch ở gần có lượng Máu cao nhất, gây sát thương phép (tỉ lệ theo AP).",
+            "kich_hoat": "Triệu hồi một quả cầu disco tại nơi tập trung đông kẻ địch nhất, sau đó hất tung mục tiêu hiện tại vào đó, gây sát thương phép (tỉ lệ theo AP). Mục tiêu rơi xuống quả cầu disco, gây sát thương phép (tỉ lệ theo AP) trong bán kính 3 ô. Vào trạng thái Vùng Phiêu trong 1 giây với mỗi kẻ địch trúng phải."
+          }
         }
       ],
+
       "bonus": {
         "tiers": [
           {
@@ -1303,10 +1339,10 @@
       }
     },
     {
-      "name": "Tụ Năng",
+      "name": "Dẫn Truyền",
       "name_en": "Channeler",
       "type": "Hệ",
-      "description": "Thiên Phú: Tướng Tụ Năng nhận thêm 20% Năng Lượng từ mọi nguồn. Đội của bạn được tăng Hồi Năng Lượng, tướng Tụ Năng nhận được nhiều hơn.",
+      "description": "Thiên Phú: Tướng Dẫn Truyền nhận thêm 20% Năng Lượng từ mọi nguồn. Đội của bạn được tăng Hồi Năng Lượng, tướng Dẫn Truyền nhận được nhiều hơn.",
       "champions": [
         {
           "name": "Mordekaiser",
@@ -1350,23 +1386,23 @@
         }
       ],
       "bonus": {
-        "trait_passive": "Tướng Tụ Năng nhận thêm 20% Năng Lượng từ mọi nguồn",
+        "trait_passive": "Tướng Dẫn Truyền nhận thêm 20% Năng Lượng từ mọi nguồn",
         "tiers": [
           {
             "count": 2,
-            "effect": "Đội: 1 Hồi Năng Lượng | Tụ Năng: 3 Hồi Năng Lượng"
+            "effect": "Đội: 1 Hồi Năng Lượng | Dẫn Truyền: 3 Hồi Năng Lượng"
           },
           {
             "count": 3,
-            "effect": "Đội: 1 Hồi Năng Lượng | Tụ Năng: 5 Hồi Năng Lượng"
+            "effect": "Đội: 1 Hồi Năng Lượng | Dẫn Truyền: 5 Hồi Năng Lượng"
           },
           {
             "count": 4,
-            "effect": "Đội: 2 Hồi Năng Lượng | Tụ Năng: 7 Hồi Năng Lượng"
+            "effect": "Đội: 2 Hồi Năng Lượng | Dẫn Truyền: 7 Hồi Năng Lượng"
           },
           {
             "count": 5,
-            "effect": "Đội: 3 Hồi Năng Lượng | Tụ Năng: 9 Hồi Năng Lượng"
+            "effect": "Đội: 3 Hồi Năng Lượng | Dẫn Truyền: 9 Hồi Năng Lượng"
           }
         ]
       }

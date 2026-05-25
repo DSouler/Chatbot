@@ -8,10 +8,13 @@ import time
 import logging
 import asyncio
 import aiohttp
+from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # ================================================================
@@ -967,3 +970,490 @@ def _is_artifact_query(text: str) -> bool:
 def get_cache() -> MetaCache:
     """Expose the module-level cache for external use."""
     return _meta_cache
+
+
+# ================================================================
+# SECTION 8: Champion-Item Recommendation (op.gg/vi/tft/meta-trends/item)
+# ================================================================
+
+# Known TFT Season 17 champion names for detection
+TFT_CHAMPIONS = {
+    "Aatrox", "Ahri", "Akali", "Aurora", "Aurelion Sol",
+    "Bard", "Bel'Veth", "Bia & Bayin", "Blitzcrank", "Briar",
+    "Caitlyn", "Cho'Gath", "Corki",
+    "Diana",
+    "Ezreal",
+    "Fiora", "Fizz",
+    "Gragas", "Graves",
+    "Illaoi",
+    "Jax", "Jhin", "Jinx",
+    "Kai'Sa", "Karma", "Kindred",
+    "LeBlanc", "Leona", "Lissandra",
+    "Malzahar", "Maokai", "Master Yi", "Meepsie", "Milio",
+    "Miss Fortune", "Mordekaiser", "Morgana",
+    "Nami", "Nunu & Willump",
+    "Ornn",
+    "Pyke",
+    "Rammus", "Rhaast", "Riven", "Robot",
+    "Shen", "Sona",
+    "Tahm Kench", "Teemo", "Twisted Fate",
+    "Urgot",
+    "Veigar", "Vex", "Viktor",
+    "Xayah",
+}
+
+# Champion name aliases for fuzzy matching
+_CHAMPION_ALIASES = {
+    "asol": "Aurelion Sol",
+    "aurelion": "Aurelion Sol",
+    "sol": "Aurelion Sol",
+    "belveth": "Bel'Veth",
+    "bel veth": "Bel'Veth",
+    "cho gath": "Cho'Gath",
+    "chogath": "Cho'Gath",
+    "kai sa": "Kai'Sa",
+    "kaisa": "Kai'Sa",
+    "le blanc": "LeBlanc",
+    "leblanc": "LeBlanc",
+    "lb": "LeBlanc",
+    "master yi": "Master Yi",
+    "yi": "Master Yi",
+    "miss fortune": "Miss Fortune",
+    "mf": "Miss Fortune",
+    "nunu": "Nunu & Willump",
+    "nunu willump": "Nunu & Willump",
+    "tahm kench": "Tahm Kench",
+    "tahm": "Tahm Kench",
+    "tk": "Tahm Kench",
+    "tf": "Twisted Fate",
+    "twisted fate": "Twisted Fate",
+    "morde": "Mordekaiser",
+}
+
+
+CHAMPION_ITEM_PATTERNS = [
+    r"(trang bị|đồ|item|build|trang bi|do)\s+(cho|của|cua|cho\s+tướng|cho\s+tuong|nào\s+cho|nao\s+cho|tốt\s+cho|tot\s+cho|phù hợp\s+cho|phu hop\s+cho|phù hợp\s+với|phu hop\s+voi)\s+(.+?)[\?\.!]?$",
+    r"(.+?)\s+(dùng|dung|mang|lên|len|cầm|cam|nên dùng|nen dung|nên mang|nen mang|nên lên|nen len|nên cầm|nen cam|nên build|nen build|build)\s+(trang bị|đồ|item|trang bi|do)\s*(gì|gi|nào|nao)?",
+    r"(.+?)\s+(dùng|dung|mang|lên|len|cầm|cam|nên dùng|nen dung|nên mang|nen mang|nên lên|nen len|nên cầm|nen cam)\s+(gì|gi|đồ gì|do gi|trang bị gì|trang bi gi|item gì|item gi)",
+    r"(trang bị|đồ|item|build|trang bi|do)\s+(tốt nhất|tot nhat|mạnh nhất|manh nhat|best|bis)\s+(cho|của|cua|cho\s+tướng|cho\s+tuong)\s+(.+?)[\?\.!]?$",
+    r"(đồ|trang bị|item|do|trang bi)\s+(cho|của|cua)\s+(.+)",
+    r"best\s*in\s*slot\s+(cho|của|cua|for)?\s*(.+)",
+    r"bis\s+(cho|của|cua|for)?\s*(.+)",
+]
+
+
+def is_champion_item_query(text: str) -> bool:
+    """Detect if user is asking about items for a specific champion."""
+    text_lower = text.lower().strip()
+    for pattern in CHAMPION_ITEM_PATTERNS:
+        if re.search(pattern, text_lower):
+            return True
+    # Also check if text mentions a champion + item-related keyword
+    item_keywords = ["trang bị", "đồ", "item", "build", "bis", "best in slot",
+                     "trang bi", "dùng gì", "dung gi", "mang gì", "mang gi",
+                     "cầm gì", "cam gi", "lên gì", "len gi",
+                     "do gi", "do cho", "đồ cho"]
+    has_item_kw = any(kw in text_lower for kw in item_keywords)
+    if has_item_kw:
+        champ = _extract_champion_name(text)
+        if champ:
+            return True
+    return False
+
+
+def _extract_champion_name(text: str) -> Optional[str]:
+    """Extract champion name from user query text."""
+    text_lower = text.lower().strip()
+
+    # Check aliases first (multi-word aliases before single-word)
+    sorted_aliases = sorted(_CHAMPION_ALIASES.keys(), key=len, reverse=True)
+    for alias in sorted_aliases:
+        if alias in text_lower:
+            return _CHAMPION_ALIASES[alias]
+
+    # Check exact champion names (longest first to avoid partial matches)
+    sorted_champs = sorted(TFT_CHAMPIONS, key=len, reverse=True)
+    for champ in sorted_champs:
+        if champ.lower() in text_lower:
+            return champ
+
+    return None
+
+
+def _parse_opgg_item_champion_data(html: str) -> Dict[str, List[Dict]]:
+    """
+    Parse op.gg item page HTML and build champion → items mapping.
+    Extracts structured JSON data from React Server Components script tags.
+    Falls back to pipe-delimited text parsing if JSON extraction fails.
+    Returns {champion_name: [{item_name, item_rank, avg_place, top4_rate, pick_rate, games, champion_position}]}
+    """
+    # Try JSON extraction from RSC script first
+    champion_items = _parse_rsc_json(html)
+    if champion_items:
+        return champion_items
+
+    # Fallback: pipe-delimited table format (from fetch_webpage tool)
+    pipe_pattern = re.compile(
+        r'\|\s*(\d+)\s*\|\s*(.+?)\s*\|\s*#([\d.]+)\s*\|\s*([\d.]+)%\s*\|\s*([\d.]+)%\s*\|\s*([\d,]+)\s*\|\s*(.+?)\s*\|'
+    )
+    pipe_matches = list(pipe_pattern.finditer(html))
+    if pipe_matches:
+        champion_items = _parse_pipe_format(pipe_matches)
+
+    return champion_items
+
+
+def _parse_rsc_json(html: str) -> Dict[str, List[Dict]]:
+    """Extract champion-item data from React Server Components JSON in HTML."""
+    try:
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(html, "html.parser")
+
+        # Find the large script containing item stats
+        big_script = None
+        for s in soup.find_all("script"):
+            if s.string and len(s.string) > 100000:
+                big_script = s.string
+                break
+
+        if not big_script:
+            return {}
+
+        # Unescape RSC string content (escaped quotes)
+        content_start = big_script.find('"', 25) + 1
+        content_end = big_script.rfind('"')
+        if content_start <= 0 or content_end <= content_start:
+            return {}
+        text = big_script[content_start:content_end].replace('\\"', '"')
+
+        # Build item ID -> Vietnamese name mapping from apiName definitions
+        name_map: Dict[str, str] = {}
+        name_pat = re.compile(r'"apiName":"([^"]+)".*?"name":"([^"]+)"')
+        for m in name_pat.finditer(text):
+            name_map[m.group(1)] = m.group(2)
+
+        # Extract item stats with champion data
+        item_pat = re.compile(
+            r'\{"items":"([^"]+)","totalCount":(\d+),"winCount":(\d+),"top4Count":(\d+),'
+            r'"winRate":([\d.]+),"top4Rate":([\d.]+),"avgPlacement":([\d.]+),'
+            r'"champions":\[(.*?)\]\}'
+        )
+        champ_pat = re.compile(
+            r'"characterId":"([^"]+)","totalCount":(\d+),"winCount":(\d+),"top4Count":(\d+),'
+            r'"winRate":([\d.]+),"top4Rate":([\d.]+),"avgPlacement":([\d.]+)'
+        )
+
+        # Rank items by total games (descending) to assign rank
+        items_data = []
+        for m in item_pat.finditer(text):
+            items_data.append({
+                "item_id": m.group(1),
+                "total_count": int(m.group(2)),
+                "top4_rate": float(m.group(6)),
+                "avg_placement": float(m.group(7)),
+                "champs_str": m.group(8),
+            })
+        items_data.sort(key=lambda x: -x["total_count"])
+
+        champion_items: Dict[str, List[Dict]] = {}
+
+        for rank, item in enumerate(items_data, 1):
+            item_name = name_map.get(item["item_id"], item["item_id"])
+
+            for pos, cm in enumerate(champ_pat.finditer(item["champs_str"]), 1):
+                char_id = cm.group(1)
+                # Strip TFT17_ prefix to get champion name
+                champ_name = char_id.replace("TFT17_", "").replace("TFT_", "")
+                # Fix casing
+                if champ_name == "Leblanc":
+                    champ_name = "LeBlanc"
+                elif champ_name == "IvernMinion":
+                    champ_name = "Ivern"
+
+                if champ_name not in champion_items:
+                    champion_items[champ_name] = []
+                champion_items[champ_name].append({
+                    "item_name": item_name,
+                    "item_rank": rank,
+                    "avg_place": item["avg_placement"],
+                    "top4_rate": item["top4_rate"] * 100,
+                    "pick_rate": 0.0,
+                    "games": item["total_count"],
+                    "champion_position": pos,
+                    "champion_games": int(cm.group(2)),
+                    "champion_top4_rate": float(cm.group(6)) * 100,
+                    "champion_avg_place": float(cm.group(7)),
+                })
+
+        # Sort each champion's items
+        for champ in champion_items:
+            champion_items[champ].sort(key=lambda x: (
+                x["champion_position"],
+                x["champion_avg_place"],
+                -x["champion_top4_rate"],
+            ))
+
+        if champion_items:
+            logger.info(f"RSC JSON: parsed {len(champion_items)} champions from {len(items_data)} items")
+
+        return champion_items
+
+    except Exception as e:
+        logger.warning(f"RSC JSON extraction failed: {e}")
+        return {}
+
+
+def _parse_pipe_format(matches) -> Dict[str, List[Dict]]:
+    """Parse pipe-delimited table format (fallback for fetch_webpage output)."""
+    champion_items: Dict[str, List[Dict]] = {}
+
+    for m in matches:
+        rank = int(m.group(1))
+        raw_name = m.group(2).strip()
+        avg_place = float(m.group(3))
+        top4_rate = float(m.group(4))
+        pick_rate = float(m.group(5))
+        games = int(m.group(6).replace(',', ''))
+        champ_str = m.group(7).strip()
+
+        if champ_str == '-':
+            continue
+
+        # De-duplicate item name (fetch_webpage sometimes doubles it)
+        words = raw_name.split()
+        half = len(words) // 2
+        if half > 0 and words[:half] == words[half:]:
+            item_name = " ".join(words[:half])
+        else:
+            item_name = raw_name
+
+        champ_names = _parse_champion_names_from_text(champ_str)
+
+        for pos, champ in enumerate(champ_names, 1):
+            if champ not in champion_items:
+                champion_items[champ] = []
+            champion_items[champ].append({
+                "item_name": item_name,
+                "item_rank": rank,
+                "avg_place": avg_place,
+                "top4_rate": top4_rate,
+                "pick_rate": pick_rate,
+                "games": games,
+                "champion_position": pos,
+            })
+
+    for champ in champion_items:
+        champion_items[champ].sort(key=lambda x: (
+            x["champion_position"],
+            x["avg_place"],
+            -x["top4_rate"],
+        ))
+
+    return champion_items
+
+
+def _parse_champion_names_from_text(text: str) -> List[str]:
+    """Parse champion names from space-separated text, handling multi-word names."""
+    text = text.strip()
+    if not text or text == '-':
+        return []
+
+    result = []
+    multi_word = sorted([c for c in TFT_CHAMPIONS if ' ' in c or '&' in c or "'" in c],
+                        key=len, reverse=True)
+
+    remaining = text
+    for champ in multi_word:
+        if champ in remaining:
+            result.append(champ)
+            remaining = remaining.replace(champ, '  ')
+
+    for word in remaining.split():
+        word = word.strip()
+        if not word:
+            continue
+        for champ in TFT_CHAMPIONS:
+            if champ.lower() == word.lower():
+                result.append(champ)
+                break
+
+    return result
+
+
+async def scrape_opgg_champion_items() -> Dict[str, List[Dict]]:
+    """
+    Crawl op.gg item page and build champion → items mapping.
+    Uses in-memory cache (TTL 30 min).
+    Falls back to saved JSON if live crawl fails.
+    """
+    cache_key = "opgg_champion_items"
+    cached = _meta_cache.get(cache_key)
+    if cached is not None:
+        logger.info("Cache hit for opgg_champion_items")
+        return cached
+
+    champion_items = {}
+
+    # Try direct aiohttp first (faster, no Playwright needed)
+    # Pass raw HTML to parser — it extracts structured JSON from RSC script tags
+    try:
+        url = "https://op.gg/vi/tft/meta-trends/item"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}
+        timeout = aiohttp.ClientTimeout(total=30)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.get(url, headers=headers) as resp:
+                if resp.status == 200:
+                    html = await resp.text()
+                    champion_items = _parse_opgg_item_champion_data(html)
+                    if champion_items:
+                        logger.info(f"aiohttp crawl: parsed {len(champion_items)} champions")
+                else:
+                    logger.warning(f"op.gg returned HTTP {resp.status}")
+    except Exception as e:
+        logger.warning(f"aiohttp crawl failed: {e}")
+
+    # Fallback: try WebReaderTool (Playwright)
+    if not champion_items:
+        try:
+            from agents.web_reader_tool import WebReaderTool
+            tool = WebReaderTool(max_length=120000)
+            result = await tool.read_url("https://op.gg/vi/tft/meta-trends/item")
+            if result.get("success") and result.get("content", "").strip():
+                champion_items = _parse_opgg_item_champion_data(result["content"])
+                if champion_items:
+                    logger.info(f"Playwright crawl: parsed {len(champion_items)} champions")
+        except Exception as e:
+            logger.warning(f"Playwright crawl failed: {e}")
+
+    # Save to disk for future fallback
+    if champion_items:
+        try:
+            import json
+            save_path = BASE_DIR / "data" / "opgg_champion_items.json"
+            with open(save_path, "w", encoding="utf-8") as f:
+                json.dump(champion_items, f, ensure_ascii=False, indent=2)
+            logger.info(f"Saved champion-item data to {save_path}")
+        except Exception as save_err:
+            logger.warning(f"Could not save champion-item data: {save_err}")
+
+    # Last fallback: load from saved JSON
+    if not champion_items:
+        try:
+            import json
+            saved_path = BASE_DIR / "data" / "opgg_champion_items.json"
+            if saved_path.exists():
+                with open(saved_path, "r", encoding="utf-8") as f:
+                    champion_items = json.load(f)
+                logger.info(f"Loaded {len(champion_items)} champions from saved file")
+        except Exception as load_err:
+            logger.warning(f"Could not load saved champion-item data: {load_err}")
+
+    if champion_items:
+        _meta_cache.set(cache_key, champion_items, "champion_items")
+
+    return champion_items
+
+
+def format_champion_items_context(champion: str, champion_items: Dict[str, List[Dict]]) -> Optional[str]:
+    """
+    Format item recommendation context for a specific champion.
+    Returns 3 best items + 1-2 alternatives with stats.
+    """
+    items = champion_items.get(champion)
+    if not items:
+        return None
+
+    # Filter: only consider items with significant games and from top ranks
+    # Separate craftable/standard items from emblems/special items
+    standard_items = []
+    special_items = []
+    emblem_keywords = ["ấn ", "vương miện chiến thuật", "siêu xẻng"]
+    special_keywords = ["ánh sáng", "radiant"]
+
+    for item in items:
+        name_lower = item["item_name"].lower()
+        if any(kw in name_lower for kw in emblem_keywords):
+            continue  # skip emblems
+        if any(kw in name_lower for kw in special_keywords):
+            special_items.append(item)
+        else:
+            standard_items.append(item)
+
+    if not standard_items:
+        standard_items = items[:5]
+
+    # Score items: prefer champion-specific stats when available (RSC parser)
+    def _score(it: Dict) -> float:
+        pos_score = (6 - it["champion_position"]) * 10  # 50 for pos 1, 10 for pos 5
+        avg_place = it.get("champion_avg_place", it["avg_place"])
+        top4 = it.get("champion_top4_rate", it["top4_rate"])
+        place_score = (6 - avg_place) * 15               # lower avg_place = better
+        top4_score = top4 * 0.5                           # higher = better
+        game_bonus = min(it["games"] / 100000, 10)        # up to 10 bonus for popular items
+        return pos_score + place_score + top4_score + game_bonus
+
+    for item in standard_items:
+        item["_score"] = _score(item)
+
+    standard_items.sort(key=lambda x: -x["_score"])
+
+    best_3 = standard_items[:3]
+    alternatives = standard_items[3:5]
+
+    parts = [
+        f"=== TRANG BỊ GỢI Ý CHO {champion.upper()} (nguồn: op.gg/vi/tft/meta-trends/item) ===\n",
+        f"--- 3 TRANG BỊ TỐI ƯU (Best in Slot) ---",
+    ]
+
+    for idx, item in enumerate(best_3, 1):
+        desc = ITEM_DESCRIPTIONS.get(item["item_name"], "")
+        recipe = ITEM_RECIPES.get(item["item_name"])
+        recipe_str = f" | Ghép: {recipe[0]} + {recipe[1]}" if recipe else ""
+        desc_str = f" | Hiệu ứng: {desc}" if desc else ""
+        avg_p = item.get("champion_avg_place", item["avg_place"])
+        top4 = item.get("champion_top4_rate", item["top4_rate"])
+        parts.append(
+            f"  {idx}. **{item['item_name']}**"
+            f" — Avg. place: #{avg_p:.2f}"
+            f" | Top 4: {top4:.1f}%"
+            f" | Games: {item['games']:,}"
+            f"{recipe_str}{desc_str}"
+        )
+
+    if alternatives:
+        parts.append(f"\n--- TRANG BỊ THAY THẾ ---")
+        for item in alternatives:
+            desc = ITEM_DESCRIPTIONS.get(item["item_name"], "")
+            recipe = ITEM_RECIPES.get(item["item_name"])
+            recipe_str = f" | Ghép: {recipe[0]} + {recipe[1]}" if recipe else ""
+            desc_str = f" | Hiệu ứng: {desc}" if desc else ""
+            avg_p = item.get("champion_avg_place", item["avg_place"])
+            top4 = item.get("champion_top4_rate", item["top4_rate"])
+            parts.append(
+                f"  • {item['item_name']}"
+                f" — Avg. place: #{avg_p:.2f}"
+                f" | Top 4: {top4:.1f}%"
+                f"{recipe_str}{desc_str}"
+            )
+
+    # Add radiant/special alternatives if available
+    if special_items:
+        parts.append(f"\n--- PHIÊN BẢN ÁNH SÁNG (nếu có) ---")
+        for item in special_items[:2]:
+            parts.append(
+                f"  ✦ {item['item_name']}"
+                f" — Avg. place: #{item['avg_place']:.2f}"
+                f" | Top 4: {item['top4_rate']:.1f}%"
+            )
+
+    parts.append(
+        f"\nLƯU Ý: Dữ liệu dựa trên thống kê từ hàng triệu trận đấu xếp hạng trên op.gg. "
+        f"Trang bị tối ưu có thể thay đổi tùy theo đội hình (comp) và meta hiện tại."
+    )
+
+    return "\n".join(parts)
+
+
+def extract_champion_for_item_query(text: str) -> Optional[str]:
+    """Public wrapper: extract champion name from an item query."""
+    return _extract_champion_name(text)

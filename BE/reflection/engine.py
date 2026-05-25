@@ -1,5 +1,4 @@
 import logging
-import asyncio
 from typing import List, Dict
 import config
 logging.basicConfig(level=logging.INFO)

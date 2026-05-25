@@ -1,6 +1,5 @@
 import logging
 import openai
-import threading
 import config
 from concurrent.futures import ThreadPoolExecutor
 

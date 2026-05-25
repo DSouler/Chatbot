@@ -5,11 +5,15 @@ import io
 import os
 import base64
 import uuid
+import hashlib
 import asyncio
+import threading
+import concurrent.futures as _cf
 from pathlib import Path as FilePath
 from difflib import SequenceMatcher
 import traceback
 
+import numpy as np
 from fastapi import FastAPI, HTTPException, Path, UploadFile, File, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
@@ -22,7 +26,6 @@ from models.requests import (
     ConversationCreateRequest,
     ConversationRenameRequest
 )
-
 from models.responses import QueryResponse
 
 from llms.engine import get_client
@@ -81,12 +84,17 @@ from agents.tft_meta_crawler import (
     ITEM_RECIPES,
     _is_recipe_query,
     get_cache as get_meta_cache,
+    is_champion_item_query,
+    extract_champion_for_item_query,
+    scrape_opgg_champion_items,
+    format_champion_items_context,
 )
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.documents import Document
-from qdrant_client.models import VectorParams, Distance
+from langchain_qdrant import QdrantVectorStore, FastEmbedSparse
+from qdrant_client.models import VectorParams, Distance, PointStruct
 from qdrant_client.http import models as qdrant_models
 
 
@@ -141,6 +149,24 @@ try:
 except Exception:
     pass  # Non-critical: table may already exist or DB may be unavailable
 
+
+# =========================
+# SHARED HELPERS
+# =========================
+
+def _get_openai_embeddings():
+    """Create OpenAI embeddings instance with project-level config."""
+    return OpenAIEmbeddings(
+        openai_api_key=config.LLM_API_KEY,
+        model="text-embedding-ada-002"
+    )
+
+
+def _deterministic_qdrant_id(prefix: str, text: str) -> str:
+    """Generate a deterministic UUID from a prefix + normalized text."""
+    normalized = text.strip().lower()
+    return str(uuid.UUID(hashlib.md5(f"{prefix}_{normalized}".encode()).hexdigest()))
+
 # =========================
 # ROUTES
 # =========================
@@ -148,6 +174,121 @@ except Exception:
 @app.get("/")
 async def index():
     return FileResponse("index.html")
+
+
+# =========================
+# CHAMPION-ITEM QDRANT HELPERS
+# =========================
+
+_champion_items_embedding = None
+_champion_items_sparse = None
+
+def _get_champion_items_embeddings():
+    """Lazy-init embeddings for champion-item Qdrant ops."""
+    global _champion_items_embedding, _champion_items_sparse
+    if _champion_items_embedding is None:
+        _champion_items_embedding = OpenAIEmbeddings(
+            openai_api_key=config.LLM_API_KEY,
+            model="text-embedding-ada-002",
+        )
+        _champion_items_sparse = FastEmbedSparse()
+    return _champion_items_embedding, _champion_items_sparse
+
+
+def _upsert_champion_items_to_qdrant(champion: str, champion_items_data: dict):
+    """Upsert a single champion's item data into Qdrant.
+    Called in background thread — safe to block."""
+    from upload_champion_items_to_qdrant import build_documents
+
+    # Build doc only for this champion
+    single = {champion: champion_items_data.get(champion, [])}
+    if not single[champion]:
+        return
+
+    docs = build_documents(single)
+    if not docs:
+        return
+
+    from qdrant_client import QdrantClient
+
+    client = QdrantClient(
+        host=config.QDRANT_HOST,
+        port=config.QDRANT_PORT,
+        api_key=config.QDRANT_API_KEY if config.QDRANT_API_KEY else None,
+    )
+
+    collection_name = config.QDRANT_COLLECTION_NAME
+
+    # Delete old points for this champion
+    try:
+        client.delete(
+            collection_name=collection_name,
+            points_selector=qdrant_models.FilterSelector(
+                filter=qdrant_models.Filter(
+                    must=[
+                        qdrant_models.FieldCondition(
+                            key="metadata.doc_type",
+                            match=qdrant_models.MatchValue(value="tft_champion_items"),
+                        ),
+                        qdrant_models.FieldCondition(
+                            key="metadata.champion_name",
+                            match=qdrant_models.MatchValue(value=champion),
+                        ),
+                    ]
+                )
+            ),
+        )
+    except Exception:
+        pass
+
+    embedding, sparse_embedding = _get_champion_items_embeddings()
+
+    vector_store = QdrantVectorStore(
+        client=client,
+        collection_name=collection_name,
+        embedding=embedding,
+        sparse_embedding=sparse_embedding,
+        vector_name="dense",
+        sparse_vector_name="sparse",
+    )
+
+    vector_store.add_documents(docs)
+    logger.info(f"Upserted {len(docs)} champion-item docs for {champion} to Qdrant")
+
+
+def _retrieve_champion_items_from_qdrant(champion: str) -> str:
+    """Retrieve pre-stored champion-item data from Qdrant."""
+    from qdrant_client import QdrantClient
+
+    client = QdrantClient(
+        host=config.QDRANT_HOST,
+        port=config.QDRANT_PORT,
+        api_key=config.QDRANT_API_KEY if config.QDRANT_API_KEY else None,
+    )
+
+    collection_name = config.QDRANT_COLLECTION_NAME
+
+    results = client.scroll(
+        collection_name=collection_name,
+        scroll_filter=qdrant_models.Filter(
+            must=[
+                qdrant_models.FieldCondition(
+                    key="metadata.doc_type",
+                    match=qdrant_models.MatchValue(value="tft_champion_items"),
+                ),
+                qdrant_models.FieldCondition(
+                    key="metadata.champion_name",
+                    match=qdrant_models.MatchValue(value=champion),
+                ),
+            ]
+        ),
+        limit=1,
+    )
+
+    points = results[0] if results else []
+    if points:
+        return points[0].payload.get("page_content", "")
+    return ""
 
 
 # =========================
@@ -360,6 +501,106 @@ async def _generate_stream(request: QuestionRequest):
                     "type": "info",
                     "message": f"⚠️ Không thể đánh giá đội hình: {e}. Tiếp tục với mode thường..."
                 }) + "\n\n"
+
+        # =========================
+        # CHAMPION ITEM QUERY — trang bị cho tướng cụ thể
+        # =========================
+        if is_champion_item_query(original_question) and not request.images:
+            champion = extract_champion_for_item_query(original_question)
+            if champion:
+                yield "data: " + json.dumps({
+                    "type": "status",
+                    "message": f"Đang tìm trang bị tối ưu cho {champion}..."
+                }) + "\n\n"
+
+                items_context = None
+
+                try:
+                    yield "data: " + json.dumps({
+                        "type": "info",
+                        "message": "Đang lấy dữ liệu trang bị từ op.gg..."
+                    }) + "\n\n"
+
+                    champion_items_data = await scrape_opgg_champion_items()
+
+                    if champion_items_data:
+                        items_context = format_champion_items_context(champion, champion_items_data)
+
+                        # Upsert crawled data into Qdrant (background, non-blocking)
+                        try:
+                            await asyncio.to_thread(
+                                _upsert_champion_items_to_qdrant, champion, champion_items_data
+                            )
+                        except Exception as upsert_err:
+                            logger.warning(f"Qdrant upsert failed (non-critical): {upsert_err}")
+
+                except Exception as e:
+                    logger.error(f"Champion item live crawl error: {e}")
+                    yield "data: " + json.dumps({
+                        "type": "info",
+                        "message": "⚠️ Crawl op.gg thất bại. Đang tìm trong Qdrant..."
+                    }) + "\n\n"
+
+                # Fallback: try Qdrant if live crawl failed or champion not found
+                if not items_context:
+                    try:
+                        qdrant_context = _retrieve_champion_items_from_qdrant(champion)
+                        if qdrant_context:
+                            items_context = qdrant_context
+                            yield "data: " + json.dumps({
+                                "type": "info",
+                                "message": f"✅ Tìm thấy dữ liệu trang bị cho {champion} từ Qdrant"
+                            }) + "\n\n"
+                    except Exception as qdrant_err:
+                        logger.warning(f"Qdrant fallback failed: {qdrant_err}")
+
+                if items_context:
+                    yield "data: " + json.dumps({
+                        "type": "info",
+                        "message": f"✅ Đã tìm thấy dữ liệu trang bị cho {champion}"
+                    }) + "\n\n"
+
+                    yield "data: " + json.dumps({
+                        "type": "sources",
+                        "data": [{"title": "OP.GG TFT Items", "url": "https://op.gg/vi/tft/meta-trends/item"}]
+                    }) + "\n\n"
+
+                    lang = reasoning_settings.language if reasoning_settings else "Vietnamese"
+                    meta_sys_prompt = config.TFT_META_SYS_PROMPT_BRANCH.replace("{lang}", lang)
+
+                    champion_qa_prompt = (
+                        f"Dưới đây là dữ liệu trang bị được gợi ý cho tướng {champion} trong TFT:\n\n"
+                        f"{items_context}\n\n"
+                        f"YÊU CẦU:\n"
+                        f"- Trả lời gồm 3 trang bị tối ưu nhất (Best in Slot) và 1-2 trang bị thay thế.\n"
+                        f"- Với mỗi trang bị, giải thích ngắn gọn tại sao nó phù hợp với {champion}.\n"
+                        f"- Nêu công thức ghép (recipe) cho từng trang bị.\n"
+                        f"- Nếu có phiên bản Ánh Sáng tốt hơn, đề cập.\n"
+                        f"- Dùng số liệu thống kê để minh chứng.\n\n"
+                        f"Câu hỏi: {original_question}\n"
+                        f"Trả lời:"
+                    )
+
+                    messages[0] = {
+                        "role": "system",
+                        "content": config.compose_system_prompt(base_system_prompt, meta_sys_prompt)
+                    }
+                    messages.append({"role": "user", "content": champion_qa_prompt})
+
+                    async for chunk in simple_pipeline.stream_completion(
+                        model_name=llm_settings.model,
+                        llm_client=llm_client,
+                        messages=messages
+                    ):
+                        yield "data: " + json.dumps(chunk) + "\n\n"
+
+                    yield "data: " + json.dumps({"type": "done"}) + "\n\n"
+                    return
+                else:
+                    yield "data: " + json.dumps({
+                        "type": "info",
+                        "message": f"⚠️ Không tìm thấy dữ liệu trang bị cho {champion}. Chuyển sang RAG..."
+                    }) + "\n\n"
 
         # =========================
         # TFT META — crawl live từ tftacademy + op.gg
@@ -629,10 +870,7 @@ async def _generate_stream(request: QuestionRequest):
                     pass
 
                 # Embed và lưu vào Qdrant
-                openai_embeddings = OpenAIEmbeddings(
-                    openai_api_key=config.LLM_API_KEY,
-                    model="text-embedding-ada-002"
-                )
+                openai_embeddings = _get_openai_embeddings()
                 _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
 
                 vectors = await asyncio.to_thread(
@@ -640,7 +878,6 @@ async def _generate_stream(request: QuestionRequest):
                     [d.page_content for d in all_docs]
                 )
 
-                from qdrant_client.models import PointStruct
                 points = [
                     PointStruct(
                         id=str(uuid.uuid4()),
@@ -823,13 +1060,19 @@ async def chat_message(request: QuestionRequest):
 
     if conversation_id and created_by:
         images_data = [{"data": img.data, "media_type": img.media_type} for img in (request.images or [])]
-        add_message(
-            conversation_id,
-            request.question,
-            created_by,
-            "user",
-            images=images_data if images_data else None
-        )
+        try:
+            add_message(
+                conversation_id,
+                request.question,
+                created_by,
+                "user",
+                images=images_data if images_data else None
+            )
+        except Exception as e:
+            if "ForeignKeyViolation" in type(e).__name__ or "foreign key" in str(e).lower():
+                logger.warning(f"Conversation {conversation_id} no longer exists, skipping message save")
+                raise HTTPException(status_code=404, detail=f"Conversation {conversation_id} not found")
+            raise
 
     bot_answer = ""
     usage_data = {}
@@ -1047,10 +1290,7 @@ async def upload_document(file: UploadFile = File(...)):
     ]
 
     # OpenAI embeddings (text-embedding-ada-002, 1536-dim)
-    openai_embeddings = OpenAIEmbeddings(
-        openai_api_key=config.LLM_API_KEY,
-        model="text-embedding-ada-002"
-    )
+    openai_embeddings = _get_openai_embeddings()
 
     # Ensure collection has correct schema
     _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
@@ -1063,7 +1303,6 @@ async def upload_document(file: UploadFile = File(...)):
     )
 
     # Build Qdrant points
-    from qdrant_client.models import PointStruct
     points = [
         PointStruct(
             id=str(uuid.uuid4()),
@@ -1101,17 +1340,13 @@ async def ingest_meta():
         if not comps:
             return JSONResponse({"status": "error", "message": "Không parse được comp nào từ op.gg"}, status_code=500)
 
-        openai_embeddings = OpenAIEmbeddings(
-            openai_api_key=config.LLM_API_KEY,
-            model="text-embedding-ada-002"
-        )
+        openai_embeddings = _get_openai_embeddings()
         _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
 
         texts = [c["document_text"] for c in comps]
         logger.info(f"Embedding {len(texts)} comp documents...")
         vectors = await asyncio.to_thread(openai_embeddings.embed_documents, texts)
 
-        from qdrant_client.models import PointStruct
         points = [
             PointStruct(
                 id=str(uuid.uuid4()),
@@ -1217,29 +1452,22 @@ async def get_saved_images():
 
 def _feedback_qdrant_id(message_id: int) -> str:
     """Generate a deterministic UUID for a feedback-boosted Qdrant point (legacy, per-message)."""
-    import hashlib
-    return str(uuid.UUID(hashlib.md5(f"feedback_{message_id}".encode()).hexdigest()))
+    return _deterministic_qdrant_id("feedback", str(message_id))
 
 
 def _feedback_qdrant_id_by_question(question: str) -> str:
     """Generate a deterministic UUID based on question text so all feedback converges."""
-    import hashlib
-    normalized = question.strip().lower()
-    return str(uuid.UUID(hashlib.md5(f"feedback_q_{normalized}".encode()).hexdigest()))
+    return _deterministic_qdrant_id("feedback_q", question)
 
 
 def _auto_cache_qdrant_id(question: str) -> str:
     """Generate a deterministic UUID based on the question text (deduplication)."""
-    import hashlib
-    normalized = question.strip().lower()
-    return str(uuid.UUID(hashlib.md5(f"auto_cache_{normalized}".encode()).hexdigest()))
+    return _deterministic_qdrant_id("auto_cache", question)
 
 
 def _auto_cache_to_qdrant(question: str, answer: str):
     """Auto-cache a successful RAG Q&A pair to Qdrant for cross-user knowledge sharing.
     Runs in a background thread to avoid blocking the response."""
-    import concurrent.futures as _cf
-    import threading
 
     def _do_cache():
         try:
@@ -1251,14 +1479,10 @@ def _auto_cache_to_qdrant(question: str, answer: str):
             doc_text = f"Câu hỏi: {q_text}\n\nCâu trả lời: {a_text}"
             qdrant_id = _auto_cache_qdrant_id(q_text)
 
-            openai_embeddings = OpenAIEmbeddings(
-                openai_api_key=config.LLM_API_KEY,
-                model="text-embedding-ada-002"
-            )
+            openai_embeddings = _get_openai_embeddings()
             vec = openai_embeddings.embed_query(q_text)
             _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
 
-            from qdrant_client.models import PointStruct
             vectordb_engine.qdrant_client.upsert(
                 collection_name=config.QDRANT_COLLECTION_NAME,
                 points=[PointStruct(
@@ -1331,15 +1555,10 @@ def api_submit_feedback(message_id: int, body: dict = Body(...)):
             if net_score > 0:
                 a_text = msg.get('content', '').strip()
                 doc_text = f"Câu hỏi: {q_text}\n\nCâu trả lời: {a_text}"
-                openai_embeddings = OpenAIEmbeddings(
-                    openai_api_key=config.LLM_API_KEY,
-                    model="text-embedding-ada-002"
-                )
-                import concurrent.futures as _cf
+                openai_embeddings = _get_openai_embeddings()
                 with _cf.ThreadPoolExecutor() as _pool:
                     vec = _pool.submit(openai_embeddings.embed_query, q_text).result()
                 _ensure_collection(vectordb_engine.qdrant_client, config.QDRANT_COLLECTION_NAME)
-                from qdrant_client.models import PointStruct
                 vectordb_engine.qdrant_client.upsert(
                     collection_name=config.QDRANT_COLLECTION_NAME,
                     points=[PointStruct(
