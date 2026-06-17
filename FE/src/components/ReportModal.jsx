@@ -57,11 +57,11 @@ const ReportModal = ({ open, onClose, userId }) => {
   const [usdVnd, setUsdVnd]           = useState(DEFAULT_USD_VND);
   const [rateLoading, setRateLoading] = useState(false);
 
-  useEffect(() => { if (open) fetchStats(); }, [open, days]);
+  useEffect(() => { if (open) fetchStats(); }, [open, days, userId]);
 
   const fetchStats = async () => {
     setLoading(true);
-    try   { setStats(await getUsageStats(null, days)); }
+    try   { setStats(await getUsageStats(userId, days)); }
     catch { setStats(null); }
     finally { setLoading(false); }
   };
