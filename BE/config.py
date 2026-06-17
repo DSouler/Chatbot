@@ -1,4 +1,4 @@
-﻿# config.py
+# config.py
 import os
 import json
 from dotenv import load_dotenv
@@ -47,7 +47,7 @@ QA_PROMPT = _load_prompt("qa_prompt.txt")
 HYDE_PROMPT = _load_prompt("hyde_prompt.txt")
 
 LLM_API_KEY = os.getenv("LLM_API_KEY", "EMPTY")
-DEFAULT_MODEL_NAME = os.getenv("DEFAULT_MODEL_NAME", "Qwen/Qwen3-14B-AWQ")
+DEFAULT_MODEL_NAME = os.getenv("DEFAULT_MODEL_NAME", "GPT-5.4 Nano")
 
 # Web Search Configuration (DuckDuckGo - free, no API key required)
 WEB_SEARCH_MAX_RESULTS = int(os.getenv("WEB_SEARCH_MAX_RESULTS", "3"))
